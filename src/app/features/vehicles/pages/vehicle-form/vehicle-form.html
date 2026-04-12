@@ -1,0 +1,86 @@
+<div class="vehicle-form">
+  <div class="vehicle-form__header">
+    <h2 class="vehicle-form__title">Añadir vehículo</h2>
+    <a class="vehicle-form__back" routerLink="/vehicles">Volver al listado</a>
+  </div>
+
+  <form class="vehicle-form__form" [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="alias">Alias</label>
+      <input
+        id="alias"
+        class="vehicle-form__input"
+        type="text"
+        formControlName="alias"
+        placeholder="Ej: BMW diario"
+      />
+    </div>
+
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="make">Marca</label>
+      <input
+        id="make"
+        class="vehicle-form__input"
+        type="text"
+        formControlName="make"
+        placeholder="Ej: BMW"
+      />
+    </div>
+
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="model">Modelo</label>
+      <input
+        id="model"
+        class="vehicle-form__input"
+        type="text"
+        formControlName="model"
+        placeholder="Ej: 320i"
+      />
+    </div>
+
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="year">Año</label>
+      <input
+        id="year"
+        class="vehicle-form__input"
+        type="number"
+        formControlName="year"
+        placeholder="Ej: 2014"
+      />
+    </div>
+
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="powertrain_type">Tipo de propulsión</label>
+      <select
+        id="powertrain_type"
+        class="vehicle-form__select"
+        formControlName="powertrain_type"
+      >
+        <option value="combustion">Combustión</option>
+        <option value="hybrid">Híbrido</option>
+        <option value="electric">Eléctrico</option>
+      </select>
+    </div>
+
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="current_mileage">Kilometraje actual</label>
+      <input
+        id="current_mileage"
+        class="vehicle-form__input"
+        type="number"
+        formControlName="current_mileage"
+        placeholder="Ej: 137000"
+      />
+    </div>
+
+    @if (error) {
+      <p class="vehicle-form__error">{{ error }}</p>
+    }
+
+    <div class="vehicle-form__actions">
+      <button class="vehicle-form__submit" type="submit" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar vehículo' }}
+      </button>
+    </div>
+  </form>
+</div>

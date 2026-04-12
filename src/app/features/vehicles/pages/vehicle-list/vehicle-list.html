@@ -1,0 +1,52 @@
+<div class="vehicle-list">
+    <div class="vehicle-list__header">
+        <h2 class="vehicle-list__title">Mis vehículos</h2>
+        <a class="vehicle-list__add-button" routerLink="/vehicles/new">
+            Añadir vehículo
+        </a>
+    </div>
+
+    @if (loading) {
+    <p class="vehicle-list__state">Cargando vehículos...</p>
+    }
+
+    @if (error) {
+    <p class="vehicle-list__state vehicle-list__state--error">{{ error }}</p>
+    }
+
+    @if (!loading && vehicles.length > 0) {
+    <div class="vehicle-list__grid">
+        @for (vehicle of vehicles; track vehicle.id) {
+        <article class="vehicle-card">
+            <div class="vehicle-card__body">
+                <h3 class="vehicle-card__title">
+                    {{ vehicle.alias || (vehicle.make + ' ' + vehicle.model) }}
+                </h3>
+
+                <p class="vehicle-card__text">
+                    {{ vehicle.make }} {{ vehicle.model }}
+                </p>
+
+                <p class="vehicle-card__text">Año: {{ vehicle.year }}</p>
+
+                <p class="vehicle-card__text">
+                    Kilómetros: {{ vehicle.current_mileage }}
+                </p>
+
+                <p class="vehicle-card__text">
+                    Tipo: {{ vehicle.powertrain_type }}
+                </p>
+                <a class="vehicle-card__link" [routerLink]="['/maintenances/new']"
+                    [queryParams]="{ vehicleId: vehicle.id }">
+                    Registrar mantenimiento
+                </a>
+            </div>
+        </article>
+        }
+    </div>
+    }
+
+    @if (!loading && vehicles.length === 0) {
+    <p class="vehicle-list__state">No hay vehículos registrados.</p>
+    }
+</div>
