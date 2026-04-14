@@ -24,6 +24,12 @@
   margin-bottom: 1.5rem;
 }
 
+.maintenance-form__header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
 .maintenance-form__title {
   margin: 0;
   font-size: 1.75rem;
@@ -31,11 +37,21 @@
   color: #111827;
 }
 
+.maintenance-form__subtitle {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
 .maintenance-form__back {
   width: fit-content;
   color: #2563eb;
   text-decoration: none;
   font-weight: 500;
+}
+
+.maintenance-form__back:hover {
+  text-decoration: underline;
 }
 
 .maintenance-form__form {
@@ -62,6 +78,12 @@
   border-radius: 8px;
   background: #fff;
   font: inherit;
+  color: #111827;
+}
+
+.maintenance-form__input::placeholder,
+.maintenance-form__textarea::placeholder {
+  color: #9ca3af;
 }
 
 .maintenance-form__input:focus,
@@ -70,9 +92,21 @@
   border-color: #2563eb;
 }
 
+.maintenance-form__textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.maintenance-form__field-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
 .maintenance-form__error {
   margin: 0;
   color: #dc2626;
+  font-weight: 500;
 }
 
 .maintenance-form__actions {
@@ -88,6 +122,11 @@
   color: #fff;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.maintenance-form__submit:hover {
+  background: #1d4ed8;
 }
 
 .maintenance-form__submit:disabled {

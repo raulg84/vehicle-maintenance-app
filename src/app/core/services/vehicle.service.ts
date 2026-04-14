@@ -15,7 +15,13 @@ export class VehicleService {
     return this.http.get<Vehicle[]>(this.apiUrl);
   }
 
+  getVehicle(id: number): Observable<Vehicle> {
+    return this.http.get<Vehicle>(`${this.apiUrl}/${id}`);
+  }
+
   createVehicle(vehicle: Partial<Vehicle>): Observable<Vehicle> {
     return this.http.post<Vehicle>(this.apiUrl, vehicle);
   }
+
+
 }

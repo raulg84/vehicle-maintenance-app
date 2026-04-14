@@ -15,6 +15,10 @@ export class MaintenanceService {
     return this.http.get<Maintenance[]>(this.apiUrl);
   }
 
+  getMaintenancesByVehicle(vehicleId: number): Observable<Maintenance[]> {
+    return this.http.get<Maintenance[]>(`${this.apiUrl}?vehicle_id=${vehicleId}`);
+  }
+
   createMaintenance(maintenance: Partial<Maintenance>): Observable<Maintenance> {
     return this.http.post<Maintenance>(this.apiUrl, maintenance);
   }

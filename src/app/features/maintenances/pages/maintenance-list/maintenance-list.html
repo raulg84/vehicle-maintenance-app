@@ -1,0 +1,80 @@
+<div class="maintenance-list">
+    <div class="maintenance-list__header">
+        <div class="maintenance-list__header-text">
+            <h2 class="maintenance-list__title">
+                Mantenimientos — {{ getVehicleName() }}
+            </h2>
+            @if (vehicle) {
+            <p class="maintenance-list__subtitle" *ngIf="vehicle">
+                {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
+            </p>
+            }
+        </div>
+
+        <div class="maintenance-list__actions">
+            <a class="maintenance-list__back" routerLink="/vehicles">Volver a vehículos</a>
+            <a class="maintenance-list__add-button" [routerLink]="['/maintenances/new']"
+                [queryParams]="{ vehicleId: vehicleId }">
+                Registrar mantenimiento
+            </a>
+        </div>
+    </div>
+
+    @if (loading) {
+    <p class="maintenance-list__state">Cargando mantenimientos...</p>
+    }
+
+    @if (error) {
+    <p class="maintenance-list__state maintenance-list__state--error">{{ error }}</p>
+    }
+
+    @if (!loading && maintenances.length > 0) {
+    <div class="maintenance-list__grid">
+        @for (maintenance of maintenances; track maintenance.id) {
+        <article class="maintenance-card">
+            <div class="maintenance-card__body">
+                <h3 class="maintenance-card__title">
+                    {{ maintenance.maintenance_type || 'Mantenimiento sin tipo' }}
+                </h3>
+
+                <div class="maintenance-card__meta">
+                    <p class="maintenance-card__text">
+                        <span class="maintenance-card__label">Fecha:</span>
+                        {{ maintenance.performed_at ? formatDate(maintenance.performed_at) : '-' }}
+                    </p>
+
+                    <p class="maintenance-card__text">
+                        <span class="maintenance-card__label">Kilometraje:</span>
+                        {{ maintenance.mileage_at_service }} km
+                    </p>
+
+                    <p class="maintenance-card__text">
+                        <span class="maintenance-card__label">Coste:</span>
+                        {{ formatCost(maintenance.cost) }}
+                    </p>
+                </div>
+
+                @if (maintenance.notes) {
+                <p class="maintenance-card__notes">
+                    <span class="maintenance-card__label">Notas:</span>
+                    {{ maintenance.notes }}
+                </p>
+                }
+            </div>
+        </article>
+        }
+    </div>
+    }
+
+    @if (!loading && maintenances.length === 0) {
+    <div class="maintenance-list__empty">
+        <p class="maintenance-list__state">
+            No hay mantenimientos registrados para este vehículo.
+        </p>
+        <a class="maintenance-list__add-button" [routerLink]="['/maintenances/new']"
+            [queryParams]="{ vehicleId: vehicleId }">
+            Registrar primer mantenimiento
+        </a>
+    </div>
+    }
+</div>

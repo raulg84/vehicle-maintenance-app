@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MaintenanceForm } from './maintenance-form';
+import { MaintenanceList } from './maintenance-list';
 
-describe('MaintenanceForm', () => {
-  let component: MaintenanceForm;
-  let fixture: ComponentFixture<MaintenanceForm>;
+describe('MaintenanceList', () => {
+  let component: MaintenanceList;
+  let fixture: ComponentFixture<MaintenanceList>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MaintenanceForm]
+      imports: [MaintenanceList]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MaintenanceForm);
+    fixture = TestBed.createComponent(MaintenanceList);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

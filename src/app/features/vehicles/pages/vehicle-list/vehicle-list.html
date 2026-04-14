@@ -36,10 +36,16 @@
                 <p class="vehicle-card__text">
                     Tipo: {{ vehicle.powertrain_type }}
                 </p>
-                <a class="vehicle-card__link" [routerLink]="['/maintenances/new']"
-                    [queryParams]="{ vehicleId: vehicle.id }">
-                    Registrar mantenimiento
-                </a>
+                <div class="vehicle-card__actions">
+                    <a class="vehicle-card__link" [routerLink]="['/vehicles', vehicle.id, 'maintenances']">
+                        Ver mantenimientos
+                    </a>
+
+                    <a class="vehicle-card__link" [routerLink]="['/maintenances/new']"
+                        [queryParams]="{ vehicleId: vehicle.id }">
+                        Registrar mantenimiento
+                    </a>
+                </div>
             </div>
         </article>
         }
