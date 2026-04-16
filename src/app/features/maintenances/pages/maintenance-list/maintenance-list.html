@@ -1,18 +1,41 @@
 <div class="maintenance-list">
     <div class="maintenance-list__header">
-        <div class="maintenance-list__header-text">
-            <h2 class="maintenance-list__title">
-                Mantenimientos — {{ getVehicleName() }}
-            </h2>
-            @if (vehicle) {
-            <p class="maintenance-list__subtitle" *ngIf="vehicle">
-                {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
-            </p>
-            }
+        <div class="maintenance-list__header-main">
+            <a class="maintenance-list__back" routerLink="/vehicles">
+                ← Volver a vehículos
+            </a>
+
+            <div class="maintenance-list__header-text">
+                <h2 class="maintenance-list__title">
+                    Mantenimientos — {{ getVehicleName() }}
+                </h2>
+
+                @if (vehicle) {
+                <p class="maintenance-list__subtitle">
+                    {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
+                </p>
+                }
+
+                @if (!loading && maintenances.length > 0) {
+                <p class="maintenance-list__summary">
+                    {{ getMaintenanceCountLabel() }} · Último mantenimiento:
+                    {{ getLastMaintenanceDate() }}
+                </p>
+                }
+
+                @if (!loading && maintenances.length === 0) {
+                <p class="maintenance-list__summary">
+                    No hay mantenimientos registrados todavía para este vehículo.
+                </p>
+                }
+            </div>
         </div>
 
         <div class="maintenance-list__actions">
-            <a class="maintenance-list__back" routerLink="/vehicles">Volver a vehículos</a>
+            <a class="maintenance-list__link" [routerLink]="['/vehicles', vehicleId, 'dashboard']">
+                Ver dashboard
+            </a>
+
             <a class="maintenance-list__add-button" [routerLink]="['/maintenances/new']"
                 [queryParams]="{ vehicleId: vehicleId }">
                 Registrar mantenimiento
@@ -25,7 +48,9 @@
     }
 
     @if (error) {
-    <p class="maintenance-list__state maintenance-list__state--error">{{ error }}</p>
+    <p class="maintenance-list__state maintenance-list__state--error">
+        {{ error }}
+    </p>
     }
 
     @if (!loading && maintenances.length > 0) {
@@ -71,6 +96,7 @@
         <p class="maintenance-list__state">
             No hay mantenimientos registrados para este vehículo.
         </p>
+
         <a class="maintenance-list__add-button" [routerLink]="['/maintenances/new']"
             [queryParams]="{ vehicleId: vehicleId }">
             Registrar primer mantenimiento

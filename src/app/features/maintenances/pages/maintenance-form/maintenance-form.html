@@ -1,79 +1,129 @@
 <div class="maintenance-form">
-    <div class="maintenance-form__header">
-        <div class="maintenance-form__header-text">
-            <h2 class="maintenance-form__title">
-                Registrar mantenimiento — {{ getVehicleName() }}
-            </h2>
+  <div class="maintenance-form__header">
+    <div class="maintenance-form__header-main">
+      <a
+        class="maintenance-form__back"
+        [routerLink]="['/vehicles', vehicleId, 'maintenances']"
+      >
+        ← Volver a mantenimientos
+      </a>
 
-            @if (vehicle) {
-            <p class="maintenance-form__subtitle">
-                {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
-            </p>
-            }
-        </div>
+      <div class="maintenance-form__header-text">
+        <h2 class="maintenance-form__title">
+          Registrar mantenimiento — {{ getVehicleName() }}
+        </h2>
 
-        <a class="maintenance-form__back" [routerLink]="['/vehicles', vehicleId, 'maintenances']">
-            Volver a mantenimientos
-        </a>
-    </div>
-
-    <form class="maintenance-form__form" [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()">
-        <div class="maintenance-form__group">
-            <label class="maintenance-form__label" for="maintenance_type">
-                Tipo de mantenimiento
-            </label>
-            <input id="maintenance_type" class="maintenance-form__input" type="text" formControlName="maintenance_type"
-                placeholder="Ej: Cambio de aceite" />
-            @if (maintenanceTypeControl?.invalid && maintenanceTypeControl?.touched) {
-            <p class="maintenance-form__field-error">
-                El tipo de mantenimiento es obligatorio.
-            </p>
-            }
-        </div>
-
-        <div class="maintenance-form__group">
-            <label class="maintenance-form__label" for="performed_at">Fecha</label>
-            <input id="performed_at" class="maintenance-form__input" type="date" formControlName="performed_at" />
-            @if (performedAtControl?.invalid && performedAtControl?.touched) {
-            <p class="maintenance-form__field-error">
-                La fecha es obligatoria.
-            </p>
-            }
-        </div>
-
-        <div class="maintenance-form__group">
-            <label class="maintenance-form__label" for="mileage_at_service">
-                Kilometraje
-            </label>
-            <input id="mileage_at_service" class="maintenance-form__input" type="number"
-                formControlName="mileage_at_service" placeholder="Ej: 138000" />
-            @if (mileageAtServiceControl?.invalid && mileageAtServiceControl?.touched) {
-            <p class="maintenance-form__field-error">
-                Debes indicar un kilometraje válido.
-            </p>
-            }
-        </div>
-
-        <div class="maintenance-form__group">
-            <label class="maintenance-form__label" for="cost">Coste</label>
-            <input id="cost" class="maintenance-form__input" type="number" step="0.01" formControlName="cost"
-                placeholder="Ej: 120.50" />
-        </div>
-
-        <div class="maintenance-form__group">
-            <label class="maintenance-form__label" for="notes">Notas</label>
-            <textarea id="notes" class="maintenance-form__textarea" formControlName="notes" rows="4"
-                placeholder="Ej: Aceite y filtro"></textarea>
-        </div>
-
-        @if (error) {
-        <p class="maintenance-form__error">{{ error }}</p>
+        @if (vehicle) {
+          <p class="maintenance-form__subtitle">
+            {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
+          </p>
         }
 
-        <div class="maintenance-form__actions">
-            <button class="maintenance-form__submit" type="submit" [disabled]="loading">
-                {{ loading ? 'Guardando...' : 'Guardar mantenimiento' }}
-            </button>
-        </div>
-    </form>
+        <p class="maintenance-form__description">
+          Introduce los datos del mantenimiento realizado.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <form
+    class="maintenance-form__form"
+    [formGroup]="maintenanceForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="maintenance-form__group">
+      <label class="maintenance-form__label" for="maintenance_type">
+        Tipo de mantenimiento
+      </label>
+      <input
+        id="maintenance_type"
+        class="maintenance-form__input"
+        type="text"
+        formControlName="maintenance_type"
+        placeholder="Ej: Cambio de aceite"
+      />
+      @if (maintenanceTypeControl?.invalid && maintenanceTypeControl?.touched) {
+        <p class="maintenance-form__field-error">
+          El tipo de mantenimiento es obligatorio.
+        </p>
+      }
+    </div>
+
+    <div class="maintenance-form__group">
+      <label class="maintenance-form__label" for="performed_at">Fecha</label>
+      <input
+        id="performed_at"
+        class="maintenance-form__input"
+        type="date"
+        formControlName="performed_at"
+      />
+      @if (performedAtControl?.invalid && performedAtControl?.touched) {
+        <p class="maintenance-form__field-error">
+          La fecha es obligatoria.
+        </p>
+      }
+    </div>
+
+    <div class="maintenance-form__group">
+      <label class="maintenance-form__label" for="mileage_at_service">
+        Kilometraje
+      </label>
+      <input
+        id="mileage_at_service"
+        class="maintenance-form__input"
+        type="number"
+        formControlName="mileage_at_service"
+        placeholder="Ej: 138000"
+      />
+      @if (mileageAtServiceControl?.invalid && mileageAtServiceControl?.touched) {
+        <p class="maintenance-form__field-error">
+          Debes indicar un kilometraje válido.
+        </p>
+      }
+    </div>
+
+    <div class="maintenance-form__group">
+      <label class="maintenance-form__label" for="cost">Coste</label>
+      <input
+        id="cost"
+        class="maintenance-form__input"
+        type="number"
+        step="0.01"
+        formControlName="cost"
+        placeholder="Ej: 120.50"
+      />
+    </div>
+
+    <div class="maintenance-form__group">
+      <label class="maintenance-form__label" for="notes">Notas</label>
+      <textarea
+        id="notes"
+        class="maintenance-form__textarea"
+        formControlName="notes"
+        rows="4"
+        placeholder="Ej: Aceite y filtro"
+      ></textarea>
+    </div>
+
+    @if (error) {
+      <p class="maintenance-form__error">{{ error }}</p>
+    }
+
+    <div class="maintenance-form__actions">
+      <a
+        class="maintenance-form__cancel"
+        [routerLink]="['/vehicles', vehicleId, 'maintenances']"
+      >
+        Cancelar
+      </a>
+
+      <button
+        class="maintenance-form__submit"
+        type="submit"
+        [disabled]="loading"
+      >
+        {{ loading ? 'Guardando...' : 'Guardar mantenimiento' }}
+      </button>
+    </div>
+  </form>
 </div>

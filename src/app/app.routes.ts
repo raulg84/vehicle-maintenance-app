@@ -39,4 +39,11 @@ export const routes: Routes = [
                 (m) => m.MaintenanceList
             ),
     },
+    {
+        path: 'vehicles/:id/dashboard',
+        loadComponent: () =>
+            import('./features/dashboard/pages/vehicle-dashboard/vehicle-dashboard').then(
+                (m) => m.VehicleDashboard
+            ),
+    },
 ];

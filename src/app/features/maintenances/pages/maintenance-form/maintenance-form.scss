@@ -18,29 +18,19 @@
 }
 
 .maintenance-form__header {
+  margin-bottom: 1.5rem;
+}
+
+.maintenance-form__header-main {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
 }
 
 .maintenance-form__header-text {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-}
-
-.maintenance-form__title {
-  margin: 0;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #111827;
-}
-
-.maintenance-form__subtitle {
-  margin: 0;
-  color: #6b7280;
-  line-height: 1.4;
 }
 
 .maintenance-form__back {
@@ -52,6 +42,26 @@
 
 .maintenance-form__back:hover {
   text-decoration: underline;
+}
+
+.maintenance-form__title {
+  margin: 0;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  font-weight: 700;
+  color: #111827;
+}
+
+.maintenance-form__subtitle {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.maintenance-form__description {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.4;
 }
 
 .maintenance-form__form {
@@ -110,17 +120,39 @@
 }
 
 .maintenance-form__actions {
-  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.maintenance-form__cancel,
+.maintenance-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.maintenance-form__cancel {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #2563eb;
+}
+
+.maintenance-form__cancel:hover {
+  background: #f9fafb;
 }
 
 .maintenance-form__submit {
-  width: 100%;
-  padding: 0.9rem 1rem;
   border: none;
-  border-radius: 8px;
   background: #2563eb;
   color: #fff;
-  font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
 }
@@ -135,9 +167,13 @@
 }
 
 @media (min-width: 768px) {
-  .maintenance-form__header {
+  .maintenance-form__actions {
     flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+  }
+
+  .maintenance-form__cancel,
+  .maintenance-form__submit {
+    width: auto;
   }
 }

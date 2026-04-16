@@ -1,0 +1,55 @@
+<div class="vehicle-dashboard">
+    <div class="vehicle-dashboard__header">
+        <div>
+            <a class="vehicle-dashboard__back" routerLink="/vehicles">
+                ← Volver a vehículos
+            </a>
+            <h2 class="vehicle-dashboard__title">
+                {{ getVehicleName() }}
+            </h2>
+
+            @if (vehicle) {
+            <p class="vehicle-dashboard__subtitle">
+                {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
+            </p>
+            }
+        </div>
+
+        <div class="vehicle-dashboard__actions">
+            <a class="vehicle-dashboard__button" [routerLink]="['/maintenances/new']"
+                [queryParams]="{ vehicleId: vehicleId }">
+                Registrar mantenimiento
+            </a>
+
+            <a class="vehicle-dashboard__link" [routerLink]="['/vehicles', vehicleId, 'maintenances']">
+                Ver historial completo
+            </a>
+        </div>
+    </div>
+
+    @if (loading) {
+    <p>Cargando...</p>
+    }
+
+    @if (!loading) {
+    <div class="vehicle-dashboard__section">
+        <h3 class="vehicle-dashboard__section-title">
+            Últimos mantenimientos
+        </h3>
+
+        @if (maintenances.length > 0) {
+        <div class="vehicle-dashboard__grid">
+            @for (m of maintenances; track m.id) {
+            <div class="maintenance-card">
+                <h4>{{ m.maintenance_type }}</h4>
+                <p>{{ formatDate(m.performed_at) }}</p>
+                <p>{{ m.mileage_at_service }} km</p>
+            </div>
+            }
+        </div>
+        } @else {
+        <p>No hay mantenimientos aún.</p>
+        }
+    </div>
+    }
+</div>

@@ -1,30 +1,29 @@
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MaintenanceService } from '../../../../core/services/maintenance.service';
-import { Maintenance } from '../../../../shared/models/maintenance.model';
 import { VehicleService } from '../../../../core/services/vehicle.service';
+import { Maintenance } from '../../../../shared/models/maintenance.model';
 import { Vehicle } from '../../../../shared/models/vehicle.model';
 
 @Component({
   selector: 'app-maintenance-list',
+  standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './maintenance-list.html',
   styleUrl: './maintenance-list.scss',
 })
-export class MaintenanceList {
-
+export class MaintenanceList implements OnInit {
   private route = inject(ActivatedRoute);
   private maintenanceService = inject(MaintenanceService);
+  private vehicleService = inject(VehicleService);
 
   maintenances: Maintenance[] = [];
+  vehicle: Vehicle | null = null;
+
   loading = true;
   error = '';
   vehicleId!: number;
-
-  private vehicleService = inject(VehicleService);
-
-  vehicle: Vehicle | null = null;
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -36,6 +35,7 @@ export class MaintenanceList {
     }
 
     this.vehicleId = Number(idParam);
+
     this.loadVehicle();
     this.loadMaintenances();
   }
@@ -46,7 +46,6 @@ export class MaintenanceList {
         this.vehicle = data;
       },
       error: () => {
-        // no se rompe la pantalla si falla
         this.vehicle = null;
       },
     });
@@ -55,10 +54,13 @@ export class MaintenanceList {
   loadMaintenances(): void {
     this.maintenanceService.getMaintenancesByVehicle(this.vehicleId).subscribe({
       next: (data) => {
-        console.log('Mantenimientos recibidos:', data);
-        console.log('Cantidad:', data.length);
+        this.maintenances = [...data].sort((a, b) => {
+          return (
+            new Date(b.performed_at).getTime() -
+            new Date(a.performed_at).getTime()
+          );
+        });
 
-        this.maintenances = data;
         this.loading = false;
       },
       error: () => {
@@ -66,6 +68,18 @@ export class MaintenanceList {
         this.loading = false;
       },
     });
+  }
+
+  getVehicleName(): string {
+    if (!this.vehicle) {
+      return 'Vehículo';
+    }
+
+    if (this.vehicle.alias) {
+      return this.vehicle.alias;
+    }
+
+    return `${this.vehicle.make} ${this.vehicle.model}`;
   }
 
   formatDate(date: string): string {
@@ -86,16 +100,16 @@ export class MaintenanceList {
     return `${parsedCost.toFixed(2)} €`;
   }
 
-  getVehicleName(): string {
-    if (!this.vehicle) {
-      return 'Vehículo';
-    }
-
-    if (this.vehicle.alias) {
-      return this.vehicle.alias;
-    }
-
-    return `${this.vehicle.make} ${this.vehicle.model}`;
+  getMaintenanceCountLabel(): string {
+    const count = this.maintenances.length;
+    return count === 1 ? '1 mantenimiento registrado' : `${count} mantenimientos registrados`;
   }
 
+  getLastMaintenanceDate(): string | null {
+    if (this.maintenances.length === 0) {
+      return null;
+    }
+
+    return this.formatDate(this.maintenances[0].performed_at);
+  }
 }

@@ -45,6 +45,10 @@
                         [queryParams]="{ vehicleId: vehicle.id }">
                         Registrar mantenimiento
                     </a>
+
+                    <a class="vehicle-card__link" [routerLink]="['/vehicles', vehicle.id, 'dashboard']">
+                        Ver dashboard
+                    </a>
                 </div>
             </div>
         </article>
