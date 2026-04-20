@@ -1,55 +1,133 @@
 <div class="vehicle-dashboard">
-    <div class="vehicle-dashboard__header">
-        <div>
-            <a class="vehicle-dashboard__back" routerLink="/vehicles">
-                ← Volver a vehículos
-            </a>
-            <h2 class="vehicle-dashboard__title">
-                {{ getVehicleName() }}
-            </h2>
+  <div class="vehicle-dashboard__header">
+    <a class="vehicle-dashboard__back" routerLink="/vehicles">
+      ← Volver a vehículos
+    </a>
 
-            @if (vehicle) {
-            <p class="vehicle-dashboard__subtitle">
-                {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
-            </p>
-            }
-        </div>
+    <div class="vehicle-dashboard__header-main">
+      <h2 class="vehicle-dashboard__title">
+        {{ getVehicleName() }}
+      </h2>
 
-        <div class="vehicle-dashboard__actions">
-            <a class="vehicle-dashboard__button" [routerLink]="['/maintenances/new']"
-                [queryParams]="{ vehicleId: vehicleId }">
-                Registrar mantenimiento
-            </a>
-
-            <a class="vehicle-dashboard__link" [routerLink]="['/vehicles', vehicleId, 'maintenances']">
-                Ver historial completo
-            </a>
-        </div>
+      @if (vehicle) {
+      <p class="vehicle-dashboard__subtitle">
+        {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
+      </p>
+      }
     </div>
 
-    @if (loading) {
-    <p>Cargando...</p>
-    }
+    <div class="vehicle-dashboard__actions">
+      <a
+        class="vehicle-dashboard__button"
+        [routerLink]="['/maintenances/new']"
+        [queryParams]="{ vehicleId: vehicleId }"
+      >
+        Registrar mantenimiento
+      </a>
 
-    @if (!loading) {
-    <div class="vehicle-dashboard__section">
-        <h3 class="vehicle-dashboard__section-title">
-            Últimos mantenimientos
-        </h3>
-
-        @if (maintenances.length > 0) {
-        <div class="vehicle-dashboard__grid">
-            @for (m of maintenances; track m.id) {
-            <div class="maintenance-card">
-                <h4>{{ m.maintenance_type }}</h4>
-                <p>{{ formatDate(m.performed_at) }}</p>
-                <p>{{ m.mileage_at_service }} km</p>
-            </div>
-            }
-        </div>
-        } @else {
-        <p>No hay mantenimientos aún.</p>
-        }
+      <a
+        class="vehicle-dashboard__link"
+        [routerLink]="['/vehicles', vehicleId, 'maintenances']"
+      >
+        Ver historial completo
+      </a>
     </div>
-    }
+  </div>
+
+  @if (loading) {
+  <p class="vehicle-dashboard__state">Cargando...</p>
+  }
+
+  @if (error) {
+  <p class="vehicle-dashboard__state vehicle-dashboard__state--error">
+    {{ error }}
+  </p>
+  }
+
+  @if (!loading && !error) {
+  <!-- Estado global -->
+  <div class="vehicle-dashboard__status-card">
+    <div class="vehicle-dashboard__status-header">
+      <h3>Estado del vehículo</h3>
+
+      <span
+        class="vehicle-dashboard__status-badge"
+        [ngClass]="{
+          'vehicle-dashboard__status-badge--ok': vehicleStatus === 'ok',
+          'vehicle-dashboard__status-badge--upcoming': vehicleStatus === 'upcoming',
+          'vehicle-dashboard__status-badge--overdue': vehicleStatus === 'overdue',
+          'vehicle-dashboard__status-badge--pending': vehicleStatus === 'pending'
+        }"
+      >
+        {{ vehicleStatusLabel }}
+      </span>
+    </div>
+
+    <p>{{ vehicleStatusMessage }}</p>
+  </div>
+
+  <!-- Próxima acción -->
+  <div
+    class="vehicle-dashboard__next-action-card"
+    [ngClass]="{
+      'vehicle-dashboard__next-action-card--info': nextActionType === 'info',
+      'vehicle-dashboard__next-action-card--warning': nextActionType === 'warning',
+      'vehicle-dashboard__next-action-card--danger': nextActionType === 'danger'
+    }"
+  >
+    <h3>Próxima acción recomendada</h3>
+    <strong>{{ nextActionTitle }}</strong>
+    <p>{{ nextActionMessage }}</p>
+  </div>
+
+  <!-- Reglas -->
+  <div class="vehicle-dashboard__section">
+    <h3>Estado por mantenimiento</h3>
+
+    <div class="vehicle-dashboard__grid">
+      @for (rule of getVisibleRuleStatuses(); track rule.rule_id) {
+      <article class="dashboard-rule-card">
+        <div class="dashboard-rule-card__body">
+          <div class="dashboard-rule-card__header">
+            <h4>{{ rule.name }}</h4>
+
+            <span
+              class="dashboard-rule-card__badge"
+              [ngClass]="{
+                'dashboard-rule-card__badge--ok': rule.status === 'ok',
+                'dashboard-rule-card__badge--upcoming': rule.status === 'upcoming',
+                'dashboard-rule-card__badge--overdue': rule.status === 'overdue',
+                'dashboard-rule-card__badge--pending': rule.status === 'pending'
+              }"
+            >
+              {{ rule.status_label }}
+            </span>
+          </div>
+
+          @if (!rule.last_maintenance_date) {
+          <p class="dashboard-rule-card__empty">
+            Sin mantenimientos registrados
+          </p>
+          } @else {
+          <p>
+            <strong>Último:</strong>
+            {{ formatDate(rule.last_maintenance_date) }}
+          </p>
+
+          <p>
+            <strong>Km restantes:</strong>
+            {{ formatRemainingKm(rule.remaining_km) }}
+          </p>
+
+          <p>
+            <strong>Días restantes:</strong>
+            {{ formatRemainingDays(rule.remaining_days) }}
+          </p>
+          }
+        </div>
+      </article>
+      }
+    </div>
+  </div>
+  }
 </div>

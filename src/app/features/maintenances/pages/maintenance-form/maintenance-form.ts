@@ -8,7 +8,9 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MaintenanceService } from '../../../../core/services/maintenance.service';
 import { VehicleService } from '../../../../core/services/vehicle.service';
+import { MaintenanceRuleService } from '../../../../core/services/maintenance-rule.service';
 import { Vehicle } from '../../../../shared/models/vehicle.model';
+import { MaintenanceRule } from '../../../../shared/models/maintenance-rule.model';
 
 @Component({
   selector: 'app-maintenance-form',
@@ -21,6 +23,7 @@ export class MaintenanceForm implements OnInit {
   private fb = inject(FormBuilder);
   private maintenanceService = inject(MaintenanceService);
   private vehicleService = inject(VehicleService);
+  private maintenanceRuleService = inject(MaintenanceRuleService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -29,9 +32,11 @@ export class MaintenanceForm implements OnInit {
 
   vehicleId: number | null = null;
   vehicle: Vehicle | null = null;
+  rules: MaintenanceRule[] = [];
 
   maintenanceForm = this.fb.group({
     vehicle_id: [null as number | null, Validators.required],
+    maintenance_rule_id: [null as number | null, Validators.required],
     maintenance_type: ['', Validators.required],
     performed_at: ['', Validators.required],
     mileage_at_service: [0, [Validators.required, Validators.min(0)]],
@@ -59,9 +64,23 @@ export class MaintenanceForm implements OnInit {
     this.vehicleService.getVehicle(this.vehicleId).subscribe({
       next: (data) => {
         this.vehicle = data;
+        this.loadRules();
       },
       error: () => {
         this.vehicle = null;
+      },
+    });
+  }
+
+  loadRules(): void {
+    const powertrainType = this.vehicle?.powertrain_type;
+
+    this.maintenanceRuleService.getRules(powertrainType).subscribe({
+      next: (data) => {
+        this.rules = data;
+      },
+      error: () => {
+        this.rules = [];
       },
     });
   }
@@ -78,6 +97,18 @@ export class MaintenanceForm implements OnInit {
     return `${this.vehicle.make} ${this.vehicle.model}`;
   }
 
+  onRuleChange(): void {
+    const selectedRuleId = this.maintenanceForm.get('maintenance_rule_id')?.value;
+
+    const selectedRule = this.rules.find((rule) => rule.id === Number(selectedRuleId));
+
+    if (!selectedRule) return;
+
+    this.maintenanceForm.patchValue({
+      maintenance_type: selectedRule.name,
+    });
+  }
+
   onSubmit(): void {
     if (this.maintenanceForm.invalid) {
       this.maintenanceForm.markAllAsTouched();
@@ -91,6 +122,7 @@ export class MaintenanceForm implements OnInit {
 
     const maintenanceData = {
       vehicle_id: formValue.vehicle_id ?? undefined,
+      maintenance_rule_id: formValue.maintenance_rule_id ?? undefined,
       maintenance_type: formValue.maintenance_type || '',
       performed_at: formValue.performed_at || '',
       mileage_at_service: formValue.mileage_at_service ?? 0,
@@ -100,12 +132,7 @@ export class MaintenanceForm implements OnInit {
 
     this.maintenanceService.createMaintenance(maintenanceData).subscribe({
       next: () => {
-        // Volver a la lista de mantenimientos del vehículo
-        this.router.navigate([
-          '/vehicles',
-          formValue.vehicle_id,
-          'maintenances',
-        ]);
+        this.router.navigate(['/vehicles', formValue.vehicle_id, 'maintenances']);
       },
       error: (err) => {
         if (err.status === 422) {
@@ -118,6 +145,10 @@ export class MaintenanceForm implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  get maintenanceRuleControl() {
+    return this.maintenanceForm.get('maintenance_rule_id');
   }
 
   get maintenanceTypeControl() {
