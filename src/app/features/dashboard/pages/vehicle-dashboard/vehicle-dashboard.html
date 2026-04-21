@@ -5,129 +5,157 @@
     </a>
 
     <div class="vehicle-dashboard__header-main">
-      <h2 class="vehicle-dashboard__title">
-        {{ getVehicleName() }}
-      </h2>
+      <div class="vehicle-dashboard__header-text">
+        <h2 class="vehicle-dashboard__title">
+          {{ getVehicleName() }}
+        </h2>
 
-      @if (vehicle) {
-      <p class="vehicle-dashboard__subtitle">
-        {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
-      </p>
-      }
-    </div>
+        @if (vehicle) {
+          <p class="vehicle-dashboard__subtitle">
+            {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
+          </p>
+        }
+      </div>
 
-    <div class="vehicle-dashboard__actions">
-      <a
-        class="vehicle-dashboard__button"
-        [routerLink]="['/maintenances/new']"
-        [queryParams]="{ vehicleId: vehicleId }"
-      >
-        Registrar mantenimiento
-      </a>
+      <div class="vehicle-dashboard__actions">
+        <a
+          class="vehicle-dashboard__button"
+          [routerLink]="['/maintenances/new']"
+          [queryParams]="{ vehicleId: vehicleId }"
+        >
+          Registrar mantenimiento
+        </a>
 
-      <a
-        class="vehicle-dashboard__link"
-        [routerLink]="['/vehicles', vehicleId, 'maintenances']"
-      >
-        Ver historial completo
-      </a>
+        <a
+          class="vehicle-dashboard__link"
+          [routerLink]="['/vehicles', vehicleId, 'maintenances']"
+        >
+          Ver historial completo
+        </a>
+      </div>
     </div>
   </div>
 
   @if (loading) {
-  <p class="vehicle-dashboard__state">Cargando...</p>
+    <p class="vehicle-dashboard__state">Cargando...</p>
   }
 
   @if (error) {
-  <p class="vehicle-dashboard__state vehicle-dashboard__state--error">
-    {{ error }}
-  </p>
+    <p class="vehicle-dashboard__state vehicle-dashboard__state--error">
+      {{ error }}
+    </p>
   }
 
   @if (!loading && !error) {
-  <!-- Estado global -->
-  <div class="vehicle-dashboard__status-card">
-    <div class="vehicle-dashboard__status-header">
-      <h3>Estado del vehículo</h3>
+    <div class="vehicle-dashboard__status-card">
+      <div class="vehicle-dashboard__status-header">
+        <h3 class="vehicle-dashboard__status-title">Estado del vehículo</h3>
 
-      <span
-        class="vehicle-dashboard__status-badge"
-        [ngClass]="{
-          'vehicle-dashboard__status-badge--ok': vehicleStatus === 'ok',
-          'vehicle-dashboard__status-badge--upcoming': vehicleStatus === 'upcoming',
-          'vehicle-dashboard__status-badge--overdue': vehicleStatus === 'overdue',
-          'vehicle-dashboard__status-badge--pending': vehicleStatus === 'pending'
-        }"
-      >
-        {{ vehicleStatusLabel }}
-      </span>
+        <span
+          class="vehicle-dashboard__status-badge"
+          [ngClass]="getVehicleStatusBadgeClass(vehicleStatus)"
+        >
+          {{ vehicleStatusLabel }}
+        </span>
+      </div>
+
+      <p class="vehicle-dashboard__status-message">
+        {{ vehicleStatusMessage }}
+      </p>
     </div>
 
-    <p>{{ vehicleStatusMessage }}</p>
-  </div>
+    <div
+      class="vehicle-dashboard__next-action-card"
+      [ngClass]="{
+        'vehicle-dashboard__next-action-card--info': nextActionType === 'info',
+        'vehicle-dashboard__next-action-card--warning': nextActionType === 'warning',
+        'vehicle-dashboard__next-action-card--danger': nextActionType === 'danger'
+      }"
+    >
+      <h3 class="vehicle-dashboard__next-action-title">
+        Próxima acción recomendada
+      </h3>
 
-  <!-- Próxima acción -->
-  <div
-    class="vehicle-dashboard__next-action-card"
-    [ngClass]="{
-      'vehicle-dashboard__next-action-card--info': nextActionType === 'info',
-      'vehicle-dashboard__next-action-card--warning': nextActionType === 'warning',
-      'vehicle-dashboard__next-action-card--danger': nextActionType === 'danger'
-    }"
-  >
-    <h3>Próxima acción recomendada</h3>
-    <strong>{{ nextActionTitle }}</strong>
-    <p>{{ nextActionMessage }}</p>
-  </div>
+      <p class="vehicle-dashboard__next-action-highlight">
+        {{ nextActionTitle }}
+      </p>
 
-  <!-- Reglas -->
-  <div class="vehicle-dashboard__section">
-    <h3>Estado por mantenimiento</h3>
+      <p class="vehicle-dashboard__next-action-message">
+        {{ nextActionMessage }}
+      </p>
+    </div>
 
-    <div class="vehicle-dashboard__grid">
-      @for (rule of getVisibleRuleStatuses(); track rule.rule_id) {
-      <article class="dashboard-rule-card">
-        <div class="dashboard-rule-card__body">
-          <div class="dashboard-rule-card__header">
-            <h4>{{ rule.name }}</h4>
+    <div class="vehicle-dashboard__section">
+      <h3 class="vehicle-dashboard__section-title">
+        Estado por mantenimiento
+      </h3>
 
-            <span
-              class="dashboard-rule-card__badge"
-              [ngClass]="{
-                'dashboard-rule-card__badge--ok': rule.status === 'ok',
-                'dashboard-rule-card__badge--upcoming': rule.status === 'upcoming',
-                'dashboard-rule-card__badge--overdue': rule.status === 'overdue',
-                'dashboard-rule-card__badge--pending': rule.status === 'pending'
-              }"
+      @if (ruleStatuses.length > 0) {
+        <div class="vehicle-dashboard__grid">
+          @for (rule of getVisibleRuleStatuses(); track rule.rule_id) {
+            <article
+              class="dashboard-rule-card"
+              [ngClass]="getRuleCardStateClass(rule.status)"
             >
-              {{ rule.status_label }}
-            </span>
-          </div>
+              <div class="dashboard-rule-card__body">
+                <div class="dashboard-rule-card__header">
+                  <h4 class="dashboard-rule-card__title">{{ rule.name }}</h4>
 
-          @if (!rule.last_maintenance_date) {
-          <p class="dashboard-rule-card__empty">
-            Sin mantenimientos registrados
-          </p>
-          } @else {
-          <p>
-            <strong>Último:</strong>
-            {{ formatDate(rule.last_maintenance_date) }}
-          </p>
+                  <span
+                    class="dashboard-rule-card__badge"
+                    [ngClass]="getRuleBadgeClass(rule.status)"
+                  >
+                    {{ rule.status_label }}
+                  </span>
+                </div>
 
-          <p>
-            <strong>Km restantes:</strong>
-            {{ formatRemainingKm(rule.remaining_km) }}
-          </p>
+                @if (rule.status === 'pending') {
+                  <p class="dashboard-rule-card__empty">
+                    Sin historial registrado para esta regla.
+                  </p>
+                } @else {
+                  <p class="dashboard-rule-card__text">
+                    <span class="dashboard-rule-card__label">Último:</span>
+                    {{ formatDate(rule.last_maintenance_date) }}
+                  </p>
 
-          <p>
-            <strong>Días restantes:</strong>
-            {{ formatRemainingDays(rule.remaining_days) }}
-          </p>
+                  <p class="dashboard-rule-card__text">
+                    <span class="dashboard-rule-card__label">Km restantes:</span>
+                    {{ formatRemainingKm(rule.remaining_km) }}
+                  </p>
+
+                  <p class="dashboard-rule-card__text">
+                    <span class="dashboard-rule-card__label">Días restantes:</span>
+                    {{ formatRemainingDays(rule.remaining_days) }}
+                  </p>
+                }
+
+                <div class="dashboard-rule-card__progress-block">
+                  <div class="dashboard-rule-card__progress-header">
+                    <span class="dashboard-rule-card__progress-label">
+                      Progreso
+                    </span>
+                    <span class="dashboard-rule-card__progress-value">
+                      {{ getProgressLabel(rule) }}
+                    </span>
+                  </div>
+
+                  <div class="dashboard-rule-card__progress">
+                    <div
+                      class="dashboard-rule-card__progress-bar"
+                      [style.width.%]="getProgressPercent(rule)"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </article>
           }
         </div>
-      </article>
+      } @else {
+        <p class="vehicle-dashboard__state">
+          No hay reglas evaluables para este vehículo.
+        </p>
       }
     </div>
-  </div>
   }
 </div>

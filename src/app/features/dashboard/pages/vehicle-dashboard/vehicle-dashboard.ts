@@ -57,8 +57,12 @@ export class VehicleDashboard implements OnInit {
 
   loadVehicle(): void {
     this.vehicleService.getVehicle(this.vehicleId).subscribe({
-      next: (data) => (this.vehicle = data),
-      error: () => (this.vehicle = null),
+      next: (data) => {
+        this.vehicle = data;
+      },
+      error: () => {
+        this.vehicle = null;
+      },
     });
   }
 
@@ -68,7 +72,16 @@ export class VehicleDashboard implements OnInit {
       .subscribe({
         next: (data) => {
           this.maintenanceStatus = data;
-          this.ruleStatuses = data.rules;
+          this.ruleStatuses = [...data.rules].sort((a, b) => {
+            const order: Record<VehicleRuleStatus, number> = {
+              overdue: 1,
+              upcoming: 2,
+              pending: 3,
+              ok: 4,
+            };
+
+            return order[a.status] - order[b.status];
+          });
 
           this.vehicleStatus = data.vehicle_status;
           this.vehicleStatusLabel = data.summary.label;
@@ -80,7 +93,7 @@ export class VehicleDashboard implements OnInit {
           this.nextActionType =
             data.vehicle_status === 'overdue'
               ? 'danger'
-              : data.vehicle_status === 'upcoming'
+              : data.vehicle_status === 'upcoming' || data.vehicle_status === 'pending'
               ? 'warning'
               : 'info';
 
@@ -94,27 +107,84 @@ export class VehicleDashboard implements OnInit {
   }
 
   getVehicleName(): string {
-    if (!this.vehicle) return 'Vehículo';
+    if (!this.vehicle) {
+      return 'Vehículo';
+    }
 
     return this.vehicle.alias || `${this.vehicle.make} ${this.vehicle.model}`;
   }
 
   formatDate(date: string | null): string {
-    if (!date) return '-';
+    if (!date) {
+      return '-';
+    }
+
     return new Date(date).toLocaleDateString('es-ES');
   }
 
   formatRemainingKm(value: number | null): string {
-    if (value == null) return '-';
+    if (value == null) {
+      return '-';
+    }
+
     return `${value} km`;
   }
 
   formatRemainingDays(value: number | null): string {
-    if (value == null) return '-';
+    if (value == null) {
+      return '-';
+    }
+
     return `${value} días`;
   }
 
   getVisibleRuleStatuses(): MaintenanceRuleStatus[] {
     return this.ruleStatuses;
+  }
+
+  getRuleCardStateClass(status: VehicleRuleStatus): string {
+    return `dashboard-rule-card--${status}`;
+  }
+
+  getRuleBadgeClass(status: VehicleRuleStatus): string {
+    return `dashboard-rule-card__badge--${status}`;
+  }
+
+  getVehicleStatusBadgeClass(status: VehicleRuleStatus): string {
+    return `vehicle-dashboard__status-badge--${status}`;
+  }
+
+  getProgressPercent(rule: MaintenanceRuleStatus): number {
+    if (
+      rule.status === 'pending' ||
+      rule.remaining_km == null ||
+      rule.last_maintenance_km == null
+    ) {
+      return 0;
+    }
+
+    const usedKm = rule.current_vehicle_km - rule.last_maintenance_km;
+    const totalKm = usedKm + Math.max(rule.remaining_km, 0);
+
+    if (totalKm <= 0) {
+      return rule.status === 'overdue' ? 100 : 0;
+    }
+
+    const percent = Math.round((usedKm / totalKm) * 100);
+
+    if (rule.status === 'overdue') {
+      return 100;
+    }
+
+    return Math.max(0, Math.min(percent, 100));
+  }
+
+  getProgressLabel(rule: MaintenanceRuleStatus): string {
+    if (rule.status === 'pending') {
+      return 'Sin historial';
+    }
+
+    const percent = this.getProgressPercent(rule);
+    return `${percent}% del intervalo consumido`;
   }
 }

@@ -2,6 +2,12 @@
   display: block;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .vehicle-dashboard {
   display: flex;
   flex-direction: column;
@@ -14,28 +20,63 @@
   gap: 1rem;
 }
 
+.vehicle-dashboard__back {
+  width: fit-content;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.vehicle-dashboard__back:hover {
+  text-decoration: underline;
+}
+
+.vehicle-dashboard__header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vehicle-dashboard__header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
 .vehicle-dashboard__title {
   margin: 0;
   font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
 }
 
 .vehicle-dashboard__subtitle {
   margin: 0;
   color: #6b7280;
+  line-height: 1.4;
 }
 
 .vehicle-dashboard__actions {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .vehicle-dashboard__button {
-  background: #2563eb;
-  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.75rem 1rem;
   border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
   text-decoration: none;
+  font-weight: 600;
+}
+
+.vehicle-dashboard__button:hover {
+  background: #1d4ed8;
 }
 
 .vehicle-dashboard__link {
@@ -48,51 +89,13 @@
   text-decoration: underline;
 }
 
-.vehicle-dashboard__section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.vehicle-dashboard__state {
+  margin: 0;
+  color: #4b5563;
 }
 
-
-
-.vehicle-dashboard__grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.maintenance-card {
-  background: white;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
-}
-
-@media (min-width: 768px) {
-  .vehicle-dashboard__header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .vehicle-dashboard__actions {
-    flex-direction: row;
-  }
-
-  .vehicle-dashboard__grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  }
-}
-
-.vehicle-dashboard__back {
-  width: fit-content;
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.vehicle-dashboard__back:hover {
-  text-decoration: underline;
+.vehicle-dashboard__state--error {
+  color: #dc2626;
 }
 
 .vehicle-dashboard__status-card {
@@ -120,10 +123,13 @@
 }
 
 .vehicle-dashboard__status-badge {
-  padding: 0.4rem 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.8rem;
   border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.85rem;
+  font-weight: 700;
+  font-size: 0.95rem;
 }
 
 .vehicle-dashboard__status-badge--ok {
@@ -195,16 +201,46 @@
   line-height: 1.5;
 }
 
-.vehicle-dashboard__state--error {
-  color: #dc2626;
+.vehicle-dashboard__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-/* Cards */
+.vehicle-dashboard__section-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.vehicle-dashboard__grid {
+  display: grid;
+  gap: 1rem;
+}
 
 .dashboard-rule-card {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  overflow: hidden;
+  border-left: 6px solid transparent;
+}
+
+.dashboard-rule-card--ok {
+  border-left-color: #22c55e;
+}
+
+.dashboard-rule-card--upcoming {
+  border-left-color: #d97706;
+}
+
+.dashboard-rule-card--overdue {
+  border-left-color: #dc2626;
+}
+
+.dashboard-rule-card--pending {
+  border-left-color: #9ca3af;
 }
 
 .dashboard-rule-card__body {
@@ -213,22 +249,27 @@
 
 .dashboard-rule-card__header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
 }
 
-/*.dashboard-rule-card__title {
+.dashboard-rule-card__title {
   margin: 0;
   font-size: 1.05rem;
   font-weight: 700;
   color: #111827;
-}*/
+}
 
 .dashboard-rule-card__badge {
-  padding: 0.3rem 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.7rem;
   border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .dashboard-rule-card__badge--ok {
@@ -251,11 +292,6 @@
   color: #374151;
 }
 
-.dashboard-rule-card__empty {
-  font-style: italic;
-  color: #6b7280;
-}
-
 .dashboard-rule-card__text {
   margin: 0 0 0.4rem;
   color: #374151;
@@ -271,7 +307,70 @@
   color: #111827;
 }
 
-.dashboard-rule-card__badge--pending {
-  background: #e5e7eb;
+.dashboard-rule-card__empty {
+  margin: 0 0 0.9rem;
+  color: #6b7280;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.dashboard-rule-card__progress-block {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.dashboard-rule-card__progress-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.dashboard-rule-card__progress-label {
   color: #374151;
+  font-weight: 500;
+}
+
+.dashboard-rule-card__progress-value {
+  color: #6b7280;
+}
+
+.dashboard-rule-card__progress {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.dashboard-rule-card__progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #60a5fa, #2563eb);
+}
+
+.dashboard-rule-card--upcoming .dashboard-rule-card__progress-bar {
+  background: linear-gradient(90deg, #fbbf24, #d97706);
+}
+
+.dashboard-rule-card--overdue .dashboard-rule-card__progress-bar {
+  background: linear-gradient(90deg, #f87171, #dc2626);
+}
+
+.dashboard-rule-card--pending .dashboard-rule-card__progress-bar {
+  background: linear-gradient(90deg, #d1d5db, #9ca3af);
+}
+
+@media (min-width: 768px) {
+  .vehicle-dashboard__header-main {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .vehicle-dashboard__grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
 }
