@@ -24,10 +24,10 @@ export class VehicleService {
   }
 
   updateVehicle(id: number, data: Partial<Vehicle>) {
-    return this.http.put<Vehicle>(`${this.apiUrl}/vehicles/${id}`, data);
+    return this.http.put<Vehicle>(`${this.apiUrl}/${id}`, data);
   }
 
   deleteVehicle(id: number) {
-    return this.http.delete(`${this.apiUrl}/vehicles/${id}`);
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
