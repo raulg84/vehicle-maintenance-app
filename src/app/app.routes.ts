@@ -26,6 +26,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'vehicles/:id/edit',
+        loadComponent: () =>
+            import('./features/vehicles/pages/vehicle-form/vehicle-form').then(
+                (m) => m.VehicleForm
+            ),
+    },
+    {
         path: 'maintenances/new',
         loadComponent: () =>
             import('./features/maintenances/pages/maintenance-form/maintenance-form').then(
@@ -40,10 +47,18 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'maintenances/:id/edit',
+        loadComponent: () =>
+            import('./features/maintenances/pages/maintenance-form/maintenance-form').then(
+                (m) => m.MaintenanceForm
+            ),
+    },
+    {
         path: 'vehicles/:id/dashboard',
         loadComponent: () =>
             import('./features/dashboard/pages/vehicle-dashboard/vehicle-dashboard').then(
                 (m) => m.VehicleDashboard
             ),
     },
+
 ];

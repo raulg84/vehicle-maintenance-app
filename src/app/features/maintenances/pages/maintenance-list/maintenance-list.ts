@@ -112,4 +112,21 @@ export class MaintenanceList implements OnInit {
 
     return this.formatDate(this.maintenances[0].performed_at);
   }
+
+  onDelete(id: number): void {
+    const confirmDelete = confirm(
+      '¿Seguro que quieres eliminar este mantenimiento?'
+    );
+
+    if (!confirmDelete) return;
+
+    this.maintenanceService.deleteMaintenance(id).subscribe({
+      next: () => {
+        this.loadMaintenances();
+      },
+      error: () => {
+        this.error = 'No se ha podido eliminar el mantenimiento.';
+      },
+    });
+  }
 }

@@ -23,5 +23,11 @@ export class VehicleService {
     return this.http.post<Vehicle>(this.apiUrl, vehicle);
   }
 
+  updateVehicle(id: number, data: Partial<Vehicle>) {
+    return this.http.put<Vehicle>(`${this.apiUrl}/vehicles/${id}`, data);
+  }
 
+  deleteVehicle(id: number) {
+    return this.http.delete(`${this.apiUrl}/vehicles/${id}`);
+  }
 }

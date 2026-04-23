@@ -124,10 +124,47 @@
 }
 
 .maintenance-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.maintenance-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.9rem 1rem 1rem;
+  border-top: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+
+.maintenance-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 0.65rem 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background: #e5e7eb;
+  color: #111827;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.maintenance-card__action:hover {
+  background: #d1d5db;
+}
+
+.maintenance-card__action--danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.maintenance-card__action--danger:hover {
+  background: #fecaca;
 }
 
 .maintenance-card__body {

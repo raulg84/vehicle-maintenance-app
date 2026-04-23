@@ -34,4 +34,19 @@ export class VehicleList implements OnInit {
       },
     });
   }
+
+  onDelete(id: number): void {
+    const confirmDelete = confirm('¿Seguro que quieres eliminar este vehículo?');
+
+    if (!confirmDelete) return;
+
+    this.vehicleService.deleteVehicle(id).subscribe({
+      next: () => {
+        this.loadVehicles();
+      },
+      error: () => {
+        alert('Error eliminando vehículo');
+      },
+    });
+  }
 }

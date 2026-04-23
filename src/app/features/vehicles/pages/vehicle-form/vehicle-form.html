@@ -1,61 +1,172 @@
 <div class="vehicle-form">
-    <div class="vehicle-form__header">
-        <div class="vehicle-form__header-main">
-            <a class="vehicle-form__back" routerLink="/vehicles">
-                ← Volver a vehículos
-            </a>
+  <div class="vehicle-form__header">
+    <a class="vehicle-form__back" routerLink="/vehicles">
+      ← Volver a vehículos
+    </a>
 
-            <div class="vehicle-form__header-text">
-                <h2 class="vehicle-form__title">
-                    Añadir vehículo
-                </h2>
+    <h2 class="vehicle-form__title">
+      {{ isEditMode ? 'Editar vehículo' : 'Registrar vehículo' }}
+    </h2>
 
-                <p class="vehicle-form__description">
-                    Introduce los datos del vehículo.
-                </p>
-            </div>
-        </div>
+    <p class="vehicle-form__subtitle">
+      {{
+        isEditMode
+          ? 'Modifica los datos del vehículo seleccionado'
+          : 'Introduce los datos del nuevo vehículo'
+      }}
+    </p>
+  </div>
+
+  <form
+    class="vehicle-form__form"
+    [formGroup]="vehicleForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <!-- Alias -->
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="alias">
+        Alias (opcional)
+      </label>
+
+      <input
+        id="alias"
+        type="text"
+        class="vehicle-form__input"
+        formControlName="alias"
+        placeholder="Ej: BMW diario"
+      />
     </div>
 
-    <form class="vehicle-form__form" [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
-        <div class="vehicle-form__group">
-            <label class="vehicle-form__label">Alias</label>
-            <input class="vehicle-form__input" type="text" formControlName="alias" placeholder="Ej: Mi BMW" />
-        </div>
+    <!-- Marca -->
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="make">
+        Marca *
+      </label>
 
-        <div class="vehicle-form__group">
-            <label class="vehicle-form__label">Marca</label>
-            <input class="vehicle-form__input" type="text" formControlName="make" placeholder="Ej: BMW" />
-        </div>
+      <input
+        id="make"
+        type="text"
+        class="vehicle-form__input"
+        formControlName="make"
+        placeholder="Ej: BMW"
+      />
 
-        <div class="vehicle-form__group">
-            <label class="vehicle-form__label">Modelo</label>
-            <input class="vehicle-form__input" type="text" formControlName="model" placeholder="Ej: 320i" />
-        </div>
+      @if (makeControl?.invalid && makeControl?.touched) {
+        <p class="vehicle-form__field-error">
+          La marca es obligatoria.
+        </p>
+      }
+    </div>
 
-        <div class="vehicle-form__group">
-            <label class="vehicle-form__label">Año</label>
-            <input class="vehicle-form__input" type="number" formControlName="year" placeholder="Ej: 2014" />
-        </div>
+    <!-- Modelo -->
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="model">
+        Modelo *
+      </label>
 
-        <div class="vehicle-form__group">
-            <label class="vehicle-form__label">Kilometraje actual</label>
-            <input class="vehicle-form__input" type="number" formControlName="current_mileage"
-                placeholder="Ej: 137000" />
-        </div>
+      <input
+        id="model"
+        type="text"
+        class="vehicle-form__input"
+        formControlName="model"
+        placeholder="Ej: 320i"
+      />
 
-        @if (error) {
-        <p class="vehicle-form__error">{{ error }}</p>
-        }
+      @if (modelControl?.invalid && modelControl?.touched) {
+        <p class="vehicle-form__field-error">
+          El modelo es obligatorio.
+        </p>
+      }
+    </div>
 
-        <div class="vehicle-form__actions">
-            <a class="vehicle-form__cancel" routerLink="/vehicles">
-                Cancelar
-            </a>
+    <!-- Año -->
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="year">
+        Año *
+      </label>
 
-            <button class="vehicle-form__submit" type="submit" [disabled]="loading">
-                {{ loading ? 'Guardando...' : 'Guardar vehículo' }}
-            </button>
-        </div>
-    </form>
+      <input
+        id="year"
+        type="number"
+        class="vehicle-form__input"
+        formControlName="year"
+        placeholder="Ej: 2014"
+      />
+
+      @if (yearControl?.invalid && yearControl?.touched) {
+        <p class="vehicle-form__field-error">
+          Debes indicar un año válido.
+        </p>
+      }
+    </div>
+
+    <!-- Tipo motorización -->
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="powertrain_type">
+        Tipo de motorización *
+      </label>
+
+      <select
+        id="powertrain_type"
+        class="vehicle-form__input"
+        formControlName="powertrain_type"
+      >
+        <option value="combustion">Combustión</option>
+        <option value="hybrid">Híbrido</option>
+        <option value="electric">Eléctrico</option>
+      </select>
+    </div>
+
+    <!-- Kilometraje -->
+    <div class="vehicle-form__group">
+      <label class="vehicle-form__label" for="current_mileage">
+        Kilometraje actual *
+      </label>
+
+      <input
+        id="current_mileage"
+        type="number"
+        class="vehicle-form__input"
+        formControlName="current_mileage"
+        placeholder="Ej: 135000"
+      />
+
+      @if (currentMileageControl?.invalid && currentMileageControl?.touched) {
+        <p class="vehicle-form__field-error">
+          El kilometraje debe ser mayor o igual a 0.
+        </p>
+      }
+    </div>
+
+    <!-- Error global -->
+    @if (error) {
+      <div class="vehicle-form__error">
+        {{ error }}
+      </div>
+    }
+
+    <!-- Acciones -->
+    <div class="vehicle-form__actions">
+      <a
+        class="vehicle-form__cancel"
+        routerLink="/vehicles"
+      >
+        Cancelar
+      </a>
+
+      <button
+        type="submit"
+        class="vehicle-form__submit"
+        [disabled]="loading"
+      >
+        {{
+          loading
+            ? 'Guardando...'
+            : isEditMode
+            ? 'Actualizar vehículo'
+            : 'Guardar vehículo'
+        }}
+      </button>
+    </div>
+  </form>
 </div>

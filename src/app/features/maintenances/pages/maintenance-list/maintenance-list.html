@@ -86,6 +86,17 @@
                 </p>
                 }
             </div>
+
+            <div class="maintenance-card__actions">
+                <a class="maintenance-card__action" [routerLink]="['/maintenances', maintenance.id, 'edit']">
+                    Editar
+                </a>
+
+                <button type="button" class="maintenance-card__action maintenance-card__action--danger"
+                    (click)="onDelete(maintenance.id)">
+                    Eliminar
+                </button>
+            </div>
         </article>
         }
     </div>

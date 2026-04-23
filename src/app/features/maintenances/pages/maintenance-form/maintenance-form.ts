@@ -11,6 +11,7 @@ import { VehicleService } from '../../../../core/services/vehicle.service';
 import { MaintenanceRuleService } from '../../../../core/services/maintenance-rule.service';
 import { Vehicle } from '../../../../shared/models/vehicle.model';
 import { MaintenanceRule } from '../../../../shared/models/maintenance-rule.model';
+import { Maintenance } from '../../../../shared/models/maintenance.model';
 
 @Component({
   selector: 'app-maintenance-form',
@@ -30,6 +31,9 @@ export class MaintenanceForm implements OnInit {
   loading = false;
   error = '';
 
+  isEditMode = false;
+  maintenanceId: number | null = null;
+
   vehicleId: number | null = null;
   vehicle: Vehicle | null = null;
   rules: MaintenanceRule[] = [];
@@ -45,7 +49,15 @@ export class MaintenanceForm implements OnInit {
   });
 
   ngOnInit(): void {
+    const maintenanceIdParam = this.route.snapshot.paramMap.get('id');
     const vehicleIdParam = this.route.snapshot.queryParamMap.get('vehicleId');
+
+    if (maintenanceIdParam) {
+      this.isEditMode = true;
+      this.maintenanceId = Number(maintenanceIdParam);
+      this.loadMaintenance();
+      return;
+    }
 
     if (vehicleIdParam) {
       this.vehicleId = Number(vehicleIdParam);
@@ -58,6 +70,35 @@ export class MaintenanceForm implements OnInit {
     }
   }
 
+  loadMaintenance(): void {
+    if (!this.maintenanceId) return;
+
+    this.loading = true;
+    this.error = '';
+
+    this.maintenanceService.getMaintenance(this.maintenanceId).subscribe({
+      next: (maintenance: Maintenance) => {
+        this.vehicleId = maintenance.vehicle_id;
+
+        this.maintenanceForm.patchValue({
+          vehicle_id: maintenance.vehicle_id,
+          maintenance_rule_id: maintenance.maintenance_rule_id ?? null,
+          maintenance_type: maintenance.maintenance_type ?? '',
+          performed_at: maintenance.performed_at ?? '',
+          mileage_at_service: maintenance.mileage_at_service ?? 0,
+          cost: maintenance.cost != null ? Number(maintenance.cost) : null,
+          notes: maintenance.notes ?? '',
+        });
+
+        this.loadVehicle();
+      },
+      error: () => {
+        this.error = 'No se ha podido cargar el mantenimiento.';
+        this.loading = false;
+      },
+    });
+  }
+
   loadVehicle(): void {
     if (!this.vehicleId) return;
 
@@ -68,6 +109,8 @@ export class MaintenanceForm implements OnInit {
       },
       error: () => {
         this.vehicle = null;
+        this.rules = [];
+        this.loading = false;
       },
     });
   }
@@ -78,9 +121,11 @@ export class MaintenanceForm implements OnInit {
     this.maintenanceRuleService.getRules(powertrainType).subscribe({
       next: (data) => {
         this.rules = data;
+        this.loading = false;
       },
       error: () => {
         this.rules = [];
+        this.loading = false;
       },
     });
   }
@@ -98,9 +143,11 @@ export class MaintenanceForm implements OnInit {
   }
 
   onRuleChange(): void {
-    const selectedRuleId = this.maintenanceForm.get('maintenance_rule_id')?.value;
+    const selectedRuleId = Number(
+      this.maintenanceForm.get('maintenance_rule_id')?.value
+    );
 
-    const selectedRule = this.rules.find((rule) => rule.id === Number(selectedRuleId));
+    const selectedRule = this.rules.find((rule) => rule.id === selectedRuleId);
 
     if (!selectedRule) return;
 
@@ -129,6 +176,28 @@ export class MaintenanceForm implements OnInit {
       cost: formValue.cost ?? undefined,
       notes: formValue.notes || undefined,
     };
+
+    if (this.isEditMode && this.maintenanceId) {
+      this.maintenanceService
+        .updateMaintenance(this.maintenanceId, maintenanceData)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/vehicles', formValue.vehicle_id, 'maintenances']);
+          },
+          error: (err) => {
+            if (err.status === 422) {
+              this.error =
+                'Hay campos obligatorios sin completar o con valores no válidos.';
+            } else {
+              this.error = 'No se ha podido actualizar el mantenimiento.';
+            }
+
+            this.loading = false;
+          },
+        });
+
+      return;
+    }
 
     this.maintenanceService.createMaintenance(maintenanceData).subscribe({
       next: () => {
