@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'vehicles',
+        redirectTo: 'login',
         pathMatch: 'full',
     },
     {
@@ -13,6 +14,7 @@ export const routes: Routes = [
     },
     {
         path: 'vehicles',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./features/vehicles/pages/vehicle-list/vehicle-list').then(
                 (m) => m.VehicleList
@@ -20,6 +22,7 @@ export const routes: Routes = [
     },
     {
         path: 'vehicles/new',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./features/vehicles/pages/vehicle-form/vehicle-form').then(
                 (m) => m.VehicleForm
@@ -27,6 +30,7 @@ export const routes: Routes = [
     },
     {
         path: 'vehicles/:id/edit',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./features/vehicles/pages/vehicle-form/vehicle-form').then(
                 (m) => m.VehicleForm
@@ -34,6 +38,7 @@ export const routes: Routes = [
     },
     {
         path: 'maintenances/new',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./features/maintenances/pages/maintenance-form/maintenance-form').then(
                 (m) => m.MaintenanceForm
@@ -41,6 +46,7 @@ export const routes: Routes = [
     },
     {
         path: 'vehicles/:id/maintenances',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./features/maintenances/pages/maintenance-list/maintenance-list').then(
                 (m) => m.MaintenanceList
@@ -48,6 +54,7 @@ export const routes: Routes = [
     },
     {
         path: 'maintenances/:id/edit',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./features/maintenances/pages/maintenance-form/maintenance-form').then(
                 (m) => m.MaintenanceForm
@@ -55,10 +62,10 @@ export const routes: Routes = [
     },
     {
         path: 'vehicles/:id/dashboard',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./features/dashboard/pages/vehicle-dashboard/vehicle-dashboard').then(
                 (m) => m.VehicleDashboard
             ),
-    },
-
+    }
 ];
