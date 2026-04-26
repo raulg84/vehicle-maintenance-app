@@ -23,6 +23,7 @@ export interface MaintenanceRuleStatus {
   current_vehicle_km: number;
   remaining_km: number | null;
   remaining_days: number | null;
+  progress: number; // Valor entre 0 y 1 para representar el progreso hacia la próxima acción
 }
 
 export interface VehicleMaintenanceStatus {

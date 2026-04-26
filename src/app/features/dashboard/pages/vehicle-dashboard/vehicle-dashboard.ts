@@ -94,8 +94,8 @@ export class VehicleDashboard implements OnInit {
             data.vehicle_status === 'overdue'
               ? 'danger'
               : data.vehicle_status === 'upcoming' || data.vehicle_status === 'pending'
-              ? 'warning'
-              : 'info';
+                ? 'warning'
+                : 'info';
 
           this.loading = false;
         },
@@ -152,39 +152,5 @@ export class VehicleDashboard implements OnInit {
 
   getVehicleStatusBadgeClass(status: VehicleRuleStatus): string {
     return `vehicle-dashboard__status-badge--${status}`;
-  }
-
-  getProgressPercent(rule: MaintenanceRuleStatus): number {
-    if (
-      rule.status === 'pending' ||
-      rule.remaining_km == null ||
-      rule.last_maintenance_km == null
-    ) {
-      return 0;
-    }
-
-    const usedKm = rule.current_vehicle_km - rule.last_maintenance_km;
-    const totalKm = usedKm + Math.max(rule.remaining_km, 0);
-
-    if (totalKm <= 0) {
-      return rule.status === 'overdue' ? 100 : 0;
-    }
-
-    const percent = Math.round((usedKm / totalKm) * 100);
-
-    if (rule.status === 'overdue') {
-      return 100;
-    }
-
-    return Math.max(0, Math.min(percent, 100));
-  }
-
-  getProgressLabel(rule: MaintenanceRuleStatus): string {
-    if (rule.status === 'pending') {
-      return 'Sin historial';
-    }
-
-    const percent = this.getProgressPercent(rule);
-    return `${percent}% del intervalo consumido`;
   }
 }

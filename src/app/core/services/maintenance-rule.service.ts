@@ -21,4 +21,35 @@ export class MaintenanceRuleService {
 
     return this.http.get<MaintenanceRule[]>(this.apiUrl);
   }
+
+  getActiveRules(powertrainType?: string): Observable<MaintenanceRule[]> {
+    const url = `${this.apiUrl}/active`;
+
+    if (powertrainType) {
+      return this.http.get<MaintenanceRule[]>(
+        `${url}?powertrain_type=${powertrainType}`
+      );
+    }
+
+    return this.http.get<MaintenanceRule[]>(url);
+  }
+
+  getRule(id: number): Observable<MaintenanceRule> {
+    return this.http.get<MaintenanceRule>(`${this.apiUrl}/${id}`);
+  }
+
+  createRule(data: Partial<MaintenanceRule>): Observable<MaintenanceRule> {
+    return this.http.post<MaintenanceRule>(this.apiUrl, data);
+  }
+
+  updateRule(
+    id: number,
+    data: Partial<MaintenanceRule>
+  ): Observable<MaintenanceRule> {
+    return this.http.put<MaintenanceRule>(`${this.apiUrl}/${id}`, data);
+  }
+
+  toggleRule(id: number): Observable<MaintenanceRule> {
+    return this.http.patch<MaintenanceRule>(`${this.apiUrl}/${id}/toggle`, {});
+  }
 }

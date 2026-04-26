@@ -1,0 +1,23 @@
+.rule-form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rule-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.rule-form__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rule-form__error {
+  color: red;
+}

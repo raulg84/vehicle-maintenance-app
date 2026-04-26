@@ -1,50 +1,93 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: #f5f7fa;
-  font-family: Arial, sans-serif;
+  background: #f3f4f6;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-}
-
-.app-layout {
+.app {
   min-height: 100vh;
 }
 
 .app-header {
-  background: #1f2937;
-  color: white;
-  padding: 1rem;
-}
-
-.app-header__content {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 1rem;
-  align-items: center;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
 }
 
-.app-header h1 {
-  font-size: 1.25rem;
-  margin: 0;
-}
-
-.app-header nav a {
-  color: white;
+.app-header__logo {
+  color: #111827;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
-.app-main {
-  max-width: 1200px;
+.app-header__nav {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app-header__link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.app-header__link:hover {
+  text-decoration: underline;
+}
+
+.app-header__user {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.app-header__user-info {
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.app-header__logout {
+  width: fit-content;
+  padding: 0.55rem 0.85rem;
+  border: none;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.app-header__logout:hover {
+  background: #fecaca;
+}
+
+.app__main {
+  width: 100%;
+  max-width: 1180px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .app-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .app-header__user {
+    flex-direction: row;
+    align-items: center;
+  }
 }

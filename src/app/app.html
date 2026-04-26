@@ -1,14 +1,38 @@
-<div class="app-layout">
+<div class="app">
+  @if (authService.isAuthenticated()) {
   <header class="app-header">
-    <div class="app-header__content">
-      <h1>Vehicle Maintenance</h1>
-      <nav>
-        <a routerLink="/vehicles">Vehículos</a>
-      </nav>
+    <div class="app-header__brand">
+      <a class="app-header__logo" routerLink="/vehicles">
+        Vehicle Maintenance
+      </a>
+    </div>
+
+    <nav class="app-header__nav">
+      <a class="app-header__link" routerLink="/vehicles">
+        Vehículos
+      </a>
+
+      @if (authService.isAdmin()) {
+      <a class="app-header__link" routerLink="/rules">
+        Reglas
+      </a>
+      }
+    </nav>
+
+    <div class="app-header__user">
+      <span class="app-header__user-info">
+        {{ authService.getCurrentUser()?.name }}
+        ·
+        {{ authService.getCurrentUser()?.role }}
+      </span>
+
+      <button type="button" class="app-header__logout" (click)="logout()">
+        Cerrar sesión
+      </button>
     </div>
   </header>
-
-  <main class="app-main">
+  }
+  <main class="app__main">
     <router-outlet></router-outlet>
   </main>
 </div>

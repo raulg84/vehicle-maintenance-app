@@ -1,0 +1,98 @@
+<div class="rule-form">
+  <div class="rule-form__header">
+    <a class="rule-form__back" routerLink="/rules">
+      ← Volver a reglas
+    </a>
+
+    <h2 class="rule-form__title">
+      {{ isEditMode ? 'Editar regla' : 'Nueva regla' }}
+    </h2>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="rule-form__form">
+
+    <!-- Nombre -->
+    <div class="rule-form__group">
+      <label>Nombre</label>
+      <input formControlName="name" />
+      @if (nameControl?.invalid && nameControl?.touched) {
+        <p class="error">Obligatorio</p>
+      }
+    </div>
+
+    <!-- Key -->
+    <div class="rule-form__group">
+      <label>Clave interna</label>
+      <input formControlName="maintenance_key" />
+      @if (keyControl?.invalid && keyControl?.touched) {
+        <p class="error">Obligatorio</p>
+      }
+    </div>
+
+    <!-- Descripción -->
+    <div class="rule-form__group">
+      <label>Descripción</label>
+      <textarea formControlName="description"></textarea>
+    </div>
+
+    <!-- Tipo motor -->
+    <div class="rule-form__group">
+      <label>Tipo de motorización</label>
+      <select formControlName="applies_to_powertrain">
+        <option value="all">Todos</option>
+        <option value="combustion">Combustión</option>
+        <option value="hybrid">Híbrido</option>
+        <option value="electric">Eléctrico</option>
+      </select>
+    </div>
+
+    <!-- Intervalos -->
+    <div class="rule-form__group">
+      <label>Intervalo KM</label>
+      <input type="number" formControlName="interval_km" />
+    </div>
+
+    <div class="rule-form__group">
+      <label>Intervalo días</label>
+      <input type="number" formControlName="interval_days" />
+    </div>
+
+    <!-- Warnings -->
+    <div class="rule-form__group">
+      <label>Warning KM</label>
+      <input type="number" formControlName="warning_km" />
+    </div>
+
+    <div class="rule-form__group">
+      <label>Warning días</label>
+      <input type="number" formControlName="warning_days" />
+    </div>
+
+    <!-- Orden -->
+    <div class="rule-form__group">
+      <label>Orden</label>
+      <input type="number" formControlName="sort_order" />
+    </div>
+
+    <!-- Activa -->
+    <div class="rule-form__group">
+      <label>
+        <input type="checkbox" formControlName="is_active" />
+        Activa
+      </label>
+    </div>
+
+    @if (error) {
+      <p class="rule-form__error">{{ error }}</p>
+    }
+
+    <div class="rule-form__actions">
+      <a routerLink="/rules">Cancelar</a>
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+
+  </form>
+</div>

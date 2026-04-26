@@ -1,0 +1,162 @@
+.rule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* HEADER */
+.rule-list__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rule-list__header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rule-list__actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.rule-list__add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  white-space: nowrap;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .rule-list__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .rule-list__actions {
+    justify-content: flex-end;
+  }
+}
+
+/* GRID */
+.rule-list__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+/* CARD */
+.rule-card {
+  padding: 1rem;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 8%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* HEADER CARD */
+.rule-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rule-card__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* STATUS */
+.rule-card__status {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.rule-card__status--active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.rule-card__status--inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* INFO */
+.rule-card__info {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.rule-card__info--secondary {
+  color: #6b7280;
+}
+
+/* ACCIONES */
+.rule-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.rule-card__action {
+  border: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.rule-card__action--primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* DESACTIVAR */
+.rule-card__action--danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.rule-card__action--danger:hover {
+  background: #b91c1c;
+}
+
+/* ACTIVAR */
+.rule-card__action--success {
+  background: #166534;
+  color: #fff;
+}
+
+.rule-card__action--success:hover {
+  background: #15803d;
+}
+
+/* ESTADOS */
+.rule-list__state {
+  text-align: center;
+}
+
+.rule-list__state--error {
+  color: red;
+}
+
+.rule-list__empty {
+  text-align: center;
+}

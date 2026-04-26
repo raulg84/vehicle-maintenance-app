@@ -43,7 +43,20 @@ export class MaintenanceForm implements OnInit {
     maintenance_rule_id: [null as number | null, Validators.required],
     maintenance_type: ['', Validators.required],
     performed_at: ['', Validators.required],
-    mileage_at_service: [0, [Validators.required, Validators.min(0)]],
+    mileage_at_service: [
+      0,
+      [
+        Validators.required,
+        Validators.min(0),
+        (control: { value: number; }) => {
+          if (!this.vehicle) return null;
+
+          return control.value < this.vehicle.current_mileage
+            ? { lowerThanVehicle: true }
+            : null;
+        },
+      ],
+    ],
     cost: [null as number | null],
     notes: [''],
   });
@@ -84,7 +97,7 @@ export class MaintenanceForm implements OnInit {
           vehicle_id: maintenance.vehicle_id,
           maintenance_rule_id: maintenance.maintenance_rule_id ?? null,
           maintenance_type: maintenance.maintenance_type ?? '',
-          performed_at: maintenance.performed_at ?? '',
+          performed_at: this.toDateInputValue(maintenance.performed_at) ?? '',
           mileage_at_service: maintenance.mileage_at_service ?? 0,
           cost: maintenance.cost != null ? Number(maintenance.cost) : null,
           notes: maintenance.notes ?? '',
@@ -105,7 +118,22 @@ export class MaintenanceForm implements OnInit {
     this.vehicleService.getVehicle(this.vehicleId).subscribe({
       next: (data) => {
         this.vehicle = data;
-        this.loadRules();
+
+        // Precargar KM solo en CREATE
+        if (!this.isEditMode) {
+          this.maintenanceForm.patchValue({
+            mileage_at_service: this.vehicle?.current_mileage ?? 0,
+          });
+        }
+
+        //re-evaluar validaciones dependientes del vehículo
+        this.maintenanceForm
+          .get('mileage_at_service')
+          ?.updateValueAndValidity();
+
+        if (this.vehicle) {
+          this.loadRules();
+        }
       },
       error: () => {
         this.vehicle = null;
@@ -118,7 +146,7 @@ export class MaintenanceForm implements OnInit {
   loadRules(): void {
     const powertrainType = this.vehicle?.powertrain_type;
 
-    this.maintenanceRuleService.getRules(powertrainType).subscribe({
+    this.maintenanceRuleService.getActiveRules(powertrainType).subscribe({
       next: (data) => {
         this.rules = data;
         this.loading = false;
@@ -229,6 +257,17 @@ export class MaintenanceForm implements OnInit {
   }
 
   get mileageAtServiceControl() {
+    return this.maintenanceForm.get('mileage_at_service');
+  }
+
+  private toDateInputValue(date: string | null | undefined): string {
+    if (!date) {
+      return '';
+    }
+    return date.substring(0, 10);
+  }
+
+  get mileageControl() {
     return this.maintenanceForm.get('mileage_at_service');
   }
 }

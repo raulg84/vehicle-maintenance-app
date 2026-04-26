@@ -1,0 +1,101 @@
+<div class="rule-list">
+    <div class="rule-list__header">
+        <div class="rule-list__header-text">
+            <h2 class="rule-list__title">Reglas de mantenimiento</h2>
+            <p class="rule-list__subtitle">
+                Configura los intervalos de mantenimiento preventivo
+            </p>
+        </div>
+
+        <div class="rule-list__actions">
+            <a class="rule-list__add-button" routerLink="/rules/new">
+                Nueva regla
+            </a>
+        </div>
+    </div>
+
+    @if (loading) {
+    <p class="rule-list__state">Cargando reglas...</p>
+    }
+
+    @if (error) {
+    <p class="rule-list__state rule-list__state--error">
+        {{ error }}
+    </p>
+    }
+
+    @if (!loading && rules.length > 0) {
+    <div class="rule-list__grid">
+        @for (rule of rules; track rule.id) {
+        <article class="rule-card">
+
+            <!-- CABECERA -->
+            <div class="rule-card__header">
+                <h3 class="rule-card__title">
+                    {{ rule.name }}
+                </h3>
+
+                <span class="rule-card__status" [class.rule-card__status--active]="rule.is_active"
+                    [class.rule-card__status--inactive]="!rule.is_active">
+                    {{ rule.is_active ? 'Activa' : 'Inactiva' }}
+                </span>
+            </div>
+
+            <!-- SUBINFO -->
+            <p class="rule-card__subtitle">
+                {{ rule.maintenance_key }}
+            </p>
+
+            <!-- INTERVALOS -->
+            <div class="rule-card__info">
+                <span>
+                    <strong>KM:</strong>
+                    {{ rule.interval_km ?? '-' }}
+                </span>
+
+                <span>
+                    <strong>Días:</strong>
+                    {{ rule.interval_days ?? '-' }}
+                </span>
+            </div>
+
+            <!-- WARNINGS -->
+            <div class="rule-card__info rule-card__info--secondary">
+                <span>
+                    Aviso KM: {{ rule.warning_km ?? '-' }}
+                </span>
+
+                <span>
+                    Aviso días: {{ rule.warning_days ?? '-' }}
+                </span>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="rule-card__actions">
+                <a class="rule-card__action rule-card__action--primary" [routerLink]="['/rules', rule.id, 'edit']">
+                    Editar
+                </a>
+
+                <button type="button" class="rule-card__action" [class.rule-card__action--danger]="rule.is_active"
+                    [class.rule-card__action--success]="!rule.is_active" (click)="toggleActive(rule)">
+                    {{ rule.is_active ? 'Desactivar' : 'Activar' }}
+                </button>
+            </div>
+
+        </article>
+        }
+    </div>
+    }
+
+    @if (!loading && rules.length === 0) {
+    <div class="rule-list__empty">
+        <p class="rule-list__state">
+            No hay reglas configuradas.
+        </p>
+
+        <a class="rule-list__add-button" routerLink="/rules/new">
+            Crear primera regla
+        </a>
+    </div>
+    }
+</div>

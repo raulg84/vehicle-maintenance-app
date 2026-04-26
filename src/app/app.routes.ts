@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth-guard';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
     {
@@ -11,6 +12,13 @@ export const routes: Routes = [
         path: 'login',
         loadComponent: () =>
             import('./features/auth/pages/login/login').then((m) => m.Login),
+    },
+    {
+        path: 'register',
+        loadComponent: () =>
+            import('./features/auth/pages/register/register').then(
+                (m) => m.Register
+            ),
     },
     {
         path: 'vehicles',
@@ -67,5 +75,29 @@ export const routes: Routes = [
             import('./features/dashboard/pages/vehicle-dashboard/vehicle-dashboard').then(
                 (m) => m.VehicleDashboard
             ),
-    }
+    },
+    {
+        path: 'rules',
+        canActivate: [adminGuard],
+        loadComponent: () =>
+            import('./features/rules/pages/rule-list/rule-list').then(
+                (m) => m.RuleList
+            ),
+    },
+    {
+        path: 'rules/new',
+        canActivate: [adminGuard],
+        loadComponent: () =>
+            import('./features/rules/pages/rule-form/rule-form').then(
+                (m) => m.RuleForm
+            ),
+    },
+    {
+        path: 'rules/:id/edit',
+        canActivate: [adminGuard],
+        loadComponent: () =>
+            import('./features/rules/pages/rule-form/rule-form').then(
+                (m) => m.RuleForm
+            ),
+    },
 ];
