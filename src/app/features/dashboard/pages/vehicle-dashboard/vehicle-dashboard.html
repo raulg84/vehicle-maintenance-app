@@ -55,6 +55,31 @@
         </p>
     </div>
 
+    @if (vehicle) {
+    <div class="vehicle-dashboard__mileage-card">
+        <div class="vehicle-dashboard__mileage-header">
+            <div>
+                <h3 class="vehicle-dashboard__mileage-title">
+                    Kilometraje actual
+                </h3>
+
+                <p class="vehicle-dashboard__mileage-value">
+                    {{ vehicle.current_mileage }} km
+                </p>
+            </div>
+        </div>
+
+        <div class="vehicle-dashboard__mileage-update">
+            <input type="number" class="vehicle-dashboard__mileage-input" [(ngModel)]="newMileage"
+                placeholder="Nuevo kilometraje" />
+
+            <button type="button" class="vehicle-dashboard__mileage-button" (click)="updateMileage()">
+                Actualizar kilometraje
+            </button>
+        </div>
+    </div>
+    }
+
     <div class="vehicle-dashboard__next-action-card" [ngClass]="{
         'vehicle-dashboard__next-action-card--info': nextActionType === 'info',
         'vehicle-dashboard__next-action-card--warning': nextActionType === 'warning',

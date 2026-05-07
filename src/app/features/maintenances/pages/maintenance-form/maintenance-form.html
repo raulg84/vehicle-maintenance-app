@@ -84,9 +84,9 @@
             <input id="mileage_at_service" class="maintenance-form__input" type="number"
                 formControlName="mileage_at_service" placeholder="Ej: 138000" />
 
-            @if (mileageAtServiceControl?.errors?.['lowerThanVehicle'] && mileageAtServiceControl?.touched) {
-            <p class="maintenance-form__field-error">
-                El kilometraje no puede ser inferior al kilometraje actual del vehículo.
+            @if (shouldUpdateVehicleMileage()) {
+            <p class="maintenance-form__helper">
+                Al guardar, se actualizará el kilometraje actual del vehículo.
             </p>
             }
         </div>

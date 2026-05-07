@@ -155,7 +155,7 @@
 }
 
 .maintenance-form__submit {
- display: inline-flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0.9rem 1.2rem;
@@ -166,4 +166,10 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
+}
+
+.maintenance-form__helper {
+  margin: 0.35rem 0 0;
+  color: #92400e;
+  font-size: 0.9rem;
 }

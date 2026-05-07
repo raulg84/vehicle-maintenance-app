@@ -267,7 +267,14 @@ export class MaintenanceForm implements OnInit {
     return date.substring(0, 10);
   }
 
-  get mileageControl() {
-    return this.maintenanceForm.get('mileage_at_service');
+  shouldUpdateVehicleMileage(): boolean {
+    const mileageAtService = this.mileageAtServiceControl?.value;
+    const currentMileage = this.vehicle?.current_mileage;
+
+    if (mileageAtService == null || currentMileage == null) {
+      return false;
+    }
+
+    return Number(mileageAtService) > Number(currentMileage);
   }
 }

@@ -10,11 +10,12 @@ import {
   MaintenanceRuleStatus,
   VehicleRuleStatus,
 } from '../../../../shared/models/vehicle-maintenance-status.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-vehicle-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './vehicle-dashboard.html',
   styleUrl: './vehicle-dashboard.scss',
 })
@@ -40,6 +41,8 @@ export class VehicleDashboard implements OnInit {
   nextActionMessage = '';
   nextActionType: 'info' | 'warning' | 'danger' = 'info';
 
+  newMileage: number | null = null;
+
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
 
@@ -59,6 +62,7 @@ export class VehicleDashboard implements OnInit {
     this.vehicleService.getVehicle(this.vehicleId).subscribe({
       next: (data) => {
         this.vehicle = data;
+        this.newMileage = data.current_mileage;
       },
       error: () => {
         this.vehicle = null;
@@ -102,6 +106,26 @@ export class VehicleDashboard implements OnInit {
         error: () => {
           this.error = 'Error calculando estado del vehículo';
           this.loading = false;
+        },
+      });
+  }
+
+  updateMileage(): void {
+    if (!this.vehicle || this.newMileage == null) return;
+
+    if (this.newMileage < this.vehicle.current_mileage) {
+      alert('El kilometraje no puede ser inferior al actual');
+      return;
+    }
+
+    this.vehicleService
+      .updateVehicle(this.vehicle.id, {
+        current_mileage: this.newMileage,
+      })
+      .subscribe({
+        next: () => {
+          // Recargar datos
+          this.loadVehicle();
         },
       });
   }

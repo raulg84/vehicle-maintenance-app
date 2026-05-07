@@ -374,3 +374,85 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }
+
+.vehicle-dashboard__mileage-card {
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+}
+
+.vehicle-dashboard__mileage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.vehicle-dashboard__mileage-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.vehicle-dashboard__mileage-value {
+  margin: 0;
+  color: #4b5563;
+  font-size: 1rem;
+}
+
+.vehicle-dashboard__mileage-update {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.vehicle-dashboard__mileage-input {
+  width: 120px;
+  padding: 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: #111827;
+  font: inherit;
+  text-align: right;
+  flex: 1 1 auto;
+  min-width: 80px;
+  max-width: 140px;
+}
+
+.vehicle-dashboard__mileage-input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.vehicle-dashboard__mileage-button {
+  padding: 0.6rem 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.vehicle-dashboard__mileage-button:hover {
+  background: #1d4ed8;
+}
+
+@media (max-width: 480px) {
+  .vehicle-dashboard__mileage-button {
+    font-size: 0;
+    padding: 0.6rem;
+  }
+
+  .vehicle-dashboard__mileage-button::after {
+    content: "Actualizar";
+    font-size: 0.9rem;
+  }
+}
