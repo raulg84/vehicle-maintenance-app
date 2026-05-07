@@ -93,3 +93,21 @@
   cursor: pointer;
   transition: background 0.2s ease;
 }
+
+.vehicle-form__field-error {
+  margin-top: 0.75rem;
+  color: #dc2626;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.vehicle-form__error {
+  padding: 0.85rem 1rem;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.95rem;
+  font-weight: 600;
+}

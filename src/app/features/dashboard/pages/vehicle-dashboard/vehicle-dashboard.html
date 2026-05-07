@@ -127,12 +127,18 @@
                     </p>
 
                     <p class="dashboard-rule-card__text">
-                        <span class="dashboard-rule-card__label">Km restantes:</span>
+                        <span class="dashboard-rule-card__label">
+                            {{ getRemainingKmLabel(rule.remaining_km) }}:
+                        </span>
+
                         {{ formatRemainingKm(rule.remaining_km) }}
                     </p>
 
                     <p class="dashboard-rule-card__text">
-                        <span class="dashboard-rule-card__label">Días restantes:</span>
+                        <span class="dashboard-rule-card__label">
+                            {{ getRemainingDaysLabel(rule.remaining_days) }}:
+                        </span>
+
                         {{ formatRemainingDays(rule.remaining_days) }}
                     </p>
                     }

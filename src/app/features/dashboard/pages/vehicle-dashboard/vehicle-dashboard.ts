@@ -124,8 +124,11 @@ export class VehicleDashboard implements OnInit {
       })
       .subscribe({
         next: () => {
-          // Recargar datos
           this.loadVehicle();
+          this.loadMaintenanceStatus();
+        },
+        error: () => {
+          this.error = 'No se ha podido actualizar el kilometraje.';
         },
       });
   }
@@ -146,20 +149,36 @@ export class VehicleDashboard implements OnInit {
     return new Date(date).toLocaleDateString('es-ES');
   }
 
-  formatRemainingKm(value: number | null): string {
-    if (value == null) {
+  formatRemainingKm(km: number | null): string {
+    if (km === null || km === undefined) {
       return '-';
     }
 
-    return `${value} km`;
+    return `${Math.abs(Math.round(km))} km`;
   }
 
-  formatRemainingDays(value: number | null): string {
-    if (value == null) {
+  getRemainingKmLabel(km: number | null): string {
+    if (km === null || km === undefined) {
+      return 'Kilómetros';
+    }
+
+    return km < 0 ? 'Km vencidos' : 'Km restantes';
+  }
+
+  formatRemainingDays(days: number | null): string {
+    if (days === null || days === undefined) {
       return '-';
     }
 
-    return `${value} días`;
+    return `${Math.abs(Math.round(days))} días`;
+  }
+
+  getRemainingDaysLabel(days: number | null): string {
+    if (days === null || days === undefined) {
+      return 'Días';
+    }
+
+    return days < 0 ? 'Días vencidos' : 'Días restantes';
   }
 
   getVisibleRuleStatuses(): MaintenanceRuleStatus[] {

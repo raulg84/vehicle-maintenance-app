@@ -94,8 +94,13 @@ export class VehicleForm implements OnInit {
         next: () => {
           this.router.navigate(['/vehicles']);
         },
-        error: () => {
-          this.error = 'No se ha podido actualizar el vehículo.';
+        error: (err) => {
+          if (err.status === 422 && err.error?.message) {
+            this.error = err.error.message;
+          } else {
+            this.error = 'No se ha podido guardar el vehículo.';
+          }
+
           this.loading = false;
         },
       });
