@@ -48,4 +48,19 @@ export class RuleList implements OnInit {
       },
     });
   }
+
+  getPowertrainLabel(type: string): string {
+    switch (type) {
+      case 'all':
+        return 'Todos';
+      case 'combustion':
+        return 'Combustión';
+      case 'hybrid':
+        return 'Híbrido';
+      case 'electric':
+        return 'Eléctrico';
+      default:
+        return type;
+    }
+  }
 }

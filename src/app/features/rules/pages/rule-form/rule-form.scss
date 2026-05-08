@@ -1,9 +1,54 @@
+:host {
+  display: block;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .rule-form {
-  max-width: 600px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.rule-form__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rule-form__back {
+  width: fit-content;
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.rule-form__back:hover {
+  text-decoration: underline;
+}
+
+.rule-form__title {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.rule-form__form {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
 }
 
 .rule-form__group {
@@ -12,12 +57,147 @@
   gap: 0.4rem;
 }
 
-.rule-form__actions {
-  display: flex;
-  justify-content: space-between;
+.rule-form__group label {
+  color: #374151;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.rule-form__group input:not([type='checkbox']),
+.rule-form__group select,
+.rule-form__group textarea {
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #fff;
+  color: #111827;
+  font: inherit;
+}
+
+.rule-form__group textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.rule-form__group input::placeholder,
+.rule-form__group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.rule-form__group input:focus,
+.rule-form__group select:focus,
+.rule-form__group textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 14%);
+}
+
+.rule-form__group input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #2563eb;
+}
+
+.rule-form__group:has(input[type='checkbox']) label {
+  display: inline-flex;
   align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.rule-form__field-error {
+  margin-top: 0.75rem;
+  color: #dc2626;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .rule-form__error {
-  color: red;
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.rule-form__actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.rule-form__actions a,
+.rule-form__actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.rule-form__actions a {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+}
+
+.rule-form__actions a:hover {
+  background: #f9fafb;
+}
+
+.rule-form__actions button {
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.rule-form__actions button:hover {
+  background: #1d4ed8;
+}
+
+.rule-form__actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (min-width: 700px) {
+  .rule-form__form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rule-form__group:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+
+  .rule-form__actions,
+  .rule-form__error {
+    grid-column: 1 / -1;
+  }
+
+  .rule-form__actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .rule-form {
+    padding: 1rem;
+  }
+
+  .rule-form__form {
+    padding: 1.1rem;
+    border-radius: 14px;
+  }
 }

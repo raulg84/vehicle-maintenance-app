@@ -111,15 +111,21 @@
 }
 
 .maintenance-form__field-error {
-  margin: 0;
+  margin-top: 0.75rem;
   color: #dc2626;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .maintenance-form__error {
-  margin: 0;
-  color: #dc2626;
-  font-weight: 500;
+  padding: 0.85rem 1rem;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .maintenance-form__actions {

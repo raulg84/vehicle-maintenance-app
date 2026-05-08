@@ -14,25 +14,34 @@
     <!-- Nombre -->
     <div class="rule-form__group">
       <label>Nombre</label>
-      <input formControlName="name" />
-      @if (nameControl?.invalid && nameControl?.touched) {
-        <p class="error">Obligatorio</p>
+
+      <input formControlName="name" placeholder="Ej: Cambio de aceite" />
+
+      @if (nameControl?.hasError('required') && nameControl?.touched) {
+      <p class="rule-form__field-error">
+        El nombre de la regla es obligatorio.
+      </p>
       }
     </div>
 
     <!-- Key -->
     <div class="rule-form__group">
       <label>Clave interna</label>
-      <input formControlName="maintenance_key" />
-      @if (keyControl?.invalid && keyControl?.touched) {
-        <p class="error">Obligatorio</p>
+
+      <input formControlName="maintenance_key" placeholder="Ej: oil_change" />
+
+      @if (keyControl?.hasError('required') && keyControl?.touched) {
+      <p class="rule-form__field-error">
+        La clave interna es obligatoria.
+      </p>
       }
     </div>
 
     <!-- Descripción -->
     <div class="rule-form__group">
       <label>Descripción</label>
-      <textarea formControlName="description"></textarea>
+      <textarea formControlName="description"
+        placeholder="Describe la finalidad de esta regla de mantenimiento"></textarea>
     </div>
 
     <!-- Tipo motor -->
@@ -49,29 +58,67 @@
     <!-- Intervalos -->
     <div class="rule-form__group">
       <label>Intervalo KM</label>
-      <input type="number" formControlName="interval_km" />
+
+      <input type="number" formControlName="interval_km" placeholder="Ej: 15000" />
+
+      @if (intervalKmControl?.hasError('min') && intervalKmControl?.touched) {
+      <p class="rule-form__field-error">
+        El intervalo en kilómetros debe ser mayor que cero.
+      </p>
+      }
+
     </div>
 
     <div class="rule-form__group">
       <label>Intervalo días</label>
-      <input type="number" formControlName="interval_days" />
+
+      <input type="number" formControlName="interval_days" placeholder="Ej: 365" />
+
+      @if (intervalDaysControl?.hasError('min') && intervalDaysControl?.touched) {
+      <p class="rule-form__field-error">
+        El intervalo en días debe ser mayor que cero.
+      </p>
+      }
     </div>
 
     <!-- Warnings -->
     <div class="rule-form__group">
       <label>Warning KM</label>
-      <input type="number" formControlName="warning_km" />
+      <input type="number" formControlName="warning_km" placeholder="Ej: 2000" />
+      @if (warningKmControl?.hasError('min') && warningKmControl?.touched) {
+      <p class="rule-form__field-error">
+        El warning en kilómetros no puede ser negativo.
+      </p>
+      }
     </div>
 
     <div class="rule-form__group">
       <label>Warning días</label>
-      <input type="number" formControlName="warning_days" />
+      <input type="number" formControlName="warning_days" placeholder="Ej: 30" />
+      @if (warningDaysControl?.hasError('min') && warningDaysControl?.touched) {
+      <p class="rule-form__field-error">
+        El warning en días no puede ser negativo.
+      </p>
+      }
     </div>
 
     <!-- Orden -->
     <div class="rule-form__group">
       <label>Orden</label>
-      <input type="number" formControlName="sort_order" />
+
+      <input type="number" formControlName="sort_order" placeholder="Ej: 1" />
+
+      @if (orderControl?.hasError('required') && orderControl?.touched) {
+      <p class="rule-form__field-error">
+        El orden es obligatorio.
+      </p>
+      }
+
+      @if (orderControl?.hasError('min') && orderControl?.touched) {
+      <p class="rule-form__field-error">
+        El orden no puede ser negativo.
+      </p>
+      }
     </div>
 
     <!-- Activa -->
@@ -83,7 +130,7 @@
     </div>
 
     @if (error) {
-      <p class="rule-form__error">{{ error }}</p>
+    <p class="rule-form__error">{{ error }}</p>
     }
 
     <div class="rule-form__actions">

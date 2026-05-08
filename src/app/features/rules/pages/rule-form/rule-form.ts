@@ -27,10 +27,10 @@ export class RuleForm {
     maintenance_key: ['', Validators.required],
     description: [''],
     applies_to_powertrain: ['all', Validators.required],
-    interval_km: [null as number | null],
-    interval_days: [null as number | null],
-    warning_km: [null as number | null],
-    warning_days: [null as number | null],
+    interval_km: [null as number | null, [Validators.min(1)]],
+    interval_days: [null as number | null, [Validators.min(1)]],
+    warning_km: [null as number | null, [Validators.min(0)]],
+    warning_days: [null as number | null, [Validators.min(0)]],
     is_active: [true],
     sort_order: [0, [Validators.required, Validators.min(0)]],
   });
@@ -75,17 +75,21 @@ export class RuleForm {
   }
 
   onSubmit(): void {
+    this.error = '';
+
     if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    if (!this.hasAnyInterval()) {
+      this.error = 'La regla debe definir al menos un intervalo en kilómetros o días.';
       this.form.markAllAsTouched();
       return;
     }
 
     const value = this.form.getRawValue();
 
-    if (!value.interval_km && !value.interval_days) {
-      this.error = 'Debes indicar intervalo en KM o días.';
-      return;
-    }
     const ruleData = {
       name: value.name || '',
       maintenance_key: value.maintenance_key || '',
@@ -105,27 +109,37 @@ export class RuleForm {
     };
 
     this.loading = true;
-    this.error = '';
 
-    if (this.isEditMode && this.ruleId) {
-      this.service.updateRule(this.ruleId, ruleData).subscribe({
-        next: () => this.router.navigate(['/rules']),
-        error: () => {
-          this.error = 'Error actualizando regla.';
-          this.loading = false;
-        },
-      });
+    const request$ =
+      this.isEditMode && this.ruleId
+        ? this.service.updateRule(this.ruleId, ruleData)
+        : this.service.createRule(ruleData);
 
-      return;
-    }
-
-    this.service.createRule(ruleData).subscribe({
+    request$.subscribe({
       next: () => this.router.navigate(['/rules']),
-      error: () => {
-        this.error = 'Error creando regla.';
+      error: (err) => {
+        if (err.status === 422 && err.error?.errors) {
+          this.error = Object.values(err.error.errors)
+            .flat()
+            .join(' ');
+        } else {
+          this.error =
+            err.error?.message ??
+            (this.isEditMode
+              ? 'Error actualizando regla.'
+              : 'Error creando regla.');
+        }
+
         this.loading = false;
       },
     });
+  }
+
+  private hasAnyInterval(): boolean {
+    const intervalKm = this.form.get('interval_km')?.value;
+    const intervalDays = this.form.get('interval_days')?.value;
+
+    return Number(intervalKm) > 0 || Number(intervalDays) > 0;
   }
 
   get nameControl() {
@@ -138,5 +152,21 @@ export class RuleForm {
 
   get orderControl() {
     return this.form.get('sort_order');
+  }
+
+  get intervalKmControl() {
+    return this.form.get('interval_km');
+  }
+
+  get intervalDaysControl() {
+    return this.form.get('interval_days');
+  }
+
+  get warningKmControl() {
+    return this.form.get('warning_km');
+  }
+
+  get warningDaysControl() {
+    return this.form.get('warning_days');
   }
 }

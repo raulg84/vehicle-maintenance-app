@@ -42,9 +42,15 @@
             </div>
 
             <!-- SUBINFO -->
-            <p class="rule-card__subtitle">
-                {{ rule.maintenance_key }}
-            </p>
+            <div class="rule-card__meta">
+                <p class="rule-card__key">
+                    {{ rule.maintenance_key }}
+                </p>
+
+                <span class="rule-card__powertrain">
+                    {{ getPowertrainLabel(rule.applies_to_powertrain) }}
+                </span>
+            </div>
 
             <!-- INTERVALOS -->
             <div class="rule-card__info">

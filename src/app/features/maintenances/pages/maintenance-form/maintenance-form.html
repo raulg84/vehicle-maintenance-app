@@ -89,6 +89,17 @@
                 Al guardar, se actualizará el kilometraje actual del vehículo.
             </p>
             }
+            @if (mileageAtServiceControl?.hasError('required') && mileageAtServiceControl?.touched) {
+            <p class="maintenance-form__field-error">
+                El kilometraje del mantenimiento es obligatorio.
+            </p>
+            }
+
+            @if (mileageAtServiceControl?.hasError('min') && mileageAtServiceControl?.touched) {
+            <p class="maintenance-form__field-error">
+                El kilometraje no puede ser negativo.
+            </p>
+            }
         </div>
 
         <div class="maintenance-form__group">

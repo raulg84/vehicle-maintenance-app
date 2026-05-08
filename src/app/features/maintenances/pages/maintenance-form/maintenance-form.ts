@@ -44,17 +44,10 @@ export class MaintenanceForm implements OnInit {
     maintenance_type: ['', Validators.required],
     performed_at: ['', Validators.required],
     mileage_at_service: [
-      0,
+      null as number | null,
       [
         Validators.required,
         Validators.min(0),
-        (control: { value: number; }) => {
-          if (!this.vehicle) return null;
-
-          return control.value < this.vehicle.current_mileage
-            ? { lowerThanVehicle: true }
-            : null;
-        },
       ],
     ],
     cost: [null as number | null],
@@ -122,7 +115,7 @@ export class MaintenanceForm implements OnInit {
         // Precargar KM solo en CREATE
         if (!this.isEditMode) {
           this.maintenanceForm.patchValue({
-            mileage_at_service: this.vehicle?.current_mileage ?? 0,
+            mileage_at_service: this.vehicle?.current_mileage ?? null,
           });
         }
 
