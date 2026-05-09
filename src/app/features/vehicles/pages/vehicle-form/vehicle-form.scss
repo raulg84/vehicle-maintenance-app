@@ -2,13 +2,19 @@
   display: block;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .vehicle-form {
-  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 820px;
   margin: 0 auto;
   padding: 1.5rem;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
 }
 
 .vehicle-form__header {
@@ -32,7 +38,16 @@
 
 .vehicle-form__title {
   margin: 0;
-  font-size: 1.75rem;
+  color: #111827;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.vehicle-form__subtitle {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.5;
 }
 
 .vehicle-form__description {
@@ -43,6 +58,10 @@
 .vehicle-form__form {
   display: grid;
   gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
 }
 
 .vehicle-form__group {
@@ -51,9 +70,19 @@
 }
 
 .vehicle-form__input {
+  width: 100%;
   padding: 0.85rem;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: 10px;
+  background: #fff;
+  color: #111827;
+  font: inherit;
+}
+
+.vehicle-form__input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 14%);
 }
 
 .vehicle-form__actions {
@@ -94,6 +123,10 @@
   transition: background 0.2s ease;
 }
 
+.vehicle-form__submit:hover {
+  background: #1d4ed8;
+}
+
 .vehicle-form__field-error {
   margin-top: 0.75rem;
   color: #dc2626;
@@ -110,4 +143,20 @@
   color: #b91c1c;
   font-size: 0.95rem;
   font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .vehicle-form {
+    padding: 1rem;
+  }
+
+  .vehicle-form__form {
+    padding: 1.1rem;
+    border-radius: 14px;
+  }
+
+  .vehicle-form__actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
 }

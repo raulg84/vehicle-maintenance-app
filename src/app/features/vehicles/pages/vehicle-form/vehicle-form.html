@@ -10,31 +10,27 @@
 
     <p class="vehicle-form__subtitle">
       {{
-        isEditMode
-          ? 'Modifica los datos del vehículo seleccionado'
-          : 'Introduce los datos del nuevo vehículo'
+      isEditMode
+      ? 'Modifica los datos del vehículo seleccionado'
+      : 'Introduce los datos del nuevo vehículo'
       }}
     </p>
   </div>
 
-  <form
-    class="vehicle-form__form"
-    [formGroup]="vehicleForm"
-    (ngSubmit)="onSubmit()"
-  >
+  <form class="vehicle-form__form" [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
     <!-- Alias -->
     <div class="vehicle-form__group">
       <label class="vehicle-form__label" for="alias">
         Alias (opcional)
       </label>
 
-      <input
-        id="alias"
-        type="text"
-        class="vehicle-form__input"
-        formControlName="alias"
-        placeholder="Ej: BMW diario"
-      />
+      <input id="alias" type="text" class="vehicle-form__input" formControlName="alias" placeholder="Ej: BMW diario" autocomplete="off"/>
+
+      @if (aliasControl?.hasError('maxlength') && aliasControl?.touched) {
+      <p class="vehicle-form__field-error">
+        El alias no puede superar los 100 caracteres.
+      </p>
+      }
     </div>
 
     <!-- Marca -->
@@ -43,18 +39,24 @@
         Marca *
       </label>
 
-      <input
-        id="make"
-        type="text"
-        class="vehicle-form__input"
-        formControlName="make"
-        placeholder="Ej: BMW"
-      />
+      <input id="make" type="text" class="vehicle-form__input" formControlName="make" placeholder="Ej: BMW" autocomplete="off"/>
 
-      @if (makeControl?.invalid && makeControl?.touched) {
-        <p class="vehicle-form__field-error">
-          La marca es obligatoria.
-        </p>
+      @if (makeControl?.hasError('required') && makeControl?.touched) {
+      <p class="vehicle-form__field-error">
+        La marca es obligatoria.
+      </p>
+      }
+
+      @if (makeControl?.hasError('blank') && makeControl?.touched) {
+      <p class="vehicle-form__field-error">
+        La marca no puede estar vacía.
+      </p>
+      }
+
+      @if (makeControl?.hasError('maxlength') && makeControl?.touched) {
+      <p class="vehicle-form__field-error">
+        La marca no puede superar los 100 caracteres.
+      </p>
       }
     </div>
 
@@ -64,18 +66,24 @@
         Modelo *
       </label>
 
-      <input
-        id="model"
-        type="text"
-        class="vehicle-form__input"
-        formControlName="model"
-        placeholder="Ej: 320i"
-      />
+      <input id="model" type="text" class="vehicle-form__input" formControlName="model" placeholder="Ej: 320i" autocomplete="off"/>
 
-      @if (modelControl?.invalid && modelControl?.touched) {
-        <p class="vehicle-form__field-error">
-          El modelo es obligatorio.
-        </p>
+      @if (modelControl?.hasError('required') && modelControl?.touched) {
+      <p class="vehicle-form__field-error">
+        El modelo es obligatorio.
+      </p>
+      }
+
+      @if (modelControl?.hasError('blank') && modelControl?.touched) {
+      <p class="vehicle-form__field-error">
+        El modelo no puede estar vacío.
+      </p>
+      }
+
+      @if (modelControl?.hasError('maxlength') && modelControl?.touched) {
+      <p class="vehicle-form__field-error">
+        El modelo no puede superar los 100 caracteres.
+      </p>
       }
     </div>
 
@@ -85,18 +93,24 @@
         Año *
       </label>
 
-      <input
-        id="year"
-        type="number"
-        class="vehicle-form__input"
-        formControlName="year"
-        placeholder="Ej: 2014"
-      />
+      <input id="year" type="number" class="vehicle-form__input" formControlName="year" placeholder="Ej: 2014" min="1900" max="currentYear"/>
 
-      @if (yearControl?.invalid && yearControl?.touched) {
-        <p class="vehicle-form__field-error">
-          Debes indicar un año válido.
-        </p>
+      @if (yearControl?.hasError('required') && yearControl?.touched) {
+      <p class="vehicle-form__field-error">
+        El año es obligatorio.
+      </p>
+      }
+
+      @if (yearControl?.hasError('min') && yearControl?.touched) {
+      <p class="vehicle-form__field-error">
+        El año no puede ser inferior a 1900.
+      </p>
+      }
+
+      @if (yearControl?.hasError('max') && yearControl?.touched) {
+      <p class="vehicle-form__field-error">
+        El año no puede ser superior al actual.
+      </p>
       }
     </div>
 
@@ -106,11 +120,7 @@
         Tipo de motorización *
       </label>
 
-      <select
-        id="powertrain_type"
-        class="vehicle-form__input"
-        formControlName="powertrain_type"
-      >
+      <select id="powertrain_type" class="vehicle-form__input" formControlName="powertrain_type">
         <option value="combustion">Combustión</option>
         <option value="hybrid">Híbrido</option>
         <option value="electric">Eléctrico</option>
@@ -123,48 +133,42 @@
         Kilometraje actual *
       </label>
 
-      <input
-        id="current_mileage"
-        type="number"
-        class="vehicle-form__input"
-        formControlName="current_mileage"
-        placeholder="Ej: 135000"
-      />
+      <input id="current_mileage" type="number" class="vehicle-form__input" formControlName="current_mileage"
+        placeholder="Ej: 135000" min="0"/>
 
-      @if (currentMileageControl?.invalid && currentMileageControl?.touched) {
-        <p class="vehicle-form__field-error">
-          El kilometraje debe ser mayor o igual a 0.
-        </p>
+      @if (currentMileageControl?.hasError('required') && currentMileageControl?.touched) {
+      <p class="vehicle-form__field-error">
+        El kilometraje actual es obligatorio.
+      </p>
+      }
+
+      @if (currentMileageControl?.hasError('min') && currentMileageControl?.touched) {
+      <p class="vehicle-form__field-error">
+        El kilometraje no puede ser negativo.
+      </p>
       }
     </div>
 
     <!-- Error global -->
     @if (error) {
-      <div class="vehicle-form__error">
-        {{ error }}
-      </div>
+    <div class="vehicle-form__error">
+      {{ error }}
+    </div>
     }
 
     <!-- Acciones -->
     <div class="vehicle-form__actions">
-      <a
-        class="vehicle-form__cancel"
-        routerLink="/vehicles"
-      >
+      <a class="vehicle-form__cancel" routerLink="/vehicles">
         Cancelar
       </a>
 
-      <button
-        type="submit"
-        class="vehicle-form__submit"
-        [disabled]="loading"
-      >
+      <button type="submit" class="vehicle-form__submit" [disabled]="loading">
         {{
-          loading
-            ? 'Guardando...'
-            : isEditMode
-            ? 'Actualizar vehículo'
-            : 'Guardar vehículo'
+        loading
+        ? 'Guardando...'
+        : isEditMode
+        ? 'Actualizar vehículo'
+        : 'Guardar vehículo'
         }}
       </button>
     </div>

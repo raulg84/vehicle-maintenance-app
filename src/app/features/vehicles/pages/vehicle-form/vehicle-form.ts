@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { VehicleService } from '../../../../core/services/vehicle.service';
 
@@ -21,15 +21,36 @@ export class VehicleForm implements OnInit {
 
   loading = false;
   error = '';
+  currentYear = new Date().getFullYear();
 
   vehicleForm = this.fb.group({
-    alias: [''],
-    make: ['', Validators.required],
-    model: ['', Validators.required],
-    year: [null as number | null, [Validators.required]],
+    alias: ['', [Validators.maxLength(100)]],
+    make: ['', [Validators.required, this.notBlank, Validators.maxLength(100)]],
+    model: ['', [Validators.required, this.notBlank, Validators.maxLength(100)]],
+    year: [
+      null as number | null,
+      [
+        Validators.required,
+        Validators.min(1900),
+        Validators.max(this.currentYear),
+      ],
+    ],
     powertrain_type: ['combustion', Validators.required],
-    current_mileage: [0, [Validators.required, Validators.min(0)]],
+    current_mileage: [
+      null as number | null,
+      [Validators.required, Validators.min(0)],
+    ],
   });
+
+  private notBlank(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+
+    if (typeof value !== 'string') {
+      return null;
+    }
+
+    return value.trim().length === 0 ? { blank: true } : null;
+  }
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -81,10 +102,10 @@ export class VehicleForm implements OnInit {
     const formValue = this.vehicleForm.getRawValue();
 
     const vehicleData = {
-      alias: formValue.alias || undefined,
-      make: formValue.make || '',
-      model: formValue.model || '',
-      year: formValue.year ?? new Date().getFullYear(),
+      alias: formValue.alias?.trim() || undefined,
+      make: formValue.make?.trim() || '',
+      model: formValue.model?.trim() || '',
+      year: formValue.year ?? this.currentYear,
       powertrain_type: formValue.powertrain_type || 'combustion',
       current_mileage: formValue.current_mileage ?? 0,
     };
@@ -112,11 +133,19 @@ export class VehicleForm implements OnInit {
       next: () => {
         this.router.navigate(['/vehicles']);
       },
-      error: () => {
-        this.error = 'No se ha podido guardar el vehículo.';
+      error: (err) => {
+        if (err.status === 422 && err.error?.message) {
+          this.error = err.error.message;
+        } else {
+          this.error = 'No se ha podido guardar el vehículo.';
+        }
         this.loading = false;
       },
     });
+  }
+
+  get aliasControl() {
+    return this.vehicleForm.get('alias');
   }
 
   get makeControl() {

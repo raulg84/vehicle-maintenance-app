@@ -23,6 +23,9 @@ export class VehicleList implements OnInit {
   }
 
   loadVehicles(): void {
+    this.loading = true;
+    this.error = '';
+
     this.vehicleService.getVehicles().subscribe({
       next: (data) => {
         this.vehicles = data;
@@ -37,15 +40,16 @@ export class VehicleList implements OnInit {
 
   onDelete(id: number): void {
     const confirmDelete = confirm('¿Seguro que quieres eliminar este vehículo?');
-
     if (!confirmDelete) return;
+
+    this.error = '';
 
     this.vehicleService.deleteVehicle(id).subscribe({
       next: () => {
         this.loadVehicles();
       },
       error: () => {
-        alert('Error eliminando vehículo');
+        this.error = 'No se ha podido eliminar el vehículo.';
       },
     });
   }
