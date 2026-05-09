@@ -29,6 +29,7 @@ export class VehicleDashboard implements OnInit {
 
   loading = true;
   error = '';
+  mileageError = '';
 
   maintenanceStatus: VehicleMaintenanceStatus | null = null;
   ruleStatuses: MaintenanceRuleStatus[] = [];
@@ -42,6 +43,7 @@ export class VehicleDashboard implements OnInit {
   nextActionType: 'info' | 'warning' | 'danger' = 'info';
 
   newMileage: number | null = null;
+  readonly maxMileage = 2_000_000;
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -113,22 +115,40 @@ export class VehicleDashboard implements OnInit {
   updateMileage(): void {
     if (!this.vehicle || this.newMileage == null) return;
 
-    if (this.newMileage < this.vehicle.current_mileage) {
-      alert('El kilometraje no puede ser inferior al actual');
+    this.mileageError = '';
+
+    const mileage = Number(this.newMileage);
+
+    if (Number.isNaN(mileage) || mileage < 0) {
+      this.mileageError = 'El kilometraje debe ser un número válido.';
+      return;
+    }
+
+    if (mileage < this.vehicle.current_mileage) {
+      this.mileageError = 'El kilometraje no puede ser inferior al actual.';
+      return;
+    }
+
+    if (mileage > this.maxMileage) {
+      this.mileageError = 'El kilometraje no puede superar 2.000.000 km.';
       return;
     }
 
     this.vehicleService
       .updateVehicle(this.vehicle.id, {
-        current_mileage: this.newMileage,
+        current_mileage: mileage,
       })
       .subscribe({
         next: () => {
           this.loadVehicle();
           this.loadMaintenanceStatus();
         },
-        error: () => {
-          this.error = 'No se ha podido actualizar el kilometraje.';
+        error: (err) => {
+          if (err.status === 422 && err.error?.errors?.current_mileage?.length) {
+            this.mileageError = 'El kilometraje no puede superar 2.000.000 km.';
+          } else {
+            this.mileageError = 'No se ha podido actualizar el kilometraje.';
+          }
         },
       });
   }

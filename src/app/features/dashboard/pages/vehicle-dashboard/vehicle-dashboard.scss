@@ -94,8 +94,22 @@
   color: #4b5563;
 }
 
-.vehicle-dashboard__state--error {
+.vehicle-dashboard__field-error {
+  margin-top: 0.75rem;
   color: #dc2626;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.vehicle-dashboard__error {
+  padding: 0.85rem 1rem;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .vehicle-dashboard__status-card {
@@ -103,9 +117,12 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: 1.25rem;
-  border-radius: 12px;
   background: #fff;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+  border-radius: 16px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .vehicle-dashboard__status-header {
@@ -158,15 +175,28 @@
   line-height: 1.5;
 }
 
+.vehicle-dashboard__mileage-card {
+  padding: 1.25rem;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+  border-radius: 16px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
 .vehicle-dashboard__next-action-card {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding: 1.25rem;
-  border-radius: 12px;
   background: #fff;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
   border-left: 6px solid transparent;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+  border-radius: 16px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .vehicle-dashboard__next-action-card--info {
@@ -221,10 +251,17 @@
 
 .dashboard-rule-card {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
   overflow: hidden;
   border-left: 6px solid transparent;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.dashboard-rule-card:hover {
+  transform: translateY(-2px);
 }
 
 .dashboard-rule-card--ok {
@@ -375,13 +412,6 @@
   }
 }
 
-.vehicle-dashboard__mileage-card {
-  padding: 1.25rem;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
-}
-
 .vehicle-dashboard__mileage-header {
   display: flex;
   justify-content: space-between;
@@ -407,7 +437,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .vehicle-dashboard__mileage-input {

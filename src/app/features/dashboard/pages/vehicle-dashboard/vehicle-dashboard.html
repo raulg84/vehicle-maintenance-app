@@ -35,12 +35,12 @@
     }
 
     @if (error) {
-    <p class="vehicle-dashboard__state vehicle-dashboard__state--error">
+    <p class="vehicle-dashboard__error">
         {{ error }}
     </p>
     }
 
-    @if (!loading && !error) {
+    @if (!loading) {
     <div class="vehicle-dashboard__status-card">
         <div class="vehicle-dashboard__status-header">
             <h3 class="vehicle-dashboard__status-title">Estado del vehículo</h3>
@@ -71,12 +71,18 @@
 
         <div class="vehicle-dashboard__mileage-update">
             <input type="number" class="vehicle-dashboard__mileage-input" [(ngModel)]="newMileage"
-                placeholder="Nuevo kilometraje" />
+                placeholder="Nuevo kilometraje" [max]="maxMileage"/>
 
             <button type="button" class="vehicle-dashboard__mileage-button" (click)="updateMileage()">
                 Actualizar kilometraje
             </button>
         </div>
+        @if (mileageError) {
+        <p class="vehicle-dashboard__field-error">
+            {{ mileageError }}
+        </p>
+        }
+
     </div>
     }
 
