@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  AbstractControl,
+  ValidationErrors,
   FormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -37,12 +39,13 @@ export class MaintenanceForm implements OnInit {
   vehicleId: number | null = null;
   vehicle: Vehicle | null = null;
   rules: MaintenanceRule[] = [];
+  today = new Date().toISOString().substring(0, 10);
 
   maintenanceForm = this.fb.group({
     vehicle_id: [null as number | null, Validators.required],
     maintenance_rule_id: [null as number | null, Validators.required],
-    maintenance_type: ['', Validators.required],
-    performed_at: ['', Validators.required],
+    maintenance_type: ['', [Validators.required, this.notBlank, Validators.maxLength(100)]],
+    performed_at: ['', [Validators.required, this.notFutureDate.bind(this)]],
     mileage_at_service: [
       null as number | null,
       [
@@ -50,8 +53,8 @@ export class MaintenanceForm implements OnInit {
         Validators.min(0),
       ],
     ],
-    cost: [null as number | null],
-    notes: [''],
+    cost: [null as number | null, [Validators.min(0)]],
+    notes: ['', [Validators.maxLength(1000)]],
   });
 
   ngOnInit(): void {
@@ -131,6 +134,7 @@ export class MaintenanceForm implements OnInit {
       error: () => {
         this.vehicle = null;
         this.rules = [];
+        this.error = 'No se ha podido cargar el vehículo asociado.';
         this.loading = false;
       },
     });
@@ -190,12 +194,12 @@ export class MaintenanceForm implements OnInit {
 
     const maintenanceData = {
       vehicle_id: formValue.vehicle_id ?? undefined,
-      maintenance_rule_id: formValue.maintenance_rule_id ?? undefined,
-      maintenance_type: formValue.maintenance_type || '',
+      maintenance_rule_id: formValue.maintenance_rule_id ? Number(formValue.maintenance_rule_id) : undefined,
+      maintenance_type: formValue.maintenance_type?.trim() || '',
       performed_at: formValue.performed_at || '',
       mileage_at_service: formValue.mileage_at_service ?? 0,
       cost: formValue.cost ?? undefined,
-      notes: formValue.notes || undefined,
+      notes: formValue.notes?.trim() || undefined,
     };
 
     if (this.isEditMode && this.maintenanceId) {
@@ -253,6 +257,14 @@ export class MaintenanceForm implements OnInit {
     return this.maintenanceForm.get('mileage_at_service');
   }
 
+  get costControl() {
+    return this.maintenanceForm.get('cost');
+  }
+
+  get notesControl() {
+    return this.maintenanceForm.get('notes');
+  }
+
   private toDateInputValue(date: string | null | undefined): string {
     if (!date) {
       return '';
@@ -269,5 +281,25 @@ export class MaintenanceForm implements OnInit {
     }
 
     return Number(mileageAtService) > Number(currentMileage);
+  }
+
+  private notBlank(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+
+    if (typeof value !== 'string') {
+      return null;
+    }
+
+    return value.trim().length === 0 ? { blank: true } : null;
+  }
+
+  private notFutureDate(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    return value > this.today ? { futureDate: true } : null;
   }
 }

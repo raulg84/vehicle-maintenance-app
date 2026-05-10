@@ -48,7 +48,7 @@
     }
 
     @if (error) {
-    <p class="maintenance-list__state maintenance-list__state--error">
+    <p class="maintenance-list__error">
         {{ error }}
     </p>
     }
@@ -65,12 +65,12 @@
                 <div class="maintenance-card__meta">
                     <p class="maintenance-card__text">
                         <span class="maintenance-card__label">Fecha:</span>
-                        {{ maintenance.performed_at ? formatDate(maintenance.performed_at) : '-' }}
+                        {{ formatDate(maintenance.performed_at) }}
                     </p>
 
                     <p class="maintenance-card__text">
                         <span class="maintenance-card__label">Kilometraje:</span>
-                        {{ maintenance.mileage_at_service }} km
+                        {{ formatMileage(maintenance.mileage_at_service) }}
                     </p>
 
                     <p class="maintenance-card__text">

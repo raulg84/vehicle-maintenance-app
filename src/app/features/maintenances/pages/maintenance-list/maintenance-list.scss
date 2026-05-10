@@ -78,6 +78,10 @@
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.18s ease;
 }
 
 .maintenance-list__link {
@@ -96,6 +100,7 @@
 
 .maintenance-list__add-button:hover {
   background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .maintenance-list__state {
@@ -103,14 +108,20 @@
   color: #4b5563;
 }
 
-.maintenance-list__state--error {
-  color: #dc2626;
+.maintenance-list__error {
+  padding: 0.85rem 1rem;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .maintenance-list__grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .maintenance-list__empty {
@@ -127,6 +138,18 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+  overflow: hidden;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.maintenance-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgb(15 23 42 / 12%);
 }
 
 .maintenance-card__actions {
@@ -151,11 +174,14 @@
   font-size: 0.92rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.18s ease;
 }
 
 .maintenance-card__action:hover {
   background: #d1d5db;
+  transform: translateY(-1px);
 }
 
 .maintenance-card__action--danger {
@@ -211,9 +237,5 @@
     align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;
-  }
-
-  .maintenance-list__grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 }

@@ -52,6 +52,9 @@ export class MaintenanceList implements OnInit {
   }
 
   loadMaintenances(): void {
+    this.loading = true;
+    this.error = '';
+
     this.maintenanceService.getMaintenancesByVehicle(this.vehicleId).subscribe({
       next: (data) => {
         this.maintenances = [...data].sort((a, b) => {
@@ -70,6 +73,25 @@ export class MaintenanceList implements OnInit {
     });
   }
 
+  onDelete(id: number): void {
+    const confirmDelete = confirm(
+      '¿Seguro que quieres eliminar este mantenimiento?'
+    );
+
+    if (!confirmDelete) return;
+
+    this.error = '';
+
+    this.maintenanceService.deleteMaintenance(id).subscribe({
+      next: () => {
+        this.loadMaintenances();
+      },
+      error: () => {
+        this.error = 'No se ha podido eliminar el mantenimiento.';
+      },
+    });
+  }
+
   getVehicleName(): string {
     if (!this.vehicle) {
       return 'Vehículo';
@@ -80,10 +102,6 @@ export class MaintenanceList implements OnInit {
     }
 
     return `${this.vehicle.make} ${this.vehicle.model}`;
-  }
-
-  formatDate(date: string): string {
-    return new Date(date).toLocaleDateString('es-ES');
   }
 
   formatCost(cost?: number | string | null): string {
@@ -100,6 +118,28 @@ export class MaintenanceList implements OnInit {
     return `${parsedCost.toFixed(2)} €`;
   }
 
+  formatMileage(km: number | string | null | undefined): string {
+    if (km === null || km === undefined || km === '') {
+      return '-';
+    }
+
+    const parsedKm = Number(km);
+
+    if (Number.isNaN(parsedKm)) {
+      return '-';
+    }
+
+    return `${Math.round(parsedKm)} km`;
+  }
+
+  formatDate(date?: string | null): string {
+    if (!date) {
+      return '-';
+    }
+
+    return new Date(date).toLocaleDateString('es-ES');
+  }
+
   getMaintenanceCountLabel(): string {
     const count = this.maintenances.length;
     return count === 1 ? '1 mantenimiento registrado' : `${count} mantenimientos registrados`;
@@ -111,22 +151,5 @@ export class MaintenanceList implements OnInit {
     }
 
     return this.formatDate(this.maintenances[0].performed_at);
-  }
-
-  onDelete(id: number): void {
-    const confirmDelete = confirm(
-      '¿Seguro que quieres eliminar este mantenimiento?'
-    );
-
-    if (!confirmDelete) return;
-
-    this.maintenanceService.deleteMaintenance(id).subscribe({
-      next: () => {
-        this.loadMaintenances();
-      },
-      error: () => {
-        this.error = 'No se ha podido eliminar el mantenimiento.';
-      },
-    });
   }
 }

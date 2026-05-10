@@ -9,12 +9,12 @@
 }
 
 .maintenance-form {
-  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 820px;
   margin: 0 auto;
   padding: 1.5rem;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
 }
 
 .maintenance-form__header {
@@ -70,6 +70,10 @@
 .maintenance-form__form {
   display: grid;
   gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
 }
 
 .maintenance-form__group {
@@ -88,10 +92,13 @@
   max-width: 100%;
   padding: 0.85rem;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
   font: inherit;
   color: #111827;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .maintenance-form__input::placeholder,
@@ -103,6 +110,7 @@
 .maintenance-form__textarea:focus {
   outline: none;
   border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
 }
 
 .maintenance-form__textarea {
@@ -136,14 +144,6 @@
   margin-top: 2rem;
 }
 
-.maintenance-form__actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
 .maintenance-form__cancel {
   display: inline-flex;
   align-items: center;
@@ -154,10 +154,14 @@
   color: #2563eb;
   background: #eff6ff;
   text-decoration: none;
+  transition:
+    background 0.2s ease,
+    transform 0.18s ease;
 }
 
 .maintenance-form__cancel:hover {
   background: #dbeafe;
+  transform: translateY(-1px);
 }
 
 .maintenance-form__submit {
@@ -171,11 +175,38 @@
   color: #fff;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.18s ease;
+}
+
+.maintenance-form__submit:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .maintenance-form__helper {
   margin: 0.35rem 0 0;
   color: #92400e;
   font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .maintenance-form {
+    padding: 1rem;
+  }
+
+  .maintenance-form__form {
+    padding: 1.25rem;
+  }
+
+  .maintenance-form__actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .maintenance-form__cancel,
+  .maintenance-form__submit {
+    width: 100%;
+  }
 }
