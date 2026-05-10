@@ -8,12 +8,12 @@
     </div>
 
     <nav class="app-header__nav">
-      <a class="app-header__link" routerLink="/vehicles">
+      <a class="app-header__link" routerLink="/vehicles" routerLinkActive="app-header__link--active">
         Vehículos
       </a>
 
       @if (authService.isAdmin()) {
-      <a class="app-header__link" routerLink="/rules">
+      <a class="app-header__link" routerLink="/rules" routerLinkActive="app-header__link--active">
         Reglas
       </a>
       }
@@ -32,6 +32,7 @@
     </div>
   </header>
   }
+
   <main class="app__main">
     <router-outlet></router-outlet>
   </main>

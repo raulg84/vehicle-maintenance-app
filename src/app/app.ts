@@ -13,14 +13,14 @@ export class App {
   private router = inject(Router);
 
   logout(): void {
-  this.authService.logout().subscribe({
-    next: () => {
-      this.router.navigate(['/login']);
-    },
-    error: () => {
-      this.authService.clearSession();
-      this.router.navigate(['/login']);
-    },
-  });
-}
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        this.authService.clearSession();
+        this.router.navigate(['/login']);
+      },
+    });
+  }
 }

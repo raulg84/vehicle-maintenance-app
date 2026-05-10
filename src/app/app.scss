@@ -21,6 +21,14 @@
   padding: 1rem 1.25rem;
   background: #fff;
   box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-header__link--active {
+  color: #111827;
+  font-weight: 800;
 }
 
 .app-header__logo {
@@ -40,10 +48,14 @@
   color: #2563eb;
   text-decoration: none;
   font-weight: 600;
+  transition:
+    color 0.2s ease,
+    transform 0.18s ease;
 }
 
 .app-header__link:hover {
-  text-decoration: underline;
+  color: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .app-header__user {
@@ -66,10 +78,14 @@
   color: #991b1b;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.18s ease;
 }
 
 .app-header__logout:hover {
   background: #fecaca;
+  transform: translateY(-1px);
 }
 
 .app__main {
