@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Vehicle } from '../../shared/models/vehicle.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 export class VehicleService {
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://vehicle-maintenance-api.ddev.site:8080/api/vehicles';
+  private readonly apiUrl = `${environment.apiUrl}/vehicles`;
 
   getVehicles(): Observable<Vehicle[]> {
     return this.http.get<Vehicle[]>(this.apiUrl);
@@ -23,11 +24,14 @@ export class VehicleService {
     return this.http.post<Vehicle>(this.apiUrl, vehicle);
   }
 
-  updateVehicle(id: number, data: Partial<Vehicle>) {
+  updateVehicle(
+    id: number,
+    data: Partial<Vehicle>
+  ): Observable<Vehicle> {
     return this.http.put<Vehicle>(`${this.apiUrl}/${id}`, data);
   }
 
-  deleteVehicle(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  deleteVehicle(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

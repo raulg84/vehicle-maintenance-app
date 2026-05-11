@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { AuthUser } from '../../shared/models/auth-user.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 interface AuthResponse {
   message: string;
@@ -14,8 +15,7 @@ interface AuthResponse {
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://vehicle-maintenance-api.ddev.site:8080/api';
-
+  private readonly apiUrl = `${environment.apiUrl}`;
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
@@ -34,25 +34,13 @@ export class AuthService {
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/login`, { email, password })
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('auth_token', response.token);
-          localStorage.setItem('auth_user', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
-        })
-      );
+      .pipe(tap((response) => this.setSession(response)));
   }
 
   register(name: string, email: string, password: string): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/register`, { name, email, password })
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('auth_token', response.token);
-          localStorage.setItem('auth_user', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
-        })
-      );
+      .pipe(tap((response) => this.setSession(response)));
   }
 
   fetchCurrentUser(): Observable<AuthUser> {
@@ -76,6 +64,12 @@ export class AuthService {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
     this.currentUserSubject.next(null);
+  }
+
+  private setSession(response: AuthResponse): void {
+    localStorage.setItem('auth_token', response.token);
+    localStorage.setItem('auth_user', JSON.stringify(response.user));
+    this.currentUserSubject.next(response.user);
   }
 
   getToken(): string | null {

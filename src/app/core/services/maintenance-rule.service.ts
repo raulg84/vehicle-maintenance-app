@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MaintenanceRule } from '../../shared/models/maintenance-rule.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,28 +11,18 @@ import { MaintenanceRule } from '../../shared/models/maintenance-rule.model';
 export class MaintenanceRuleService {
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://vehicle-maintenance-api.ddev.site:8080/api/maintenance-rules';
+  private readonly apiUrl = `${environment.apiUrl}/maintenance-rules`;
 
   getRules(powertrainType?: string): Observable<MaintenanceRule[]> {
-    if (powertrainType) {
-      return this.http.get<MaintenanceRule[]>(
-        `${this.apiUrl}?powertrain_type=${powertrainType}`
-      );
-    }
-
-    return this.http.get<MaintenanceRule[]>(this.apiUrl);
+    return this.http.get<MaintenanceRule[]>(this.apiUrl, {
+      params: powertrainType ? { powertrain_type: powertrainType } : {},
+    });
   }
 
   getActiveRules(powertrainType?: string): Observable<MaintenanceRule[]> {
-    const url = `${this.apiUrl}/active`;
-
-    if (powertrainType) {
-      return this.http.get<MaintenanceRule[]>(
-        `${url}?powertrain_type=${powertrainType}`
-      );
-    }
-
-    return this.http.get<MaintenanceRule[]>(url);
+    return this.http.get<MaintenanceRule[]>(`${this.apiUrl}/active`, {
+      params: powertrainType ? { powertrain_type: powertrainType } : {},
+    });
   }
 
   getRule(id: number): Observable<MaintenanceRule> {

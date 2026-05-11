@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Maintenance } from '../../shared/models/maintenance.model';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,14 +10,18 @@ import { Observable } from 'rxjs';
 export class MaintenanceService {
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://vehicle-maintenance-api.ddev.site:8080/api/maintenances';
+  private readonly apiUrl = `${environment.apiUrl}/maintenances`;
 
   getMaintenances(): Observable<Maintenance[]> {
     return this.http.get<Maintenance[]>(this.apiUrl);
   }
 
   getMaintenancesByVehicle(vehicleId: number): Observable<Maintenance[]> {
-    return this.http.get<Maintenance[]>(`${this.apiUrl}?vehicle_id=${vehicleId}`);
+    return this.http.get<Maintenance[]>(this.apiUrl, {
+      params: {
+        vehicle_id: vehicleId,
+      },
+    });
   }
 
   getMaintenance(id: number): Observable<Maintenance> {
@@ -31,7 +36,7 @@ export class MaintenanceService {
     return this.http.put<Maintenance>(`${this.apiUrl}/${id}`, maintenance);
   }
 
-  deleteMaintenance(id: number): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+  deleteMaintenance(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
