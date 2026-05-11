@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,7 @@ export class Register {
   error = '';
 
   form = this.fb.group({
-    name: ['', Validators.required],
+    name: ['', [Validators.required, Validators.maxLength(100)]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
@@ -35,15 +36,23 @@ export class Register {
 
     const value = this.form.getRawValue();
 
+    const name = value.name?.trim() || '';
+    const email = value.email?.trim() || '';
+    const password = value.password || '';
+
     this.authService
-      .register(value.name || '', value.email || '', value.password || '')
+      .register(name, email, password)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
       .subscribe({
         next: () => {
           this.router.navigate(['/vehicles']);
         },
         error: () => {
           this.error = 'No se ha podido registrar el usuario.';
-          this.loading = false;
         },
       });
   }

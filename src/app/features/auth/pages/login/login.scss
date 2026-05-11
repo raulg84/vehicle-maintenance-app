@@ -18,9 +18,9 @@
     width: 100%;
     max-width: 520px;
     padding: 1.75rem;
-    border-radius: 12px;
+    border-radius: 18px;
     background: #fff;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+    box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
 }
 
 .auth-form__header {
@@ -62,22 +62,37 @@
     width: 100%;
     padding: 0.85rem;
     border: 1px solid #d1d5db;
-    border-radius: 8px;
+    border-radius: 10px;
     background: #fff;
     font: inherit;
     color: #111827;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .auth-form__input:focus {
     outline: none;
     border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
 }
 
-.auth-form__field-error,
 .auth-form__error {
-    margin: 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.auth-form__field-error {
+    margin: 0.15rem 0 0;
     color: #dc2626;
     font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.4;
 }
 
 .auth-form__submit {
@@ -90,10 +105,14 @@
     color: #fff;
     font-weight: 700;
     cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.18s ease;
 }
 
 .auth-form__submit:hover {
     background: #1d4ed8;
+    transform: translateY(-1px);
 }
 
 .auth-form__submit:disabled {
@@ -117,4 +136,14 @@
 .auth-form__link a:hover {
     color: #1d4ed8;
     text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .auth-form {
+        padding: 1.25rem 1rem;
+    }
+
+    .auth-form__card {
+        padding: 1.25rem;
+    }
 }

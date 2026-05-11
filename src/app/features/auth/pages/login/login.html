@@ -11,9 +11,13 @@
             <div class="auth-form__group">
                 <label class="auth-form__label" for="email">Email</label>
                 <input id="email" class="auth-form__input" type="email" formControlName="email"
-                    placeholder="admin@tfm.local" />
+                    placeholder="admin@tfm.local" autocomplete="email" />
 
-                @if (emailControl?.invalid && emailControl?.touched) {
+                @if (emailControl?.hasError('required') && emailControl?.touched) {
+                <p class="auth-form__field-error">El email es obligatorio.</p>
+                }
+
+                @if (emailControl?.hasError('email') && emailControl?.touched) {
                 <p class="auth-form__field-error">Introduce un email válido.</p>
                 }
             </div>
@@ -21,10 +25,10 @@
             <div class="auth-form__group">
                 <label class="auth-form__label" for="password">Contraseña</label>
                 <input id="password" class="auth-form__input" type="password" formControlName="password"
-                    placeholder="Contraseña" />
+                    placeholder="Contraseña" autocomplete="current-password" />
 
-                @if (passwordControl?.invalid && passwordControl?.touched) {
-                <p class="auth-form__field-error">La contraseña es obligatoria.</p>
+                @if (passwordControl?.hasError('required') && passwordControl?.touched) { <p
+                    class="auth-form__field-error">La contraseña es obligatoria.</p>
                 }
             </div>
 

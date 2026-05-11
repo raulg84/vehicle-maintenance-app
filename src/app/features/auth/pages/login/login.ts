@@ -39,23 +39,21 @@ export class Login {
 
     const formValue = this.loginForm.getRawValue();
 
+    const email = formValue.email?.trim() || '';
+    const password = formValue.password || '';
+
     this.authService
-      .login(formValue.email || '', formValue.password || '')
+      .login(email, password)
       .pipe(
         finalize(() => {
           this.loading = false;
         })
       )
       .subscribe({
-        next: (response) => {
-          console.log('Login OK:', response);
-
-          // De momento manda siempre a vehicles.
-          // Luego ya redirigimos admin a /rules cuando esa ruta esté cerrada.
+        next: () => {
           this.router.navigate(['/vehicles']);
         },
-        error: (err) => {
-          console.error('Login ERROR:', err);
+        error: () => {
           this.error = 'Credenciales incorrectas o error de servidor.';
         },
       });
