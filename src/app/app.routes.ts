@@ -100,4 +100,8 @@ export const routes: Routes = [
                 (m) => m.RuleForm
             ),
     },
+    {
+        path: '**',
+        redirectTo: 'vehicles',
+    }
 ];

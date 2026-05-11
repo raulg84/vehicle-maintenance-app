@@ -22,8 +22,12 @@ export class AuthService {
   constructor() {
     const storedUser = localStorage.getItem('auth_user');
 
-    if (storedUser) {
+    if (!storedUser) return;
+
+    try {
       this.currentUserSubject.next(JSON.parse(storedUser));
+    } catch {
+      this.clearSession();
     }
   }
 
@@ -83,7 +87,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return !!this.getToken() && !!this.getCurrentUser();
   }
 
   isAdmin(): boolean {
