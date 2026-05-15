@@ -48,6 +48,7 @@
                 }
               ],
               "outputHashing": "all"
+              "fileReplacements": [
             },
             "development": {
               "optimization": false,
