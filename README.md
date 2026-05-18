@@ -1,59 +1,106 @@
-# VehicleMaintenanceApp
+# Plataforma web de monitorización preventiva de vehículos multimotor — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.23.
+## Descripción
 
-## Development server
+Aplicación web desarrollada con Angular para la gestión y monitorización preventiva de vehículos multimotor.
 
-To start a local development server, run:
+La aplicación permite a los usuarios registrar varios vehículos, gestionar mantenimientos y visualizar el estado preventivo mediante un dashboard basado en reglas configurables.
 
-```bash
-ng serve
-```
+Este proyecto forma parte del Trabajo Final de Máster (TFM):
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+**Máster Universitario en Desarrollo de Sitios y Aplicaciones Web – UOC**
 
-## Code scaffolding
+## Tecnologías utilizadas
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Angular
+- TypeScript
+- Angular Router
+- Angular Guards
+- Reactive Forms
+- HTML5
+- CSS3
+- RxJS
+- Netlify
 
-```bash
-ng generate component component-name
-```
+## Funcionalidades principales
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Usuarios
 
-```bash
-ng generate --help
-```
+- Registro
+- Inicio de sesión
 
-## Building
+### Vehículos
 
-To build the project run:
+- Alta de vehículos
+- Edición
+- Eliminación
+- Gestión de varios vehículos
 
-```bash
-ng build
-```
+### Mantenimientos
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Registro de mantenimientos
+- Edición
+- Historial
+- Actualización de kilometraje
 
-## Running unit tests
+### Dashboard
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- Estado preventivo:
+    - Correcto
+    - Próximo mantenimiento
+    - Mantenimiento vencido
 
-```bash
-ng test
-```
+### Administración
 
-## Running end-to-end tests
+- Gestión de reglas de mantenimiento
 
-For end-to-end (e2e) testing, run:
+## Arquitectura
 
-```bash
-ng e2e
-```
+La aplicación sigue una arquitectura basada en componentes y servicios:
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+    src/
+    ├── components/
+    ├── pages/
+    ├── services/
+    ├── guards/
+    ├── interceptors/
+    ├── models/
+    ├── shared/
 
-## Additional Resources
+## Variables de entorno
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Desarrollo:
+
+    apiUrl: 'http://localhost:8000/api'
+
+- Producción:
+
+    apiUrl: 'http://localhost:8000/api'
+
+## Instalación
+
+Clonar repositorio: 
+
+    git clone https://github.com/raulg84/vehicle-maintenance-app.git
+
+Instalar dependencias: 
+
+    npm install
+
+Ejecutar aplicación: 
+
+    ng serve
+
+Abrir: 
+
+    http://localhost:4200
+
+## Despliegue
+Aplicación desplegada mediante:
+
+- Netlify (Frontend)
+- Railway (Backend)
+
+URL pública: 
+
+    https://vehicle-maintenance-app.netlify.app
