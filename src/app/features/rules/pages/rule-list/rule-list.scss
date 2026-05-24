@@ -1,3 +1,13 @@
+:host {
+  display: block;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .rule-list {
   display: flex;
   flex-direction: column;
@@ -17,6 +27,20 @@
   gap: 0.35rem;
 }
 
+.rule-list__title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+
+.rule-list__subtitle {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
 .rule-list__actions {
   display: flex;
   justify-content: flex-start;
@@ -24,16 +48,24 @@
 
 .rule-list__add-button {
   display: inline-flex;
+  background: #2563eb;
+  color: #fff;
   align-items: center;
   justify-content: center;
   width: fit-content;
-  white-space: nowrap;
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  background: #2563eb;
-  color: #fff;
   text-decoration: none;
   font-weight: 600;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.18s ease;
+}
+
+.rule-list__add-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 @media (min-width: 768px) {
@@ -150,6 +182,7 @@
 }
 
 /* ACCIONES */
+/* ACCIONES */
 .rule-card__actions {
   display: flex;
   gap: 0.5rem;
@@ -158,15 +191,50 @@
 }
 
 .rule-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   border: none;
   padding: 0.55rem 0.9rem;
   border-radius: 8px;
+
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 700;
-  transition: background 0.15s ease, transform 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.18s ease;
 }
 
+/* HOVER común */
+.rule-card__action:hover {
+  transform: translateY(-1px);
+}
+
+/* CLICK */
+.rule-card__action:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* TECLADO / ACCESIBILIDAD */
+.rule-card__action:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+/* DESHABILITADO */
+.rule-card__action:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
+/* EDITAR */
 .rule-card__action--primary {
   background: #2563eb;
   color: #fff;
@@ -174,6 +242,10 @@
 
 .rule-card__action--primary:hover {
   background: #1d4ed8;
+}
+
+.rule-card__action--primary:active {
+  background: #1e40af;
 }
 
 /* DESACTIVAR */
@@ -186,7 +258,10 @@
   background: #b91c1c;
 }
 
-/* ACTIVAR */
+.rule-card__action--danger:active {
+  background: #991b1b;
+}
+
 .rule-card__action--success {
   background: #166534;
   color: #fff;
@@ -194,6 +269,10 @@
 
 .rule-card__action--success:hover {
   background: #15803d;
+}
+
+.rule-card__action--success:active {
+  background: #166534;
 }
 
 /* ESTADOS */

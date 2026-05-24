@@ -1,12 +1,15 @@
-<div class="vehicle-form">
+<section class="vehicle-form" aria-labelledby="vehicle-form-title">
+
   <div class="vehicle-form__header">
-    <a class="vehicle-form__back" routerLink="/vehicles">
+
+    <a class="vehicle-form__back" routerLink="/vehicles" aria-label="Volver a la lista de vehículos">
+
       ← Volver a vehículos
     </a>
 
-    <h2 class="vehicle-form__title">
+    <h1 id="vehicle-form-title" class="vehicle-form__title">
       {{ isEditMode ? 'Editar vehículo' : 'Registrar vehículo' }}
-    </h2>
+    </h1>
 
     <p class="vehicle-form__subtitle">
       {{
@@ -17,17 +20,20 @@
     </p>
   </div>
 
-  <form class="vehicle-form__form" [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+  <form class="vehicle-form__form" [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" novalidate>
+
     <!-- Alias -->
     <div class="vehicle-form__group">
       <label class="vehicle-form__label" for="alias">
         Alias (opcional)
       </label>
 
-      <input id="alias" type="text" class="vehicle-form__input" formControlName="alias" placeholder="Ej: BMW diario" autocomplete="off"/>
+      <input id="alias" type="text" class="vehicle-form__input" formControlName="alias" placeholder="Mi coche diario"
+        autocomplete="off" aria-describedby="alias-maxlength-error"
+        [attr.aria-invalid]="aliasControl?.invalid && aliasControl?.touched" />
 
       @if (aliasControl?.hasError('maxlength') && aliasControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="alias-maxlength-error" class="vehicle-form__field-error">
         El alias no puede superar los 100 caracteres.
       </p>
       }
@@ -39,22 +45,18 @@
         Marca *
       </label>
 
-      <input id="make" type="text" class="vehicle-form__input" formControlName="make" placeholder="Ej: BMW" autocomplete="off"/>
+      <input id="make" type="text" class="vehicle-form__input" formControlName="make" placeholder="BMW"
+        autocomplete="off" required aria-describedby="make-required-error make-maxlength-error"
+        [attr.aria-invalid]="makeControl?.invalid && makeControl?.touched" />
 
       @if (makeControl?.hasError('required') && makeControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="make-required-error" class="vehicle-form__field-error">
         La marca es obligatoria.
       </p>
       }
 
-      @if (makeControl?.hasError('blank') && makeControl?.touched) {
-      <p class="vehicle-form__field-error">
-        La marca no puede estar vacía.
-      </p>
-      }
-
       @if (makeControl?.hasError('maxlength') && makeControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="make-maxlength-error" class="vehicle-form__field-error">
         La marca no puede superar los 100 caracteres.
       </p>
       }
@@ -66,22 +68,18 @@
         Modelo *
       </label>
 
-      <input id="model" type="text" class="vehicle-form__input" formControlName="model" placeholder="Ej: 320i" autocomplete="off"/>
+      <input id="model" type="text" class="vehicle-form__input" formControlName="model" placeholder="320i"
+        autocomplete="off" required aria-describedby="model-required-error model-maxlength-error"
+        [attr.aria-invalid]="modelControl?.invalid && modelControl?.touched" />
 
       @if (modelControl?.hasError('required') && modelControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="model-required-error" class="vehicle-form__field-error">
         El modelo es obligatorio.
       </p>
       }
 
-      @if (modelControl?.hasError('blank') && modelControl?.touched) {
-      <p class="vehicle-form__field-error">
-        El modelo no puede estar vacío.
-      </p>
-      }
-
       @if (modelControl?.hasError('maxlength') && modelControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="model-maxlength-error" class="vehicle-form__field-error">
         El modelo no puede superar los 100 caracteres.
       </p>
       }
@@ -93,22 +91,24 @@
         Año *
       </label>
 
-      <input id="year" type="number" class="vehicle-form__input" formControlName="year" placeholder="Ej: 2014" min="1900" max="currentYear"/>
+      <input id="year" type="number" class="vehicle-form__input" formControlName="year" placeholder="2015" min="1900"
+        [max]="currentYear" required aria-describedby="year-required-error year-min-error year-max-error"
+        [attr.aria-invalid]="yearControl?.invalid && yearControl?.touched" />
 
       @if (yearControl?.hasError('required') && yearControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="year-required-error" class="vehicle-form__field-error">
         El año es obligatorio.
       </p>
       }
 
       @if (yearControl?.hasError('min') && yearControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="year-min-error" class="vehicle-form__field-error">
         El año no puede ser inferior a 1900.
       </p>
       }
 
       @if (yearControl?.hasError('max') && yearControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="year-max-error" class="vehicle-form__field-error">
         El año no puede ser superior al actual.
       </p>
       }
@@ -120,11 +120,33 @@
         Tipo de motorización *
       </label>
 
-      <select id="powertrain_type" class="vehicle-form__input" formControlName="powertrain_type">
-        <option value="combustion">Combustión</option>
-        <option value="hybrid">Híbrido</option>
-        <option value="electric">Eléctrico</option>
+      <select id="powertrain_type" class="vehicle-form__input" formControlName="powertrain_type" required
+        aria-describedby="powertrain-required-error"
+        [attr.aria-invalid]="powertrainTypeControl?.invalid && powertrainTypeControl?.touched">
+
+        <option value="combustion">
+          Combustión
+        </option>
+
+        <option value="hybrid">
+          Híbrido
+        </option>
+
+        <option value="electric">
+          Eléctrico
+        </option>
+
       </select>
+
+      @if (powertrainTypeControl?.hasError('required')
+      && powertrainTypeControl?.touched) {
+
+      <p id="powertrain-required-error" class="vehicle-form__field-error">
+
+        Debe seleccionar un tipo de motorización.
+      </p>
+      }
+
     </div>
 
     <!-- Kilometraje -->
@@ -134,16 +156,18 @@
       </label>
 
       <input id="current_mileage" type="number" class="vehicle-form__input" formControlName="current_mileage"
-        placeholder="Ej: 135000" min="0"/>
+        placeholder="150000" min="0" required
+        aria-describedby="current-mileage-required-error current-mileage-min-error"
+        [attr.aria-invalid]="currentMileageControl?.invalid && currentMileageControl?.touched" />
 
       @if (currentMileageControl?.hasError('required') && currentMileageControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="current-mileage-required-error" class="vehicle-form__field-error">
         El kilometraje actual es obligatorio.
       </p>
       }
 
       @if (currentMileageControl?.hasError('min') && currentMileageControl?.touched) {
-      <p class="vehicle-form__field-error">
+      <p id="current-mileage-min-error" class="vehicle-form__field-error">
         El kilometraje no puede ser negativo.
       </p>
       }
@@ -151,7 +175,7 @@
 
     <!-- Error global -->
     @if (error) {
-    <div class="vehicle-form__error">
+    <div class="vehicle-form__error" role="alert" aria-live="assertive">
       {{ error }}
     </div>
     }
@@ -162,10 +186,9 @@
         Cancelar
       </a>
 
-      <button type="submit" class="vehicle-form__submit" [disabled]="loading">
-        {{
+      <button type="submit" class="vehicle-form__submit" [disabled]="loading" [attr.aria-busy]="loading"> {{
         loading
-        ? 'Guardando...'
+        ? 'Guardando vehículo...'
         : isEditMode
         ? 'Actualizar vehículo'
         : 'Guardar vehículo'
@@ -173,4 +196,4 @@
       </button>
     </div>
   </form>
-</div>
+</section>

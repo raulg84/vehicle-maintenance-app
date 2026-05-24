@@ -65,18 +65,24 @@
 
 .vehicle-dashboard__button {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
   background: #2563eb;
   color: #fff;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.18s ease;
 }
 
 .vehicle-dashboard__button:hover {
   background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .vehicle-dashboard__link {
@@ -97,6 +103,14 @@
 .vehicle-dashboard__field-error {
   margin-top: 0.75rem;
   color: #dc2626;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.vehicle-dashboard__field-success {
+  margin-top: 0.75rem;
+  color: #166534;
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.4;
@@ -469,10 +483,31 @@
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.18s ease;
 }
 
 .vehicle-dashboard__mileage-button:hover {
   background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.vehicle-dashboard__mileage-button:active {
+  transform: translateY(1px) scale(0.98);
+  background: #1e40af;
+}
+
+.vehicle-dashboard__mileage-button:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+.vehicle-dashboard__mileage-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
 }
 
 @media (max-width: 480px) {

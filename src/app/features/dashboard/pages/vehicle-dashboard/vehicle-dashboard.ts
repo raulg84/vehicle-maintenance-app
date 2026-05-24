@@ -30,6 +30,7 @@ export class VehicleDashboard implements OnInit {
   loading = true;
   error = '';
   mileageError = '';
+  mileageSuccess = '';
 
   maintenanceStatus: VehicleMaintenanceStatus | null = null;
   ruleStatuses: MaintenanceRuleStatus[] = [];
@@ -37,6 +38,7 @@ export class VehicleDashboard implements OnInit {
   vehicleStatus: VehicleRuleStatus = 'ok';
   vehicleStatusLabel = 'OK';
   vehicleStatusMessage = '';
+  private mileageSuccessTimeout?: ReturnType<typeof setTimeout>;
 
   nextActionTitle = '';
   nextActionMessage = '';
@@ -140,10 +142,23 @@ export class VehicleDashboard implements OnInit {
       })
       .subscribe({
         next: () => {
+          this.mileageSuccess = 'Kilometraje actualizado correctamente.';
+          this.mileageError = '';
+
+          if (this.mileageSuccessTimeout) {
+            clearTimeout(this.mileageSuccessTimeout);
+          }
+
+          this.mileageSuccessTimeout = setTimeout(() => {
+            this.mileageSuccess = '';
+          }, 3000);
+
           this.loadVehicle();
           this.loadMaintenanceStatus();
         },
         error: (err) => {
+          this.mileageSuccess = '';
+
           if (err.status === 422 && err.error?.errors?.current_mileage?.length) {
             this.mileageError = 'El kilometraje no puede superar 2.000.000 km.';
           } else {

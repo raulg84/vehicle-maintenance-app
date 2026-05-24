@@ -163,4 +163,8 @@ export class VehicleForm implements OnInit {
   get currentMileageControl() {
     return this.vehicleForm.get('current_mileage');
   }
+
+  get powertrainTypeControl() {
+    return this.vehicleForm.get('powertrain_type');
+  }
 }

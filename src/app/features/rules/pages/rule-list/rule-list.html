@@ -1,9 +1,12 @@
-<div class="rule-list">
+<section class="rule-list" aria-labelledby="rule-list-title">
     <div class="rule-list__header">
         <div class="rule-list__header-text">
-            <h2 class="rule-list__title">Reglas de mantenimiento</h2>
+            <h1 id="rule-list-title" class="rule-list__title">
+                Reglas de mantenimiento
+            </h1>
+
             <p class="rule-list__subtitle">
-                Configura los intervalos de mantenimiento preventivo
+                Configura los intervalos de mantenimiento preventivo.
             </p>
         </div>
 
@@ -15,11 +18,13 @@
     </div>
 
     @if (loading) {
-    <p class="rule-list__state">Cargando reglas...</p>
+    <p class="rule-list__state" aria-live="polite">
+        Cargando reglas...
+    </p>
     }
 
     @if (error) {
-    <p class="rule-list__state rule-list__state--error">
+    <p class="rule-list__state rule-list__state--error" role="alert" aria-live="assertive">
         {{ error }}
     </p>
     }
@@ -28,20 +33,18 @@
     <div class="rule-list__grid">
         @for (rule of rules; track rule.id) {
         <article class="rule-card">
-
-            <!-- CABECERA -->
             <div class="rule-card__header">
-                <h3 class="rule-card__title">
+                <h2 class="rule-card__title">
                     {{ rule.name }}
-                </h3>
+                </h2>
 
                 <span class="rule-card__status" [class.rule-card__status--active]="rule.is_active"
-                    [class.rule-card__status--inactive]="!rule.is_active">
+                    [class.rule-card__status--inactive]="!rule.is_active"
+                    [attr.aria-label]="'Estado de la regla ' + rule.name + ': ' + (rule.is_active ? 'Activa' : 'Inactiva')">
                     {{ rule.is_active ? 'Activa' : 'Inactiva' }}
                 </span>
             </div>
 
-            <!-- SUBINFO -->
             <div class="rule-card__meta">
                 <p class="rule-card__key">
                     {{ rule.maintenance_key }}
@@ -52,8 +55,7 @@
                 </span>
             </div>
 
-            <!-- INTERVALOS -->
-            <div class="rule-card__info">
+            <div class="rule-card__info" aria-label="Intervalos de mantenimiento">
                 <span>
                     <strong>KM:</strong>
                     {{ rule.interval_km ?? '-' }}
@@ -65,8 +67,7 @@
                 </span>
             </div>
 
-            <!-- WARNINGS -->
-            <div class="rule-card__info rule-card__info--secondary">
+            <div class="rule-card__info rule-card__info--secondary" aria-label="Umbrales de aviso">
                 <span>
                     Aviso KM: {{ rule.warning_km ?? '-' }}
                 </span>
@@ -76,25 +77,25 @@
                 </span>
             </div>
 
-            <!-- FOOTER -->
             <div class="rule-card__actions">
-                <a class="rule-card__action rule-card__action--primary" [routerLink]="['/rules', rule.id, 'edit']">
+                <a class="rule-card__action rule-card__action--primary" [routerLink]="['/rules', rule.id, 'edit']"
+                    [attr.aria-label]="'Editar regla ' + rule.name">
                     Editar
                 </a>
 
                 <button type="button" class="rule-card__action" [class.rule-card__action--danger]="rule.is_active"
-                    [class.rule-card__action--success]="!rule.is_active" (click)="toggleActive(rule)">
+                    [class.rule-card__action--success]="!rule.is_active" (click)="toggleActive(rule)"
+                    [attr.aria-label]="(rule.is_active ? 'Desactivar regla ' : 'Activar regla ') + rule.name">
                     {{ rule.is_active ? 'Desactivar' : 'Activar' }}
                 </button>
             </div>
-
         </article>
         }
     </div>
     }
 
     @if (!loading && rules.length === 0) {
-    <div class="rule-list__empty">
+    <div class="rule-list__empty" aria-live="polite">
         <p class="rule-list__state">
             No hay reglas configuradas.
         </p>
@@ -104,4 +105,4 @@
         </a>
     </div>
     }
-</div>
+</section>

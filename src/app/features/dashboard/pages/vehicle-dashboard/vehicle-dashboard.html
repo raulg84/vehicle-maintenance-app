@@ -1,14 +1,14 @@
-<div class="vehicle-dashboard">
+<section class="vehicle-dashboard" aria-labelledby="vehicle-dashboard-title">
     <div class="vehicle-dashboard__header">
-        <a class="vehicle-dashboard__back" routerLink="/vehicles">
+        <a class="vehicle-dashboard__back" routerLink="/vehicles" aria-label="Volver a la lista de vehículos">
             ← Volver a vehículos
         </a>
 
         <div class="vehicle-dashboard__header-main">
             <div class="vehicle-dashboard__header-text">
-                <h2 class="vehicle-dashboard__title">
+                <h1 id="vehicle-dashboard-title" class="vehicle-dashboard__title">
                     {{ getVehicleName() }}
-                </h2>
+                </h1>
 
                 @if (vehicle) {
                 <p class="vehicle-dashboard__subtitle">
@@ -31,12 +31,12 @@
     </div>
 
     @if (loading) {
-    <p class="vehicle-dashboard__state">Cargando...</p>
+    <p class="vehicle-dashboard__state" aria-live="polite">
+        Cargando...</p>
     }
 
     @if (error) {
-    <p class="vehicle-dashboard__error">
-        {{ error }}
+    <p class="vehicle-dashboard__error" role="alert" aria-live="assertive"> {{ error }}
     </p>
     }
 
@@ -45,8 +45,8 @@
         <div class="vehicle-dashboard__status-header">
             <h3 class="vehicle-dashboard__status-title">Estado del vehículo</h3>
 
-            <span class="vehicle-dashboard__status-badge" [ngClass]="getVehicleStatusBadgeClass(vehicleStatus)">
-                {{ vehicleStatusLabel }}
+            <span class="vehicle-dashboard__status-badge" [ngClass]="getVehicleStatusBadgeClass(vehicleStatus)"
+                [attr.aria-label]="'Estado del vehículo: ' + vehicleStatusLabel"> {{ vehicleStatusLabel }}
             </span>
         </div>
 
@@ -70,16 +70,28 @@
         </div>
 
         <div class="vehicle-dashboard__mileage-update">
-            <input type="number" class="vehicle-dashboard__mileage-input" [(ngModel)]="newMileage"
-                placeholder="Nuevo kilometraje" [max]="maxMileage"/>
+            <label class="vehicle-form__label" for="newMileage">
+
+                Nuevo kilometraje
+            </label>
+
+            <input id="newMileage" type="number" class="vehicle-dashboard__mileage-input" [(ngModel)]="newMileage"
+                placeholder="Nuevo kilometraje" [max]="maxMileage" required
+                [attr.aria-invalid]="mileageError ? 'true' : 'false'" aria-describedby="mileage-error" />
 
             <button type="button" class="vehicle-dashboard__mileage-button" (click)="updateMileage()">
-                Actualizar kilometraje
+                Actualizar
             </button>
         </div>
         @if (mileageError) {
-        <p class="vehicle-dashboard__field-error">
-            {{ mileageError }}
+        <p id="mileage-error" class="vehicle-dashboard__field-error" role="alert" aria-live="assertive">
+            {{ mileageError}}
+        </p>
+        }
+
+        @if (mileageSuccess) {
+        <p class="vehicle-dashboard__field-success" role="status" aria-live="polite">
+            {{ mileageSuccess }}
         </p>
         }
 
@@ -117,8 +129,9 @@
                     <div class="dashboard-rule-card__header">
                         <h4 class="dashboard-rule-card__title">{{ rule.name }}</h4>
 
-                        <span class="dashboard-rule-card__badge" [ngClass]="getRuleBadgeClass(rule.status)">
-                            {{ rule.status_label }}
+                        <span class="dashboard-rule-card__badge" [ngClass]="getRuleBadgeClass(rule.status)"
+                            [attr.aria-label]="'Estado del mantenimiento ' + rule.name + ': ' + rule.status_label"> {{
+                            rule.status_label }}
                         </span>
                     </div>
 
@@ -159,7 +172,10 @@
                         </div>
 
                         <div class="dashboard-rule-card__progress">
-                            <div class="dashboard-rule-card__progress-bar" [style.width.%]="rule.progress * 100"></div>
+                            <div class="dashboard-rule-card__progress-bar" [style.width.%]="rule.progress * 100"
+                                role="progressbar" [attr.aria-valuenow]="rule.progress * 100" aria-valuemin="0"
+                                aria-valuemax="100" [attr.aria-label]="'Progreso de mantenimiento de ' + rule.name">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -173,4 +189,4 @@
         }
     </div>
     }
-</div>
+</section>

@@ -41,7 +41,8 @@ export class VehicleList implements OnInit {
   onDelete(id: number): void {
     const confirmDelete = confirm(
       '¿Seguro que deseas eliminar este vehículo? Esta acción no se puede deshacer.'
-    ); if (!confirmDelete) return;
+    );
+    if (!confirmDelete) return;
 
     this.error = '';
 

@@ -17,13 +17,14 @@
 .maintenance-list__header {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .maintenance-list__header-main {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .maintenance-list__header-text {
@@ -64,13 +65,15 @@
 
 .maintenance-list__actions {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.maintenance-list__link,
 .maintenance-list__add-button {
   display: inline-flex;
+  background: #2563eb;
+  color: #fff;
   align-items: center;
   justify-content: center;
   width: fit-content;
@@ -84,23 +87,19 @@
     transform 0.18s ease;
 }
 
+.maintenance-list__add-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
 .maintenance-list__link {
   color: #2563eb;
-  background: transparent;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .maintenance-list__link:hover {
   text-decoration: underline;
-}
-
-.maintenance-list__add-button {
-  background: #2563eb;
-  color: #fff;
-}
-
-.maintenance-list__add-button:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
 }
 
 .maintenance-list__state {
@@ -226,16 +225,9 @@
 }
 
 @media (min-width: 768px) {
-  .maintenance-list__header {
+  .maintenance-list__header-main {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-  }
-
-  .maintenance-list__actions {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
   }
 }

@@ -1,14 +1,14 @@
-<div class="maintenance-list">
+<section class="maintenance-list" aria-labelledby="maintenance-list-title">
     <div class="maintenance-list__header">
-        <div class="maintenance-list__header-main">
-            <a class="maintenance-list__back" routerLink="/vehicles">
-                ← Volver a vehículos
-            </a>
+        <a class="maintenance-list__back" routerLink="/vehicles" aria-label="Volver a la lista de vehículos">
+            ← Volver a vehículos
+        </a>
 
+        <div class="maintenance-list__header-main">
             <div class="maintenance-list__header-text">
-                <h2 class="maintenance-list__title">
+                <h1 id="maintenance-list-title" class="maintenance-list__title">
                     Mantenimientos — {{ getVehicleName() }}
-                </h2>
+                </h1>
 
                 @if (vehicle) {
                 <p class="maintenance-list__subtitle">
@@ -29,26 +29,28 @@
                 </p>
                 }
             </div>
-        </div>
 
-        <div class="maintenance-list__actions">
-            <a class="maintenance-list__link" [routerLink]="['/vehicles', vehicleId, 'dashboard']">
-                Ver dashboard
-            </a>
+            <div class="maintenance-list__actions">
+                <a class="maintenance-list__add-button" [routerLink]="['/maintenances/new']"
+                    [queryParams]="{ vehicleId: vehicleId }">
+                    Registrar mantenimiento
+                </a>
 
-            <a class="maintenance-list__add-button" [routerLink]="['/maintenances/new']"
-                [queryParams]="{ vehicleId: vehicleId }">
-                Registrar mantenimiento
-            </a>
+                <a class="maintenance-list__link" [routerLink]="['/vehicles', vehicleId, 'dashboard']">
+                    Ver dashboard
+                </a>
+            </div>
         </div>
     </div>
 
     @if (loading) {
-    <p class="maintenance-list__state">Cargando mantenimientos...</p>
+    <p class="maintenance-list__state" aria-live="polite">
+        Cargando mantenimientos...
+    </p>
     }
 
     @if (error) {
-    <p class="maintenance-list__error">
+    <p class="maintenance-list__error" role="alert" aria-live="assertive">
         {{ error }}
     </p>
     }
@@ -58,9 +60,9 @@
         @for (maintenance of maintenances; track maintenance.id) {
         <article class="maintenance-card">
             <div class="maintenance-card__body">
-                <h3 class="maintenance-card__title">
+                <h2 class="maintenance-card__title">
                     {{ maintenance.maintenance_type || 'Mantenimiento sin tipo' }}
-                </h3>
+                </h2>
 
                 <div class="maintenance-card__meta">
                     <p class="maintenance-card__text">
@@ -88,12 +90,14 @@
             </div>
 
             <div class="maintenance-card__actions">
-                <a class="maintenance-card__action" [routerLink]="['/maintenances', maintenance.id, 'edit']">
+                <a class="maintenance-card__action" [routerLink]="['/maintenances', maintenance.id, 'edit']"
+                    [attr.aria-label]="'Editar mantenimiento ' + (maintenance.maintenance_type || 'sin tipo')">
                     Editar
                 </a>
 
                 <button type="button" class="maintenance-card__action maintenance-card__action--danger"
-                    (click)="onDelete(maintenance.id)">
+                    (click)="onDelete(maintenance.id)"
+                    [attr.aria-label]="'Eliminar mantenimiento ' + (maintenance.maintenance_type || 'sin tipo')">
                     Eliminar
                 </button>
             </div>
@@ -103,7 +107,7 @@
     }
 
     @if (!loading && maintenances.length === 0) {
-    <div class="maintenance-list__empty">
+    <div class="maintenance-list__empty" aria-live="polite">
         <p class="maintenance-list__state">
             No hay mantenimientos registrados para este vehículo.
         </p>
@@ -114,4 +118,4 @@
         </a>
     </div>
     }
-</div>
+</section>

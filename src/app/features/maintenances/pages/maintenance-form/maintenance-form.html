@@ -1,19 +1,18 @@
-<div class="maintenance-form">
+<section class="maintenance-form" aria-labelledby="maintenance-form-title">
     <div class="maintenance-form__header">
         <div class="maintenance-form__header-main">
-            <a class="maintenance-form__back" [routerLink]="['/vehicles', vehicleId, 'maintenances']">
-                ← Volver a mantenimientos
+            <a class="maintenance-form__back" [routerLink]="['/vehicles', vehicleId, 'maintenances']"
+                aria-label="Volver a la lista de mantenimientos"> ← Volver a mantenimientos
             </a>
 
             <div class="maintenance-form__header-text">
-                <h2 class="maintenance-form__title">
-                    {{
+                <h1 id="maintenance-form-title" class="maintenance-form__title"> {{
                     isEditMode
                     ? 'Editar mantenimiento'
                     : 'Registrar mantenimiento'
                     }}
                     — {{ getVehicleName() }}
-                </h2>
+                </h1>
 
                 @if (vehicle) {
                 <p class="maintenance-form__subtitle">
@@ -32,23 +31,30 @@
         </div>
     </div>
 
-    <form class="maintenance-form__form" [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()">
+    <form class="maintenance-form__form" [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="maintenance-form__group">
             <label class="maintenance-form__label" for="maintenance_rule_id">
-                Regla de mantenimiento
+                Regla de mantenimiento *
             </label>
 
             <select id="maintenance_rule_id" class="maintenance-form__input" formControlName="maintenance_rule_id"
+                required aria-describedby="maintenance-rule-error"
+                [attr.aria-invalid]="maintenanceRuleControl?.invalid && maintenanceRuleControl?.touched"
                 (change)="onRuleChange()">
-                <option value="">Selecciona una regla</option>
+
+                <option [ngValue]="null" disabled selected>
+                    Selecciona una regla de mantenimiento
+                </option>
 
                 @for (rule of rules; track rule.id) {
-                <option [value]="rule.id">{{ rule.name }}</option>
+                <option [ngValue]="rule.id">
+                    {{ rule.name }}
+                </option>
                 }
             </select>
 
             @if (maintenanceRuleControl?.invalid && maintenanceRuleControl?.touched) {
-            <p class="maintenance-form__field-error">
+            <p id="maintenance-rule-error" class="maintenance-form__field-error">
                 Debes seleccionar una regla de mantenimiento.
             </p>
             }
@@ -56,41 +62,39 @@
 
         <div class="maintenance-form__group">
             <label class="maintenance-form__label" for="maintenance_type">
-                Tipo de mantenimiento
+                Tipo de mantenimiento *
             </label>
             <input id="maintenance_type" class="maintenance-form__input" type="text" formControlName="maintenance_type"
-                placeholder="Ej: Cambio de aceite" autocomplete="off" />
+                placeholder="Cambio de aceite" autocomplete="off" required aria-describedby="
+      maintenance-type-required-error
+      maintenance-type-maxlength-error"
+                [attr.aria-invalid]="maintenanceTypeControl?.invalid && maintenanceTypeControl?.touched" />
             @if (maintenanceTypeControl?.hasError('required') && maintenanceTypeControl?.touched) {
-            <p class="maintenance-form__field-error">
+            <p id="maintenance-type-required-error" class="maintenance-form__field-error">
                 El tipo de mantenimiento es obligatorio.
             </p>
             }
 
-            @if (maintenanceTypeControl?.hasError('blank') && maintenanceTypeControl?.touched) {
-            <p class="maintenance-form__field-error">
-                El tipo de mantenimiento no puede estar vacío.
-            </p>
-            }
-
             @if (maintenanceTypeControl?.hasError('maxlength') && maintenanceTypeControl?.touched) {
-            <p class="maintenance-form__field-error">
+            <p id="maintenance-type-maxlength-error" class="maintenance-form__field-error">
                 El tipo de mantenimiento no puede superar los 100 caracteres.
             </p>
             }
         </div>
 
         <div class="maintenance-form__group">
-            <label class="maintenance-form__label" for="performed_at">Fecha</label>
+            <label class="maintenance-form__label" for="performed_at">Fecha *</label>
             <input id="performed_at" class="maintenance-form__input" type="date" formControlName="performed_at"
-                [max]="today" />
+                [max]="today" required aria-describedby="performed-required-error performed-future-error"
+                [attr.aria-invalid]="performedAtControl?.invalid && performedAtControl?.touched" />
             @if (performedAtControl?.hasError('required') && performedAtControl?.touched) {
-            <p class="maintenance-form__field-error">
+            <p id="performed-required-error" class="maintenance-form__field-error">
                 La fecha es obligatoria.
             </p>
             }
 
             @if (performedAtControl?.hasError('futureDate') && performedAtControl?.touched) {
-            <p class="maintenance-form__field-error">
+            <p id="performed-future-error" class="maintenance-form__field-error">
                 La fecha del mantenimiento no puede ser futura.
             </p>
             }
@@ -98,10 +102,12 @@
 
         <div class="maintenance-form__group">
             <label class="maintenance-form__label" for="mileage_at_service">
-                Kilometraje
+                Kilometraje *
             </label>
             <input id="mileage_at_service" class="maintenance-form__input" type="number"
-                formControlName="mileage_at_service" placeholder="Ej: 138000" min="0" />
+                formControlName="mileage_at_service" placeholder="138000" min="0" required aria-describedby="
+      mileage-required-error
+      mileage-min-error" [attr.aria-invalid]="mileageAtServiceControl?.invalid && mileageAtServiceControl?.touched" />
 
             @if (shouldUpdateVehicleMileage()) {
             <p class="maintenance-form__helper">
@@ -109,13 +115,13 @@
             </p>
             }
             @if (mileageAtServiceControl?.hasError('required') && mileageAtServiceControl?.touched) {
-            <p class="maintenance-form__field-error">
+            <p id="mileage-required-error" class="maintenance-form__field-error">
                 El kilometraje del mantenimiento es obligatorio.
             </p>
             }
 
             @if (mileageAtServiceControl?.hasError('min') && mileageAtServiceControl?.touched) {
-            <p class="maintenance-form__field-error">
+            <p id="mileage-min-error" class="maintenance-form__field-error">
                 El kilometraje no puede ser negativo.
             </p>
             }
@@ -124,10 +130,11 @@
         <div class="maintenance-form__group">
             <label class="maintenance-form__label" for="cost">Coste</label>
             <input id="cost" class="maintenance-form__input" type="number" step="0.01" formControlName="cost"
-                placeholder="Ej: 120.50" min="0" />
+                placeholder="180" min="0" aria-describedby="cost-min-error"
+                [attr.aria-invalid]="costControl?.invalid && costControl?.touched" />
 
             @if (costControl?.hasError('min') && costControl?.touched) {
-            <p class="maintenance-form__field-error">
+            <p id="cost-min-error" class="maintenance-form__field-error">
                 El coste no puede ser negativo.
             </p>
             }
@@ -136,27 +143,27 @@
         <div class="maintenance-form__group">
             <label class="maintenance-form__label" for="notes">Notas</label>
             <textarea id="notes" class="maintenance-form__textarea" formControlName="notes" rows="4"
-                placeholder="Ej: Aceite y filtro"></textarea>
+                placeholder="Aceite y filtro" aria-describedby="notes-maxlength-error"
+                [attr.aria-invalid]="notesControl?.invalid && notesControl?.touched"></textarea>
             @if (notesControl?.hasError('maxlength') && notesControl?.touched) {
-            <p class="maintenance-form__field-error">
+            <p id="notes-maxlength-error" class="maintenance-form__field-error">
                 Las notas no pueden superar los 1000 caracteres.
             </p>
             }
         </div>
 
         @if (error) {
-        <p class="maintenance-form__error">{{ error }}</p>
+        <p id="form-error" class="maintenance-form__error" role="alert" aria-live="assertive"> {{ error }}</p>
         }
 
         <div class="maintenance-form__actions">
-            <a class="maintenance-form__cancel" [routerLink]="['/vehicles', vehicleId, 'maintenances']">
-                Cancelar
+            <a class="maintenance-form__cancel" [routerLink]="['/vehicles', vehicleId, 'maintenances']"
+                aria-label="Cancelar y volver a la lista de mantenimientos"> Cancelar
             </a>
 
-            <button class="maintenance-form__submit" type="submit" [disabled]="loading">
-                {{
+            <button class="maintenance-form__submit" type="submit" [disabled]="loading" [attr.aria-busy]="loading"> {{
                 loading
-                ? 'Guardando...'
+                ? 'Guardando mantenimiento...'
                 : isEditMode
                 ? 'Actualizar mantenimiento'
                 : 'Guardar mantenimiento'
@@ -164,4 +171,4 @@
             </button>
         </div>
     </form>
-</div>
+</section>

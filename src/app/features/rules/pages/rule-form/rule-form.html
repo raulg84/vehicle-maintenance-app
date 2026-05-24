@@ -1,53 +1,58 @@
-<div class="rule-form">
+<section class="rule-form" aria-labelledby="rule-form-title">
   <div class="rule-form__header">
-    <a class="rule-form__back" routerLink="/rules">
+    <a class="rule-form__back" routerLink="/rules" aria-label="Volver a la lista de reglas">
       ← Volver a reglas
     </a>
 
-    <h2 class="rule-form__title">
+    <h1 id="rule-form-title" class="rule-form__title">
       {{ isEditMode ? 'Editar regla' : 'Nueva regla' }}
-    </h2>
+    </h1>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="rule-form__form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="rule-form__form" novalidate>
 
-    <!-- Nombre -->
     <div class="rule-form__group">
-      <label>Nombre</label>
+      <label class="rule-form__label" for="name">Nombre *</label>
 
-      <input formControlName="name" placeholder="Ej: Cambio de aceite" />
+      <input id="name" class="rule-form__input" type="text" formControlName="name" placeholder="Cambio de aceite"
+        autocomplete="off" required aria-describedby="name-required-error"
+        [attr.aria-invalid]="nameControl?.invalid && nameControl?.touched" />
 
       @if (nameControl?.hasError('required') && nameControl?.touched) {
-      <p class="rule-form__field-error">
+      <p id="name-required-error" class="rule-form__field-error">
         El nombre de la regla es obligatorio.
       </p>
       }
     </div>
 
-    <!-- Key -->
     <div class="rule-form__group">
-      <label>Clave interna</label>
+      <label class="rule-form__label" for="maintenance_key">Clave interna *</label>
 
-      <input formControlName="maintenance_key" placeholder="Ej: oil_change" />
+      <input id="maintenance_key" class="rule-form__input" type="text" formControlName="maintenance_key"
+        placeholder="oil_change" autocomplete="off" required aria-describedby="maintenance-key-required-error"
+        [attr.aria-invalid]="keyControl?.invalid && keyControl?.touched" />
 
       @if (keyControl?.hasError('required') && keyControl?.touched) {
-      <p class="rule-form__field-error">
+      <p id="maintenance-key-required-error" class="rule-form__field-error">
         La clave interna es obligatoria.
       </p>
       }
     </div>
 
-    <!-- Descripción -->
     <div class="rule-form__group">
-      <label>Descripción</label>
-      <textarea formControlName="description"
-        placeholder="Describe la finalidad de esta regla de mantenimiento"></textarea>
+      <label class="rule-form__label" for="description">Descripción</label>
+
+      <textarea id="description" class="rule-form__textarea" formControlName="description" rows="4"
+        placeholder="Describe la finalidad de esta regla de mantenimiento">
+      </textarea>
     </div>
 
-    <!-- Tipo motor -->
     <div class="rule-form__group">
-      <label>Tipo de motorización</label>
-      <select formControlName="applies_to_powertrain">
+      <label class="rule-form__label" for="applies_to_powertrain">
+        Tipo de motorización *
+      </label>
+
+      <select id="applies_to_powertrain" class="rule-form__input" formControlName="applies_to_powertrain" required>
         <option value="all">Todos</option>
         <option value="combustion">Combustión</option>
         <option value="hybrid">Híbrido</option>
@@ -55,91 +60,110 @@
       </select>
     </div>
 
-    <!-- Intervalos -->
     <div class="rule-form__group">
-      <label>Intervalo KM</label>
+      <label class="rule-form__label" for="interval_km">Intervalo KM</label>
 
-      <input type="number" formControlName="interval_km" placeholder="Ej: 15000" />
+      <input id="interval_km" class="rule-form__input" type="number" formControlName="interval_km" placeholder="15000"
+        min="0" aria-describedby="interval-km-min-error"
+        [attr.aria-invalid]="intervalKmControl?.invalid && intervalKmControl?.touched" />
 
       @if (intervalKmControl?.hasError('min') && intervalKmControl?.touched) {
-      <p class="rule-form__field-error">
+      <p id="interval-km-min-error" class="rule-form__field-error">
         El intervalo en kilómetros debe ser mayor que cero.
       </p>
       }
-
     </div>
 
     <div class="rule-form__group">
-      <label>Intervalo días</label>
+      <label class="rule-form__label" for="interval_days">Intervalo días</label>
 
-      <input type="number" formControlName="interval_days" placeholder="Ej: 365" />
+      <input id="interval_days" class="rule-form__input" type="number" formControlName="interval_days" placeholder="365"
+        min="0" aria-describedby="interval-days-min-error"
+        [attr.aria-invalid]="intervalDaysControl?.invalid && intervalDaysControl?.touched" />
 
       @if (intervalDaysControl?.hasError('min') && intervalDaysControl?.touched) {
-      <p class="rule-form__field-error">
+      <p id="interval-days-min-error" class="rule-form__field-error">
         El intervalo en días debe ser mayor que cero.
       </p>
       }
     </div>
 
-    <!-- Warnings -->
     <div class="rule-form__group">
-      <label>Warning KM</label>
-      <input type="number" formControlName="warning_km" placeholder="Ej: 2000" />
+      <label class="rule-form__label" for="warning_km">Aviso KM</label>
+
+      <input id="warning_km" class="rule-form__input" type="number" formControlName="warning_km" placeholder="2000"
+        min="0" aria-describedby="warning-km-min-error"
+        [attr.aria-invalid]="warningKmControl?.invalid && warningKmControl?.touched" />
+
       @if (warningKmControl?.hasError('min') && warningKmControl?.touched) {
-      <p class="rule-form__field-error">
-        El warning en kilómetros no puede ser negativo.
+      <p id="warning-km-min-error" class="rule-form__field-error">
+        El aviso en kilómetros no puede ser negativo.
       </p>
       }
     </div>
 
     <div class="rule-form__group">
-      <label>Warning días</label>
-      <input type="number" formControlName="warning_days" placeholder="Ej: 30" />
+      <label class="rule-form__label" for="warning_days">Aviso días</label>
+
+      <input id="warning_days" class="rule-form__input" type="number" formControlName="warning_days" placeholder="30"
+        min="0" aria-describedby="warning-days-min-error"
+        [attr.aria-invalid]="warningDaysControl?.invalid && warningDaysControl?.touched" />
+
       @if (warningDaysControl?.hasError('min') && warningDaysControl?.touched) {
-      <p class="rule-form__field-error">
-        El warning en días no puede ser negativo.
+      <p id="warning-days-min-error" class="rule-form__field-error">
+        El aviso en días no puede ser negativo.
       </p>
       }
     </div>
 
-    <!-- Orden -->
     <div class="rule-form__group">
-      <label>Orden</label>
+      <label class="rule-form__label" for="sort_order">Orden *</label>
 
-      <input type="number" formControlName="sort_order" placeholder="Ej: 1" />
+      <input id="sort_order" class="rule-form__input" type="number" formControlName="sort_order" placeholder="1" min="0"
+        required aria-describedby="sort-order-required-error sort-order-min-error"
+        [attr.aria-invalid]="orderControl?.invalid && orderControl?.touched" />
 
       @if (orderControl?.hasError('required') && orderControl?.touched) {
-      <p class="rule-form__field-error">
+      <p id="sort-order-required-error" class="rule-form__field-error">
         El orden es obligatorio.
       </p>
       }
 
       @if (orderControl?.hasError('min') && orderControl?.touched) {
-      <p class="rule-form__field-error">
+      <p id="sort-order-min-error" class="rule-form__field-error">
         El orden no puede ser negativo.
       </p>
       }
     </div>
 
-    <!-- Activa -->
     <div class="rule-form__group">
-      <label>
+      <label class="rule-form__checkbox">
         <input type="checkbox" formControlName="is_active" />
         Activa
       </label>
     </div>
 
     @if (error) {
-    <p class="rule-form__error">{{ error }}</p>
+    <p class="rule-form__error" role="alert" aria-live="assertive">
+      {{ error }}
+    </p>
     }
 
     <div class="rule-form__actions">
-      <a routerLink="/rules">Cancelar</a>
+      <a class="rule-form__cancel" routerLink="/rules" aria-label="Cancelar y volver a la lista de reglas">
+        Cancelar
+      </a>
 
-      <button type="submit" [disabled]="loading">
-        {{ loading ? 'Guardando...' : 'Guardar' }}
+      <button class="rule-form__submit" type="submit" [disabled]="loading" [attr.aria-busy]="loading">
+        {{
+        loading
+        ? 'Guardando regla...'
+        : isEditMode
+        ? 'Actualizar regla'
+        : 'Guardar regla'
+        }}
       </button>
     </div>
 
   </form>
-</div>
+</section>

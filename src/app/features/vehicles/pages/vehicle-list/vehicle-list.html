@@ -1,9 +1,12 @@
-<div class="vehicle-list">
+<section class="vehicle-list" aria-labelledby="vehicle-list-title">
   <div class="vehicle-list__header">
     <div class="vehicle-list__header-text">
-      <h2 class="vehicle-list__title">Mis vehículos</h2>
+      <h1 id="vehicle-list-title" class="vehicle-list__title">
+        Mis vehículos
+      </h1>
+
       <p class="vehicle-list__subtitle">
-        Gestiona tus vehículos y accede a su estado de mantenimiento
+        Gestiona tus vehículos y accede a su estado de mantenimiento.
       </p>
     </div>
 
@@ -15,72 +18,67 @@
   </div>
 
   @if (loading) {
-    <p class="vehicle-list__state">Cargando vehículos...</p>
+  <p class="vehicle-list__state" aria-live="polite">
+    Cargando vehículos...
+  </p>
   }
 
   @if (error) {
-    <p class="vehicle-list__state vehicle-list__state--error">
-      {{ error }}
-    </p>
+  <p class="vehicle-list__state vehicle-list__state--error" role="alert" aria-live="assertive">
+    {{ error }}
+  </p>
   }
 
   @if (!loading && vehicles.length > 0) {
-    <div class="vehicle-list__grid">
-      @for (vehicle of vehicles; track vehicle.id) {
-        <article class="vehicle-card">
-          <div class="vehicle-card__body">
-            <h3 class="vehicle-card__title">
-              {{ vehicle.alias || (vehicle.make + ' ' + vehicle.model) }}
-            </h3>
+  <div class="vehicle-list__grid">
+    @for (vehicle of vehicles; track vehicle.id) {
+    <article class="vehicle-card">
+      <div class="vehicle-card__body">
+        <h2 class="vehicle-card__title">
+          {{ vehicle.alias || (vehicle.make + ' ' + vehicle.model) }}
+        </h2>
 
-            <p class="vehicle-card__subtitle">
-              {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
-            </p>
+        <p class="vehicle-card__subtitle">
+          {{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.year }}
+        </p>
 
-            <p class="vehicle-card__text">
-              <span class="vehicle-card__label">Kilometraje:</span>
-              {{ vehicle.current_mileage }} km
-            </p>
-          </div>
+        <p class="vehicle-card__text">
+          <span class="vehicle-card__label">Kilometraje:</span>
+          {{ vehicle.current_mileage }} km
+        </p>
+      </div>
 
-          <!-- ACCIONES -->
-          <div class="vehicle-card__actions">
-            <a
-              class="vehicle-card__action vehicle-card__action--primary"
-              [routerLink]="['/vehicles', vehicle.id, 'dashboard']"
-            >
-              Dashboard
-            </a>
+      <div class="vehicle-card__actions">
+        <a class="vehicle-card__action vehicle-card__action--primary"
+          [routerLink]="['/vehicles', vehicle.id, 'dashboard']"
+          [attr.aria-label]="'Ver dashboard de ' + (vehicle.alias || vehicle.make + ' ' + vehicle.model)">
+          Dashboard
+        </a>
 
-            <a
-              class="vehicle-card__action"
-              [routerLink]="['/vehicles', vehicle.id, 'edit']"
-            >
-              Editar
-            </a>
+        <a class="vehicle-card__action" [routerLink]="['/vehicles', vehicle.id, 'edit']"
+          [attr.aria-label]="'Editar ' + (vehicle.alias || vehicle.make + ' ' + vehicle.model)">
+          Editar
+        </a>
 
-            <button
-              type="button"
-              class="vehicle-card__action vehicle-card__action--danger"
-              (click)="onDelete(vehicle.id)"
-            >
-              Eliminar
-            </button>
-          </div>
-        </article>
-      }
-    </div>
+        <button type="button" class="vehicle-card__action vehicle-card__action--danger" (click)="onDelete(vehicle.id)"
+          [attr.aria-label]="'Eliminar ' + (vehicle.alias || vehicle.make + ' ' + vehicle.model)">
+          Eliminar
+        </button>
+      </div>
+    </article>
+    }
+  </div>
   }
 
   @if (!loading && vehicles.length === 0) {
-    <div class="vehicle-list__empty">
-      <p class="vehicle-list__state">
-        No tienes vehículos registrados.
-      </p>
+  <div class="vehicle-list__empty" aria-live="polite">
+    <p class="vehicle-list__state">
+      No tienes vehículos registrados.
+    </p>
 
-      <a class="vehicle-list__add-button" routerLink="/vehicles/new">
-        Registrar primer vehículo
-      </a>
-    </div>
+    <a class="vehicle-list__add-button" routerLink="/vehicles/new">
+      Registrar primer vehículo
+    </a>
+  </div>
   }
-</div>
+</section>
