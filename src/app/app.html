@@ -1,11 +1,8 @@
-<div class="app">
-  @if (authService.isAuthenticated()) {
-  <header class="app-header">
-    <div class="app-header__brand">
-      <a class="app-header__logo" routerLink="/vehicles">
-        Vehicle Maintenance
-      </a>
-    </div>
+<header class="app-header">
+  <div class="app-header__inner">
+    <a routerLink="/vehicles" class="app-header__logo">
+      <img src="assets/images/logo-navbar.png" alt="PreventDrive" class="logo-image">
+    </a>
 
     <nav class="app-header__nav">
       <a class="app-header__link" routerLink="/vehicles" routerLinkActive="app-header__link--active">
@@ -21,19 +18,20 @@
 
     <div class="app-header__user">
       <span class="app-header__user-info">
-        {{ authService.getCurrentUser()?.name }}
-        ·
-        {{ authService.getCurrentUser()?.role }}
+        {{ authService.getCurrentUser()?.name }} · {{
+        authService.getCurrentUser()?.role === 'admin'
+        ? 'Administrador'
+        : 'Usuario'
+        }}
       </span>
 
       <button type="button" class="app-header__logout" (click)="logout()">
         Cerrar sesión
       </button>
     </div>
-  </header>
-  }
+  </div>
+</header>
 
-  <main class="app__main">
-    <router-outlet></router-outlet>
-  </main>
-</div>
+<main class="app__main">
+  <router-outlet></router-outlet>
+</main>

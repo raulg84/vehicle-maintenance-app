@@ -75,7 +75,7 @@ export class MaintenanceList implements OnInit {
 
   onDelete(id: number): void {
     const confirmDelete = confirm(
-      '¿Seguro que quieres eliminar este mantenimiento?'
+      '¿Seguro que quieres eliminar este mantenimiento? Esta acción no se puede deshacer.'
     );
 
     if (!confirmDelete) return;
