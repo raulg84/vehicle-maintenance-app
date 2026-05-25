@@ -211,17 +211,34 @@
     transform 0.18s ease;
 }
 
-/* HOVER común */
-.rule-card__action:hover {
-  transform: translateY(-1px);
+/* ESCRITORIO (ratón) */
+@media (hover: hover) {
+
+  .rule-card__action:hover {
+    transform: translateY(-1px);
+  }
+
+  .rule-card__action:active {
+    transform: translateY(1px) scale(0.98);
+  }
+
 }
 
-/* CLICK */
-.rule-card__action:active {
-  transform: translateY(1px) scale(0.98);
+/* PANTALLA TÁCTIL / MÓVIL */
+@media (hover: none) {
+
+  .rule-card__action:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+
 }
 
-/* TECLADO / ACCESIBILIDAD */
+/* Quita el brillo gris de Android */
+.rule-card__action {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .rule-card__action:focus-visible {
   outline: 3px solid #93c5fd;
   outline-offset: 3px;
