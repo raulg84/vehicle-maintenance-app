@@ -11,7 +11,7 @@
     </div>
 
     <div class="vehicle-list__actions">
-      <a class="vehicle-list__add-button" routerLink="/vehicles/new">
+      <a class="vehicle-list__add-button button-interactive" routerLink="/vehicles/new">
         Añadir vehículo
       </a>
     </div>
@@ -49,18 +49,18 @@
       </div>
 
       <div class="vehicle-card__actions">
-        <a class="vehicle-card__action vehicle-card__action--primary"
+        <a class="vehicle-card__action vehicle-card__action--primary button-interactive"
           [routerLink]="['/vehicles', vehicle.id, 'dashboard']"
           [attr.aria-label]="'Ver dashboard de ' + (vehicle.alias || vehicle.make + ' ' + vehicle.model)">
           Dashboard
         </a>
 
-        <a class="vehicle-card__action" [routerLink]="['/vehicles', vehicle.id, 'edit']"
+        <a class="vehicle-card__action button-interactive" [routerLink]="['/vehicles', vehicle.id, 'edit']"
           [attr.aria-label]="'Editar ' + (vehicle.alias || vehicle.make + ' ' + vehicle.model)">
           Editar
         </a>
 
-        <button type="button" class="vehicle-card__action vehicle-card__action--danger" (click)="onDelete(vehicle.id)"
+        <button type="button" class="vehicle-card__action vehicle-card__action--danger button-interactive" (click)="onDelete(vehicle.id)"
           [attr.aria-label]="'Eliminar ' + (vehicle.alias || vehicle.make + ' ' + vehicle.model)">
           Eliminar
         </button>
@@ -76,7 +76,7 @@
       No tienes vehículos registrados.
     </p>
 
-    <a class="vehicle-list__add-button" routerLink="/vehicles/new">
+    <a class="vehicle-list__add-button button-interactive" routerLink="/vehicles/new">
       Registrar primer vehículo
     </a>
   </div>

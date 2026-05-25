@@ -23,13 +23,6 @@
   gap: 0.75rem;
 }
 
-.rule-form__back {
-  width: fit-content;
-  color: #2563eb;
-  font-weight: 600;
-  text-decoration: none;
-}
-
 .rule-form__back:hover {
   text-decoration: underline;
 }
@@ -133,42 +126,45 @@
   margin-top: 0.5rem;
 }
 
-.rule-form__actions a,
-.rule-form__actions button {
+.rule-form__cancel {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  font-weight: 700;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
   text-decoration: none;
+  color: #2563eb;
+  background: #eff6ff;
 }
 
-.rule-form__actions a {
-  border: 1px solid #d1d5db;
-  background: #fff;
-  color: #374151;
+.rule-form__cancel:hover {
+  background: #dbeafe;
 }
 
-.rule-form__actions a:hover {
-  background: #f9fafb;
+.rule-form__cancel:active {
+  background: #bfdbfe;
 }
 
-.rule-form__actions button {
+.rule-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.2rem;
+  border-radius: 8px;
   border: none;
   background: #2563eb;
   color: #fff;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.rule-form__actions button:hover {
+.rule-form__submit:hover {
   background: #1d4ed8;
 }
 
-.rule-form__actions button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.rule-form__submit:active {
+  background: #1e40af;
 }
 
 @media (min-width: 700px) {

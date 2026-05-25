@@ -9,12 +9,14 @@
 
       @if (authService.isAuthenticated()) {
       <nav class="app-header__nav" aria-label="Navegación principal">
-        <a class="app-header__link" routerLink="/vehicles" routerLinkActive="app-header__link--active">
+        <a class="app-header__link" routerLink="/vehicles" routerLinkActive="app-header__link--active"
+          [routerLinkActiveOptions]="{ exact: false }">
           Vehículos
         </a>
 
         @if (authService.isAdmin()) {
-        <a class="app-header__link" routerLink="/rules" routerLinkActive="app-header__link--active">
+        <a class="app-header__link" routerLink="/rules" routerLinkActive="app-header__link--active"
+          [routerLinkActiveOptions]="{ exact: false }">
           Reglas
         </a>
         }

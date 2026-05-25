@@ -2,7 +2,7 @@
 
   <div class="vehicle-form__header">
 
-    <a class="vehicle-form__back" routerLink="/vehicles" aria-label="Volver a la lista de vehículos">
+    <a class="link-back" routerLink="/vehicles" aria-label="Volver a la lista de vehículos">
 
       ← Volver a vehículos
     </a>
@@ -182,11 +182,11 @@
 
     <!-- Acciones -->
     <div class="vehicle-form__actions">
-      <a class="vehicle-form__cancel" routerLink="/vehicles">
+      <a class="vehicle-form__cancel button-interactive" routerLink="/vehicles">
         Cancelar
       </a>
 
-      <button type="submit" class="vehicle-form__submit" [disabled]="loading" [attr.aria-busy]="loading"> {{
+      <button type="submit" class="vehicle-form__submit button-interactive" [disabled]="loading" [attr.aria-busy]="loading"> {{
         loading
         ? 'Guardando vehículo...'
         : isEditMode

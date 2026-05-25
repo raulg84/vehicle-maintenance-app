@@ -11,7 +11,7 @@
         </div>
 
         <div class="rule-list__actions">
-            <a class="rule-list__add-button" routerLink="/rules/new">
+            <a class="rule-list__add-button button-interactive" routerLink="/rules/new">
                 Nueva regla
             </a>
         </div>
@@ -78,12 +78,12 @@
             </div>
 
             <div class="rule-card__actions">
-                <a class="rule-card__action rule-card__action--primary" [routerLink]="['/rules', rule.id, 'edit']"
+                <a class="rule-card__action rule-card__action--primary button-interactive" [routerLink]="['/rules', rule.id, 'edit']"
                     [attr.aria-label]="'Editar regla ' + rule.name">
                     Editar
                 </a>
 
-                <button type="button" class="rule-card__action" [class.rule-card__action--danger]="rule.is_active"
+                <button type="button" class="rule-card__action button-interactive" [class.rule-card__action--danger]="rule.is_active"
                     [class.rule-card__action--success]="!rule.is_active" (click)="toggleActive(rule)"
                     [attr.aria-label]="(rule.is_active ? 'Desactivar regla ' : 'Activar regla ') + rule.name">
                     {{ rule.is_active ? 'Desactivar' : 'Activar' }}
@@ -100,7 +100,7 @@
             No hay reglas configuradas.
         </p>
 
-        <a class="rule-list__add-button" routerLink="/rules/new">
+        <a class="rule-list__add-button button-interactive" routerLink="/rules/new">
             Crear primera regla
         </a>
     </div>

@@ -30,12 +30,6 @@
   gap: 0.75rem;
 }
 
-.vehicle-form__back {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 500;
-}
-
 .vehicle-form__title {
   margin: 0;
   color: #111827;
@@ -100,13 +94,17 @@
   padding: 0.9rem 1rem;
   border-radius: 8px;
   font-weight: 600;
+  text-decoration: none;
   color: #2563eb;
   background: #eff6ff;
-  text-decoration: none;
 }
 
 .vehicle-form__cancel:hover {
   background: #dbeafe;
+}
+
+.vehicle-form__cancel:active {
+  background: #bfdbfe;
 }
 
 .vehicle-form__submit {
@@ -120,13 +118,15 @@
   color: #fff;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
 }
 
 .vehicle-form__submit:hover {
   background: #1d4ed8;
 }
 
+.vehicle-form__submit:active {
+  background: #1e40af;
+}
 .vehicle-form__field-error {
   margin-top: 0.75rem;
   color: #dc2626;

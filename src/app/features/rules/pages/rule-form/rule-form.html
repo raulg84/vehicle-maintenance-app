@@ -1,6 +1,6 @@
 <section class="rule-form" aria-labelledby="rule-form-title">
   <div class="rule-form__header">
-    <a class="rule-form__back" routerLink="/rules" aria-label="Volver a la lista de reglas">
+    <a class="link-back" routerLink="/rules" aria-label="Volver a la lista de reglas">
       ← Volver a reglas
     </a>
 
@@ -150,11 +150,11 @@
     }
 
     <div class="rule-form__actions">
-      <a class="rule-form__cancel" routerLink="/rules" aria-label="Cancelar y volver a la lista de reglas">
+      <a class="rule-form__cancel button-interactive" routerLink="/rules" aria-label="Cancelar y volver a la lista de reglas">
         Cancelar
       </a>
 
-      <button class="rule-form__submit" type="submit" [disabled]="loading" [attr.aria-busy]="loading">
+      <button class="rule-form__submit button-interactive" type="submit" [disabled]="loading" [attr.aria-busy]="loading">
         {{
         loading
         ? 'Guardando regla...'

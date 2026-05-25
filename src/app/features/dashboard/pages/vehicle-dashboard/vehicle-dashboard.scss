@@ -20,17 +20,6 @@
   gap: 1rem;
 }
 
-.vehicle-dashboard__back {
-  width: fit-content;
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.vehicle-dashboard__back:hover {
-  text-decoration: underline;
-}
-
 .vehicle-dashboard__header-main {
   display: flex;
   flex-direction: column;
@@ -65,24 +54,23 @@
 
 .vehicle-dashboard__button {
   display: inline-flex;
-  background: #2563eb;
-  color: #fff;
   align-items: center;
   justify-content: center;
   width: fit-content;
   padding: 0.75rem 1rem;
   border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
   text-decoration: none;
   font-weight: 600;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.18s ease;
 }
 
 .vehicle-dashboard__button:hover {
   background: #1d4ed8;
-  transform: translateY(-1px);
+}
+
+.vehicle-dashboard__button:active {
+  background: #1e40af;
 }
 
 .vehicle-dashboard__link {
@@ -483,34 +471,18 @@
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.18s ease;
 }
 
 .vehicle-dashboard__mileage-button:hover {
   background: #1d4ed8;
-  transform: translateY(-1px);
 }
 
 .vehicle-dashboard__mileage-button:active {
-  transform: translateY(1px) scale(0.98);
   background: #1e40af;
 }
 
-.vehicle-dashboard__mileage-button:focus-visible {
-  outline: 3px solid #93c5fd;
-  outline-offset: 3px;
-}
-
-.vehicle-dashboard__mileage-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.65;
-  transform: none;
-}
-
 @media (max-width: 480px) {
+
   .vehicle-dashboard__mileage-button {
     font-size: 0;
     padding: 0.6rem;
@@ -520,4 +492,5 @@
     content: "Actualizar";
     font-size: 0.9rem;
   }
+
 }

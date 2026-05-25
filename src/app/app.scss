@@ -54,14 +54,56 @@
 }
 
 .app-header__link {
+  position: relative;
   color: #4b5563;
   text-decoration: none;
   font-weight: 600;
+  transition:
+    color 0.2s ease,
+    transform 0.18s ease;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) {
+  .app-header__link:hover {
+    color: #2563eb;
+    transform: translateY(-1px);
+  }
+}
+
+.app-header__link:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 
 .app-header__link--active {
   color: #111827;
   font-weight: 800;
+}
+
+.app-header__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.35rem;
+  height: 2px;
+  border-radius: 999px;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.app-header__link--active::after {
+  background: #2563eb;
+}
+
+@media (hover: none) {
+  .app-header__link:active {
+    color: #2563eb;
+    opacity: 0.85;
+  }
 }
 
 .app-header__user {
@@ -108,7 +150,7 @@
     justify-content: space-between;
   }
 
-  .app__main{
-    padding:1rem;
+  .app__main {
+    padding: 1rem;
   }
 }
