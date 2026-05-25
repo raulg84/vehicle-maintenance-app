@@ -59,7 +59,7 @@ export class MaintenanceForm implements OnInit {
 
   ngOnInit(): void {
     const maintenanceIdParam = this.route.snapshot.paramMap.get('id');
-    const vehicleIdParam = this.route.snapshot.queryParamMap.get('vehicleId');
+    const vehicleIdParam = this.route.snapshot.paramMap.get('vehicleId');
 
     if (maintenanceIdParam) {
       this.isEditMode = true;

@@ -26,18 +26,20 @@ export class MaintenanceList implements OnInit {
   vehicleId!: number;
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
+    this.route.paramMap.subscribe(params => {
+      const vehicleId = Number(params.get('vehicleId'));
 
-    if (!idParam) {
-      this.error = 'No se ha indicado un vehículo válido.';
-      this.loading = false;
-      return;
-    }
+      if (!vehicleId) {
+        this.error = 'No se ha indicado un vehículo válido.';
+        this.loading = false;
+        return;
+      }
 
-    this.vehicleId = Number(idParam);
+      this.vehicleId = vehicleId;
 
-    this.loadVehicle();
-    this.loadMaintenances();
+      this.loadVehicle();
+      this.loadMaintenances();
+    });
   }
 
   loadVehicle(): void {

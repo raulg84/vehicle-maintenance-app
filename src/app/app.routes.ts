@@ -45,7 +45,7 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'maintenances/new',
+        path: 'vehicles/:vehicleId/maintenances/new',
         canActivate: [authGuard],
         loadComponent: () =>
             import('./features/maintenances/pages/maintenance-form/maintenance-form').then(
@@ -53,7 +53,7 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'vehicles/:id/maintenances',
+        path: 'vehicles/:vehicleId/maintenances',
         canActivate: [authGuard],
         loadComponent: () =>
             import('./features/maintenances/pages/maintenance-list/maintenance-list').then(
@@ -61,7 +61,7 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'maintenances/:id/edit',
+        path: 'vehicles/:vehicleId/maintenances/:maintenanceId/edit',
         canActivate: [authGuard],
         loadComponent: () =>
             import('./features/maintenances/pages/maintenance-form/maintenance-form').then(

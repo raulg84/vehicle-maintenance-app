@@ -31,7 +31,7 @@
             </div>
 
             <div class="maintenance-list__actions">
-                <a class="maintenance-list__add-button" [routerLink]="['/maintenances/new']"
+                <a class="maintenance-list__add-button" [routerLink]="['/vehicles', vehicleId, 'maintenances', 'new']"
                     [queryParams]="{ vehicleId: vehicleId }">
                     Registrar mantenimiento
                 </a>
