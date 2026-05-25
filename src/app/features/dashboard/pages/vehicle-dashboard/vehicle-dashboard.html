@@ -18,9 +18,7 @@
             </div>
 
             <div class="vehicle-dashboard__actions">
-                <a class="vehicle-dashboard__button button-interactive"
-                    [routerLink]="['/vehicles', vehicleId, 'maintenances', 'new']"
-                    [queryParams]="{ vehicleId: vehicleId }">
+                <a class="vehicle-dashboard__button button-interactive"  [routerLink]="['/vehicles', vehicleId, 'maintenances', 'new']">
                     Registrar mantenimiento
                 </a>
 
@@ -80,8 +78,7 @@
                 placeholder="Nuevo kilometraje" [max]="maxMileage" required
                 [attr.aria-invalid]="mileageError ? 'true' : 'false'" aria-describedby="mileage-error" />
 
-            <button type="button" class="vehicle-dashboard__mileage-button button-interactive"
-                (click)="updateMileage()">
+            <button type="button" class="vehicle-dashboard__mileage-button button-interactive" (click)="updateMileage()">
                 Actualizar
             </button>
         </div>

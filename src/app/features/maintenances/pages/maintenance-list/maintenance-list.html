@@ -31,8 +31,8 @@
             </div>
 
             <div class="maintenance-list__actions">
-                <a class="maintenance-list__add-button" [routerLink]="['/vehicles', vehicleId, 'maintenances', 'new']"
-                    [queryParams]="{ vehicleId: vehicleId }">
+                <a class="maintenance-list__add-button button-interactive"
+                    [routerLink]="['/vehicles', vehicleId, 'maintenances', 'new']">
                     Registrar mantenimiento
                 </a>
 
@@ -90,12 +90,14 @@
             </div>
 
             <div class="maintenance-card__actions">
-                <a class="maintenance-card__action" [routerLink]="['/maintenances', maintenance.id, 'edit']"
+                <a class="maintenance-card__action button-interactive"
+                    [routerLink]="['/vehicles', vehicleId, 'maintenances', maintenance.id, 'edit']"
                     [attr.aria-label]="'Editar mantenimiento ' + (maintenance.maintenance_type || 'sin tipo')">
                     Editar
                 </a>
 
-                <button type="button" class="maintenance-card__action maintenance-card__action--danger"
+                <button type="button"
+                    class="maintenance-card__action maintenance-card__action--danger button-interactive"
                     (click)="onDelete(maintenance.id)"
                     [attr.aria-label]="'Eliminar mantenimiento ' + (maintenance.maintenance_type || 'sin tipo')">
                     Eliminar
@@ -111,9 +113,8 @@
         <p class="maintenance-list__state">
             No hay mantenimientos registrados para este vehículo.
         </p>
-
-        <a class="maintenance-list__add-button" [routerLink]="['/maintenances/new']"
-            [queryParams]="{ vehicleId: vehicleId }">
+        <a class="maintenance-list__add-button button-interactive"
+            [routerLink]="['/vehicles', vehicleId, 'maintenances', 'new']">
             Registrar primer mantenimiento
         </a>
     </div>

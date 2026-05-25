@@ -61,24 +61,23 @@
 
 .maintenance-list__add-button {
   display: inline-flex;
-  background: #2563eb;
-  color: #fff;
   align-items: center;
   justify-content: center;
   width: fit-content;
   padding: 0.75rem 1rem;
   border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
   text-decoration: none;
   font-weight: 600;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.18s ease;
 }
 
 .maintenance-list__add-button:hover {
   background: #1d4ed8;
-  transform: translateY(-1px);
+}
+
+.maintenance-list__add-button:active {
+  background: #1e40af;
 }
 
 .maintenance-list__link {
@@ -152,24 +151,28 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   min-width: 90px;
   padding: 0.65rem 0.9rem;
+
   border: none;
   border-radius: 8px;
+
   background: #e5e7eb;
   color: #111827;
+
   text-decoration: none;
   font-size: 0.92rem;
   font-weight: 600;
   cursor: pointer;
-  transition:
-    background 0.2s ease,
-    transform 0.18s ease;
 }
 
 .maintenance-card__action:hover {
   background: #d1d5db;
-  transform: translateY(-1px);
+}
+
+.maintenance-card__action:active {
+  background: #cbd5e1;
 }
 
 .maintenance-card__action--danger {
@@ -179,6 +182,10 @@
 
 .maintenance-card__action--danger:hover {
   background: #fecaca;
+}
+
+.maintenance-card__action--danger:active {
+  background: #fca5a5;
 }
 
 .maintenance-card__body {

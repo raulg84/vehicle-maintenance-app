@@ -58,23 +58,26 @@ export class MaintenanceForm implements OnInit {
   });
 
   ngOnInit(): void {
-    const maintenanceIdParam = this.route.snapshot.paramMap.get('id');
     const vehicleIdParam = this.route.snapshot.paramMap.get('vehicleId');
+    const maintenanceIdParam = this.route.snapshot.paramMap.get('maintenanceId');
+
+    if (!vehicleIdParam) {
+      this.error = 'No se ha indicado un vehículo válido.';
+      return;
+    }
+
+    this.vehicleId = Number(vehicleIdParam);
+
+    this.maintenanceForm.patchValue({
+      vehicle_id: this.vehicleId,
+    });
 
     if (maintenanceIdParam) {
       this.isEditMode = true;
       this.maintenanceId = Number(maintenanceIdParam);
+
       this.loadMaintenance();
-      return;
-    }
-
-    if (vehicleIdParam) {
-      this.vehicleId = Number(vehicleIdParam);
-
-      this.maintenanceForm.patchValue({
-        vehicle_id: this.vehicleId,
-      });
-
+    } else {
       this.loadVehicle();
     }
   }
