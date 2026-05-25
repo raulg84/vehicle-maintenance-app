@@ -105,19 +105,14 @@
     color: #fff;
     font-weight: 700;
     cursor: pointer;
-    transition:
-        background 0.2s ease,
-        transform 0.18s ease;
 }
 
 .auth-form__submit:hover {
     background: #1d4ed8;
-    transform: translateY(-1px);
 }
 
-.auth-form__submit:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+.auth-form__submit:active {
+    background: #1e40af;
 }
 
 .auth-form__link {

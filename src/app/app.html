@@ -25,15 +25,19 @@
       <div class="app-header__user">
         <span class="app-header__user-info">
           {{ authService.getCurrentUser()?.name }}
-          ·
-          {{
-          authService.getCurrentUser()?.role === 'admin'
-          ? 'Administrador'
-          : 'Usuario'
-          }}
+
+          <span class="app-header__separator">·</span>
+
+          <span class="app-header__role">
+            {{
+            authService.getCurrentUser()?.role === 'admin'
+            ? 'Administrador'
+            : 'Usuario'
+            }}
+          </span>
         </span>
 
-        <button type="button" class="app-header__logout" (click)="logout()">
+        <button class="app-header__logout button-interactive" (click)="logout()">
           Cerrar sesión
         </button>
       </div>
